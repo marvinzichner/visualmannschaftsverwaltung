@@ -21,6 +21,7 @@ namespace VisualMannschaftsverwaltung
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             ApplicationController = new ApplicationController();
+            ApplicationController.prepareTuple();
         }
     }
 }

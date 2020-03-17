@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,10 +12,12 @@ namespace VisualMannschaftsverwaltung.View
     {
         #region Eigenschaften
         private ApplicationController applicationController;
+        private string _targetPersonType;
         #endregion
 
         #region Accessoren / Modifier
         public ApplicationController ApplicationController { get => applicationController; set => applicationController = value; }
+        public string TargetPersonType { get => _targetPersonType; set => _targetPersonType = value; }
         #endregion
 
         #region Konstruktor
@@ -27,12 +30,16 @@ namespace VisualMannschaftsverwaltung.View
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            OutputType.Value =
+                ApplicationController.getFirstTupleMatch("typematcher");
         }
 
         protected void confirmPersonSelection(object sender, EventArgs e)
         {
-            Console.WriteLine("hello!");
+            ApplicationController.buttonPersonTypeSelected(
+                this.PersonSelectionType.SelectedValue);
+            OutputType.Value =
+                ApplicationController.getFirstTupleMatch("typematcher");
         }
         #endregion
     }

@@ -40,6 +40,8 @@
         <asp:TextBox ID="fieldBirthdate" CssClass="listField" runat="server"></asp:TextBox>
     </div>
 
+    <input id="OutputType" type="text" runat="server" />
+
     <style>
         .listSpacer {
             height: 30px;

@@ -7,11 +7,13 @@
 // </automatisch generiert>
 //------------------------------------------------------------------------------
 
-namespace VisualMannschaftsverwaltung.View {
-    
-    
-    public partial class PersonenVerwaltung {
-        
+namespace VisualMannschaftsverwaltung.View
+{
+
+
+    public partial class PersonenVerwaltung
+    {
+
         /// <summary>
         /// PersonSelectionType-Steuerelement
         /// </summary>
@@ -20,7 +22,7 @@ namespace VisualMannschaftsverwaltung.View {
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList PersonSelectionType;
-        
+
         /// <summary>
         /// buttonConfirmSelection-Steuerelement
         /// </summary>
@@ -29,7 +31,7 @@ namespace VisualMannschaftsverwaltung.View {
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button buttonConfirmSelection;
-        
+
         /// <summary>
         /// fieldVorname-Steuerelement
         /// </summary>
@@ -38,7 +40,7 @@ namespace VisualMannschaftsverwaltung.View {
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox fieldVorname;
-        
+
         /// <summary>
         /// fieldNachname-Steuerelement
         /// </summary>
@@ -47,7 +49,7 @@ namespace VisualMannschaftsverwaltung.View {
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox fieldNachname;
-        
+
         /// <summary>
         /// fieldBirthdate-Steuerelement
         /// </summary>
@@ -56,5 +58,14 @@ namespace VisualMannschaftsverwaltung.View {
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox fieldBirthdate;
+
+        /// <summary>
+        /// OutputType-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText OutputType;
     }
 }

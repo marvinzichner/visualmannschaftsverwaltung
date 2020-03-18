@@ -60,12 +60,12 @@ namespace VisualMannschaftsverwaltung.View
         protected global::System.Web.UI.WebControls.TextBox fieldBirthdate;
 
         /// <summary>
-        /// OutputType-Steuerelement
+        /// dynamicFlow-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText OutputType;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dynamicFlow;
     }
 }

@@ -30,16 +30,36 @@ namespace VisualMannschaftsverwaltung.View
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            OutputType.Value =
-                ApplicationController.getFirstTupleMatch("typematcher");
+            
         }
 
         protected void confirmPersonSelection(object sender, EventArgs e)
         {
             ApplicationController.buttonPersonTypeSelected(
                 this.PersonSelectionType.SelectedValue);
-            OutputType.Value =
-                ApplicationController.getFirstTupleMatch("typematcher");
+            //ApplicationController.getFirstTupleMatch("typematcher");
+
+            dynamicFlow.Controls.Add(generateNewField("tb01", "Name"));
+            dynamicFlow.Controls.Add(generateNewField("tb02", "Alter"));
+        }
+
+        protected Control generateNewField(string id, string text)
+        {
+            Control c = new Control();
+            Label l = new Label();
+            TextBox tb = new TextBox();
+            System.Web.UI.HtmlControls.HtmlGenericControl div = new System.Web.UI.HtmlControls.HtmlGenericControl();
+
+            l.Text = text;
+            l.CssClass = "listLabelFlow";
+            tb.CssClass = "listField";
+            tb.ID = "generatedField-" + id;
+
+            div.Controls.Add(l);
+            div.Controls.Add(tb);
+            c.Controls.Add(div);
+   
+            return c;
         }
         #endregion
     }

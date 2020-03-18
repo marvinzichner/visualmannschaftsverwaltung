@@ -40,7 +40,7 @@
         <asp:TextBox ID="fieldBirthdate" CssClass="listField" runat="server"></asp:TextBox>
     </div>
 
-    <input id="OutputType" type="text" runat="server" />
+    <div class="listSpacer listSpacerDynamic" runat="server" id="dynamicFlow"></div>
 
     <style>
         .listSpacer {
@@ -49,7 +49,17 @@
             width: 100%;
             margin-bottom: 5px;
         }
+        .listSpacerDynamic div {
+            height: 30px;
+            line-height: 30px;
+            width: 100%;
+            margin-bottom: 5px;
+        }
         .listLabel {
+            float: left;
+            width: 200px;
+        }
+        .listLabelFlow {
             float: left;
             width: 200px;
         }

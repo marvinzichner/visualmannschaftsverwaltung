@@ -30,17 +30,37 @@ namespace VisualMannschaftsverwaltung.View
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            fieldVorname.Enabled = false;
+            fieldNachname.Enabled = false;
+            fieldBirthdate.Enabled = false;
         }
 
         protected void confirmPersonSelection(object sender, EventArgs e)
         {
+            string selection = this.PersonSelectionType.SelectedValue;
             ApplicationController.buttonPersonTypeSelected(
                 this.PersonSelectionType.SelectedValue);
-            //ApplicationController.getFirstTupleMatch("typematcher");
 
-            dynamicFlow.Controls.Add(generateNewField("tb01", "Name"));
-            dynamicFlow.Controls.Add(generateNewField("tb02", "Alter"));
+            try { 
+                Type reflectedPerson = 
+                    Type.GetType("VisualMannschaftsverwaltung." + selection);
+                Person reflectedInstance = 
+                    (Person) Activator.CreateInstance(reflectedPerson);
+
+                reflectedInstance.getGenericAttribues().ForEach(genericType =>
+                {
+                    dynamicFlow.Controls.Add(
+                        generateNewField("attribute-" + genericType, genericType));
+                });
+
+                fieldVorname.Enabled = true;
+                fieldNachname.Enabled = true;
+                fieldBirthdate.Enabled = true;
+            } 
+            catch (Exception)
+            {
+                dynamicFlow.Controls.Add(generateNewField("attribute-error", "reflection failed: " + selection));
+            }
         }
 
         protected Control generateNewField(string id, string text)
@@ -48,7 +68,8 @@ namespace VisualMannschaftsverwaltung.View
             Control c = new Control();
             Label l = new Label();
             TextBox tb = new TextBox();
-            System.Web.UI.HtmlControls.HtmlGenericControl div = new System.Web.UI.HtmlControls.HtmlGenericControl();
+            System.Web.UI.HtmlControls.HtmlGenericControl div = 
+                new System.Web.UI.HtmlControls.HtmlGenericControl();
 
             l.Text = text;
             l.CssClass = "listLabelFlow";

@@ -177,7 +177,9 @@
     <Compile Include="Contact.aspx.designer.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Controller\ApplicationContext.cs" />
     <Compile Include="Controller\ApplicationController.cs" />
+    <Compile Include="Controller\Utils.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -188,6 +190,19 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Model\Bundesliga.cs" />
+    <Compile Include="Model\FussballSpieler.cs" />
+    <Compile Include="Model\HandballSpieler.cs" />
+    <Compile Include="Model\Mannschaft.cs" />
+    <Compile Include="Model\Person.cs" />
+    <Compile Include="Model\Physiotherapeut.cs" />
+    <Compile Include="Model\Spieler.cs" />
+    <Compile Include="Model\SpielerRolle.cs" />
+    <Compile Include="Model\SportArt.cs" />
+    <Compile Include="Model\TennisSpieler.cs" />
+    <Compile Include="Model\Trainer.cs" />
+    <Compile Include="Model\Turnier.cs" />
+    <Compile Include="Model\Verein.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
@@ -220,7 +235,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Model\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

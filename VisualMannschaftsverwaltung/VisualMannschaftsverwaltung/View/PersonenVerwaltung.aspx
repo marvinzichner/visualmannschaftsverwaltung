@@ -17,8 +17,8 @@
         <asp:ListItem Value="FussballSpieler">Fussballspieler</asp:ListItem>
         <asp:ListItem Value="HandballSpieler">Handballspieler</asp:ListItem>
         <asp:ListItem Value="TennisSpieler">Tennisspieler</asp:ListItem>
-        <asp:ListItem>Physiotherapeuth</asp:ListItem>
-        <asp:ListItem>Trainer</asp:ListItem>
+        <asp:ListItem Value="Physiotherapeut">Physiotherapeut</asp:ListItem>
+        <asp:ListItem Value="Trainer">Trainer</asp:ListItem>
     </asp:RadioButtonList>
 
     <br />
@@ -41,6 +41,8 @@
     </div>
 
     <div class="listSpacer listSpacerDynamic" runat="server" id="dynamicFlow"></div>
+
+    <asp:Button ID="button2" runat="server" Text="Person erstellen" />
 
     <style>
         .listSpacer {
@@ -67,6 +69,7 @@
             float: left;
             height: 30px;
             width: 400px;
+            margin-right: 20px;
         }
     </style>
 

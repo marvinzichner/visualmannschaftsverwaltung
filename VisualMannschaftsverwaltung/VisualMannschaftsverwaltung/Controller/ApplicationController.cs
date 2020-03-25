@@ -16,11 +16,13 @@ namespace VisualMannschaftsverwaltung
         #region Eigenschaften
         private List<Tuple<string, string>> _userData;
         private List<Mannschaft> _mannschaften;
+        private List<Person> _personen;
         #endregion
 
         #region Accessoren / Modifier
         public List<Tuple<string, string>> UserData { get => _userData; set => _userData = value; }
         public List<Mannschaft> Mannschaften { get => _mannschaften; set => _mannschaften = value; }
+        public List<Person> Personen { get => _personen; set => _personen = value; }
         #endregion
 
         #region Konstruktoren
@@ -28,6 +30,7 @@ namespace VisualMannschaftsverwaltung
         {
             this.UserData = new List<Tuple<string, string>>();
             this.Mannschaften = new List<Mannschaft>();
+            this.Personen = new List<Person>();
         }
         #endregion
 
@@ -63,6 +66,11 @@ namespace VisualMannschaftsverwaltung
         {
             this.UserData.Add(
                 new Tuple<string, string>("typematcher", "value"));
+        }
+
+        public void addPerson(Person person)
+        {
+            this.Personen.Add(person);
         }
         #endregion
     }

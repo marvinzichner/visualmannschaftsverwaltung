@@ -23,8 +23,8 @@
 
     <br />
     <asp:Button ID="buttonConfirmSelection" runat="server" Text="Auswahl bestätigen" OnClick="confirmPersonSelection" />
+    <br />
 
-    <hr />
     <h4>2. Geben Sie Detailinformationen zu dieser Person an:</h4>
     
     <div class="listSpacer">
@@ -42,7 +42,15 @@
 
     <div class="listSpacer listSpacerDynamic" runat="server" id="dynamicFlow"></div>
 
-    <asp:Button ID="button2" runat="server" Text="Person erstellen" />
+    <asp:Button ID="button2" runat="server" OnClick="createNewPerson" Text="Person erstellen" />
+    <br />
+
+    <hr />
+
+    <h4>Anzeige der vorhandenen Personen</h4>
+    <div runat="server" id="dynamicPersonList">
+       
+    </div>
 
     <style>
         .listSpacer {

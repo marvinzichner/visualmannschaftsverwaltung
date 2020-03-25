@@ -15,6 +15,8 @@ namespace VisualMannschaftsverwaltung
     {
         #region Eigenschaften
         private string _name;
+        private string _nachname;
+        private string _bithdate;
         private SportArt _sportArt;
         private List<string> _genericAttributes;
         #endregion
@@ -23,12 +25,16 @@ namespace VisualMannschaftsverwaltung
         public string Name { get => _name; set => _name = value; }
         public SportArt SportArt { get => _sportArt; set => _sportArt = value; }
         public List<string> GenericAttributes { get => _genericAttributes; set => _genericAttributes = value; }
+        public string Nachname { get => _nachname; set => _nachname = value; }
+        public string Bithdate { get => _bithdate; set => _bithdate = value; }
         #endregion
 
         #region Konstruktoren
         public Person()
         {
-            Name = "Max Mustermann";
+            Name = "Max";
+            Nachname = "Mustermann";
+            Bithdate = "12.34.5678";
             SportArt = SportArt.KEINE;
             GenericAttributes = new List<string>();
         }
@@ -36,6 +42,8 @@ namespace VisualMannschaftsverwaltung
         public Person(string name)
         {
             Name = name;
+            Nachname = "Mustermann";
+            Bithdate = "12.34.5678";
             SportArt = SportArt.KEINE;
             GenericAttributes = new List<string>();
         }
@@ -43,6 +51,8 @@ namespace VisualMannschaftsverwaltung
         public Person(Person p)
         {
             Name = p.Name;
+            Nachname = p.Nachname;
+            Bithdate = p.Bithdate;
             SportArt = p.SportArt;
             GenericAttributes = p.GenericAttributes;
         }
@@ -115,6 +125,18 @@ namespace VisualMannschaftsverwaltung
         public virtual Person name(string s)
         {
             this.Name = s;
+            return this;
+        }
+
+        public virtual Person nachname(string s)
+        {
+            this.Nachname = s;
+            return this;
+        }
+
+        public virtual Person birthdate(string s)
+        {
+            this.Bithdate = s;
             return this;
         }
         public virtual Person sportArt(SportArt s)

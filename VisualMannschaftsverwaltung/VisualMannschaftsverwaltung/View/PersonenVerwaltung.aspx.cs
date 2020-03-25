@@ -27,14 +27,57 @@ namespace VisualMannschaftsverwaltung.View
         protected void Page_Init(object sender, EventArgs e)
         {
             ApplicationController = Global.ApplicationController;
+
+            this.loadPersonen();
         }
         protected void Page_Load(object sender, EventArgs e)
         {
             fieldVorname.Enabled = false;
             fieldNachname.Enabled = false;
             fieldBirthdate.Enabled = false;
+
+            this.loadPersonen();
         }
 
+        protected void createNewPerson(object sender, EventArgs e)
+        {
+            string selectedType = ApplicationController.getFirstTupleMatch("typematcher");
+            string fieldVorname = this.fieldVorname.Text;
+            string fieldNachname = this.fieldNachname.Text;
+            string fieldBirthdate = this.fieldBirthdate.Text;
+
+            try
+            {
+                Type targetType = Type.GetType("VisualMannschaftsverwaltung." + selectedType);
+                Person reflectedInstance = (Person)Activator.CreateInstance(targetType);
+                
+                reflectedInstance
+                    .name(fieldVorname)
+                    .nachname(fieldNachname)
+                    .birthdate(fieldBirthdate);
+
+                ApplicationController.addPerson(reflectedInstance);
+            }
+            catch (Exception)
+            {
+                dynamicFlow.Controls.Add(
+                    generateNewField("attribute-error", "reflection failed: " + selectedType));
+            }
+        }
+
+        protected void loadPersonen()
+        {
+            ApplicationController.Personen.ForEach(person =>
+            {
+                Control c = new Control();
+                Label l = new Label();
+
+                l.Text = person.Name + " " + person.Nachname;
+                c.Controls.Add(l);
+
+                dynamicPersonList.Controls.Add(c);
+            });
+        }
         protected void confirmPersonSelection(object sender, EventArgs e)
         {
             string selection = this.PersonSelectionType.SelectedValue;
@@ -59,7 +102,8 @@ namespace VisualMannschaftsverwaltung.View
             } 
             catch (Exception)
             {
-                dynamicFlow.Controls.Add(generateNewField("attribute-error", "reflection failed: " + selection));
+                dynamicFlow.Controls.Add(
+                    generateNewField("attribute-error", "reflection failed: " + selection));
             }
         }
 

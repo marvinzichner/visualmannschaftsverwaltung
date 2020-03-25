@@ -27,8 +27,6 @@ namespace VisualMannschaftsverwaltung.View
         protected void Page_Init(object sender, EventArgs e)
         {
             ApplicationController = Global.ApplicationController;
-
-            this.loadPersonen();
         }
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -56,7 +54,27 @@ namespace VisualMannschaftsverwaltung.View
                     .nachname(fieldNachname)
                     .birthdate(fieldBirthdate);
 
-                ApplicationController.addPerson(reflectedInstance);
+                List<KeyValuePair<string, string>> attr = new List<KeyValuePair<string, string>>();
+                getAllAttributes().ForEach(attribute =>
+                {
+                    attr.Add(new KeyValuePair<string, string>(attribute, Request["attribute-" + attribute]));
+                });
+
+                if (selectedType == "FussballSpieler")
+                {
+                    ApplicationController.addPerson(
+                        reflectedInstance
+                            .sportArt(SportArt.FUSSBALL)
+                            .toFussballSpieler()
+                            .spielSiege(25)
+                            .isLeftFeet(
+                               false)
+                    );
+                }
+                else
+                {
+                    ApplicationController.addPerson(reflectedInstance);
+                }
             }
             catch (Exception)
             {
@@ -65,17 +83,79 @@ namespace VisualMannschaftsverwaltung.View
             }
         }
 
-        protected void loadPersonen()
+        protected List<string> getAllAttributes()
         {
+            List<string> tableKeys = new List<string>();
+            tableKeys.Add("Vorname");
+            tableKeys.Add("Nachname");
+            tableKeys.Add("Geburtsdatum");
             ApplicationController.Personen.ForEach(person =>
             {
-                Control c = new Control();
+                person.getGenericAttribues().ForEach(attribute =>
+                {
+                    if (!tableKeys.Contains(attribute))
+                    {
+                        tableKeys.Add(attribute);
+                    }
+                });
+            });
+
+            return tableKeys;
+        }
+
+        protected void loadPersonen()
+        {
+            
+
+            int percent = 100 / getAllAttributes().Count;
+            getAllAttributes().ForEach(attribute =>
+            {
                 Label l = new Label();
 
-                l.Text = person.Name + " " + person.Nachname;
-                c.Controls.Add(l);
+                l.Text = attribute;
+                l.Attributes.CssStyle.Add("width", percent + "%");
+                l.Attributes.CssStyle.Add("float", "left");
+                staticPersonListHeader.Controls.Add(l);
+            });
 
-                dynamicPersonList.Controls.Add(c);
+            ApplicationController.Personen.ForEach(person =>
+            {
+                getAllAttributes().ForEach(attribute =>
+                {
+                    Label l = new Label();
+                    l.Attributes.CssStyle.Add("width", percent + "%");
+                    l.Attributes.CssStyle.Add("float", "left");
+                    string cellContent = "---";
+
+                    if (attribute == "Vorname")
+                    {
+                        cellContent = person.Name;
+                    }
+                    else if (attribute == "Nachname")
+                    {
+                        cellContent = person.Nachname;
+                    }
+                    else if (attribute == "Geburtsdatum")
+                    {
+                        cellContent = person.Birthdate;
+                    }
+                    else
+                    {
+                        try {
+                            Type personType = person.GetType();
+                            PropertyInfo pi = personType.GetProperty(attribute);
+                            cellContent = pi.GetValue(person).ToString();
+                        }
+                        catch (Exception e)
+                        {
+                            cellContent = e.Message;
+                        }
+                    }
+
+
+                    l.Text = cellContent;
+                    dynamicPersonList.Controls.Add(l);
+                });
             });
         }
         protected void confirmPersonSelection(object sender, EventArgs e)

@@ -14,8 +14,8 @@ namespace VisualMannschaftsverwaltung
     public class FussballSpieler : Spieler
     {
         #region Eigenschaften
-        bool _isLeftFeet;
-        int _SpielSiege;
+        private bool _isLeftFeet;
+        private int _SpielSiege;
         #endregion
 
         #region Accessoren / Modifier

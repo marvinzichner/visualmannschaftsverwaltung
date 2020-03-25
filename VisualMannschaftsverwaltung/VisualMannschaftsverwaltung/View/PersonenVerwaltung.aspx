@@ -48,9 +48,10 @@
     <hr />
 
     <h4>Anzeige der vorhandenen Personen</h4>
-    <div runat="server" id="dynamicPersonList">
-       
-    </div>
+    <div runat="server" id="staticPersonListHeader" class="tableHeader"></div>
+    <div runat="server" id="dynamicPersonList"></div>
+
+    <br /><br />
 
     <style>
         .listSpacer {
@@ -78,6 +79,9 @@
             height: 30px;
             width: 400px;
             margin-right: 20px;
+        }
+        .tableHeader {
+            font-weight: bold;
         }
     </style>
 

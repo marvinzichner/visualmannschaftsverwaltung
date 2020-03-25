@@ -26,7 +26,7 @@ namespace VisualMannschaftsverwaltung
         public SportArt SportArt { get => _sportArt; set => _sportArt = value; }
         public List<string> GenericAttributes { get => _genericAttributes; set => _genericAttributes = value; }
         public string Nachname { get => _nachname; set => _nachname = value; }
-        public string Bithdate { get => _bithdate; set => _bithdate = value; }
+        public string Birthdate { get => _bithdate; set => _bithdate = value; }
         #endregion
 
         #region Konstruktoren
@@ -34,7 +34,7 @@ namespace VisualMannschaftsverwaltung
         {
             Name = "Max";
             Nachname = "Mustermann";
-            Bithdate = "12.34.5678";
+            Birthdate = "12.34.5678";
             SportArt = SportArt.KEINE;
             GenericAttributes = new List<string>();
         }
@@ -43,7 +43,7 @@ namespace VisualMannschaftsverwaltung
         {
             Name = name;
             Nachname = "Mustermann";
-            Bithdate = "12.34.5678";
+            Birthdate = "12.34.5678";
             SportArt = SportArt.KEINE;
             GenericAttributes = new List<string>();
         }
@@ -52,7 +52,7 @@ namespace VisualMannschaftsverwaltung
         {
             Name = p.Name;
             Nachname = p.Nachname;
-            Bithdate = p.Bithdate;
+            Birthdate = p.Birthdate;
             SportArt = p.SportArt;
             GenericAttributes = p.GenericAttributes;
         }
@@ -136,7 +136,7 @@ namespace VisualMannschaftsverwaltung
 
         public virtual Person birthdate(string s)
         {
-            this.Bithdate = s;
+            this.Birthdate = s;
             return this;
         }
         public virtual Person sportArt(SportArt s)

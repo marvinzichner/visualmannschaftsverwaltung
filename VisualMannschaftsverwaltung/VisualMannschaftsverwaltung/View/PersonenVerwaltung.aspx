@@ -12,6 +12,8 @@
         margin-bottom: 30px;
     ">Personen Verwaltung</div>
 
+    <div runat="server" ID="errorMessages" class="errorText"></div>
+
     <h4>1. Wählen Sie den zu erstellenden Personentyp aus:</h4>
     <asp:RadioButtonList ID="PersonSelectionType" runat="server">
         <asp:ListItem Value="FussballSpieler">Fussballspieler</asp:ListItem>
@@ -26,21 +28,23 @@
     <br />
 
     <h4>2. Geben Sie Detailinformationen zu dieser Person an:</h4>
-    
-    <div class="listSpacer">
-        <div class="listLabel">Vorname</div>
-        <asp:TextBox ID="fieldVorname" CssClass="listField" runat="server"></asp:TextBox>
-    </div>
-    <div class="listSpacer">
-        <div class="listLabel">Nachname</div>
-        <asp:TextBox ID="fieldNachname" CssClass="listField" runat="server"></asp:TextBox>
-    </div>
-    <div class="listSpacer">
-        <div class="listLabel">Geburtsdatum</div>
-        <asp:TextBox ID="fieldBirthdate" CssClass="listField" runat="server"></asp:TextBox>
-    </div>
 
-    <div class="listSpacer listSpacerDynamic" runat="server" id="dynamicFlow"></div>
+    <div class="clear">
+        <div class="listSpacer">
+            <div class="listLabel">Vorname</div>
+            <asp:TextBox ID="fieldVorname" CssClass="listField" runat="server"></asp:TextBox>
+        </div>
+        <div class="listSpacer">
+            <div class="listLabel">Nachname</div>
+            <asp:TextBox ID="fieldNachname" CssClass="listField" runat="server"></asp:TextBox>
+        </div>
+        <div class="listSpacer">
+            <div class="listLabel">Geburtsdatum</div>
+            <asp:TextBox ID="fieldBirthdate" CssClass="listField" runat="server"></asp:TextBox>
+        </div>
+
+        <div class="listSpacer listSpacerDynamic" runat="server" id="dynamicFlow"></div>
+    </div>
 
     <asp:Button ID="button2" runat="server" OnClick="createNewPerson" Text="Person erstellen" />
     <br />
@@ -49,7 +53,7 @@
 
     <h4>Anzeige der vorhandenen Personen</h4>
     <div runat="server" id="staticPersonListHeader" class="tableHeader"></div>
-    <div runat="server" id="dynamicPersonList"></div>
+    <div runat="server" id="dynamicPersonList" class="clear"></div>
 
     <br /><br />
 
@@ -74,6 +78,11 @@
             float: left;
             width: 200px;
         }
+        .clear:after {
+            clear: both;
+            content: "";
+            display: table;
+        }
         .listField {
             float: left;
             height: 30px;
@@ -82,6 +91,10 @@
         }
         .tableHeader {
             font-weight: bold;
+        }
+        .errorText {
+            color: red;
+            padding: 10px;
         }
     </style>
 

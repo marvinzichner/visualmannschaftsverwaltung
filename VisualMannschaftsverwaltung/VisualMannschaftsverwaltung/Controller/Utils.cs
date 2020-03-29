@@ -122,6 +122,42 @@ namespace VisualMannschaftsverwaltung
             this.Personen.Add(p);
             return this.Personen;
         }
+
+        static public bool convertToBool(object o, bool standard, string field)
+        {
+            bool b = standard;
+            try
+            {
+                b = Convert.ToBoolean(o);
+            }
+            catch (Exception e)
+            {
+                throw new InputValidationException(
+                    "Die Eingabe konnte nicht in einen boolischen Wert umgewandelt werden",
+                    "PersonenVerwaltung",
+                    field,
+                    "'True' oder 'False'");
+            }
+            return b;
+        }
+
+        static public int convertToInt(object o, int standard, string field)
+        {
+            int i = standard;
+            try
+            {
+                i = Convert.ToInt32(o);
+            }
+            catch (Exception e)
+            {
+                throw new InputValidationException(
+                    "Die Eingabe konnte nicht in eine Zahl umgewandelt werden",
+                    "PersonenVerwaltung",
+                    field,
+                    "Beliebige Anzahl von Ziffern im Raum 0-9");
+            }
+            return i;
+        }
         #endregion
     }
 }

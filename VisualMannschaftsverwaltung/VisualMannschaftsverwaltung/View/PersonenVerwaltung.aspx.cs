@@ -39,6 +39,8 @@ namespace VisualMannschaftsverwaltung.View
 
         protected void createNewPerson(object sender, EventArgs e)
         {
+            List<InputValidationException> violationList = new List<InputValidationException>();
+            this.errorMessages.InnerHtml = "";
             string selectedType = ApplicationController.getFirstTupleMatch("typematcher");
             string fieldVorname = this.fieldVorname.Text;
             string fieldNachname = this.fieldNachname.Text;
@@ -55,9 +57,10 @@ namespace VisualMannschaftsverwaltung.View
                     .birthdate(fieldBirthdate);
 
                 List<KeyValuePair<string, string>> attr = new List<KeyValuePair<string, string>>();
-                getAllAttributes().ForEach(attribute =>
+                getAllGenericAttributes().ForEach(attribute =>
                 {
-                    attr.Add(new KeyValuePair<string, string>(attribute, Request["attribute-" + attribute]));
+                    attr.Add(new KeyValuePair<string, string>(
+                        attribute, Request["ctl00$MainContent$generatedField-attribute-" + attribute]));
                 });
 
                 if (selectedType == "FussballSpieler")
@@ -66,9 +69,54 @@ namespace VisualMannschaftsverwaltung.View
                         reflectedInstance
                             .sportArt(SportArt.FUSSBALL)
                             .toFussballSpieler()
-                            .spielSiege(25)
+                            .spielSiege(
+                                Utils.convertToInt(attr.Find(x => x.Key == "SpielSiege").Value, 0, "SpielSiege"))
                             .isLeftFeet(
-                               false)
+                                Utils.convertToBool(attr.Find(x => x.Key == "IsLeftFeet").Value, false, "IsLeftFeet"))
+                    );
+                }
+                else if (selectedType == "HandballSpieler")
+                {
+                    ApplicationController.addPerson(
+                        reflectedInstance
+                            .sportArt(SportArt.HANDBALL)
+                            .toHandballSpieler()
+                            .spielSiege(
+                                Utils.convertToInt(attr.Find(x => x.Key == "SpielSiege").Value, 0, "SpielSiege"))
+                            .isLeftHand(
+                                Utils.convertToBool(attr.Find(x => x.Key == "IsLeftHand").Value, false, "IsLeftHand"))
+                    );
+                }
+                else if (selectedType == "TennisSpieler")
+                {
+                    ApplicationController.addPerson(
+                        reflectedInstance
+                            .sportArt(SportArt.TENNIS)
+                            .toTennisSpieler()
+                            .spielSiege(
+                                Utils.convertToInt(attr.Find(x => x.Key == "SpielSiege").Value, 0, "SpielSiege"))
+                            .isLeftHand(
+                                Utils.convertToBool(attr.Find(x => x.Key == "IsLeftHand").Value, false, "IsLeftHand"))
+                    );
+                }
+                else if (selectedType == "Trainer")
+                {
+                    ApplicationController.addPerson(
+                        reflectedInstance
+                            .sportArt(SportArt.KEINE)
+                            .toTrainer()
+                            .hasLicense(
+                               Utils.convertToBool(attr.Find(x => x.Key == "HasLicense").Value, false, "HasLicense"))
+                    );
+                }
+                else if (selectedType == "Physiotherapeut")
+                {
+                    ApplicationController.addPerson(
+                        reflectedInstance
+                            .sportArt(SportArt.KEINE)
+                            .toPhysiotherapeut()
+                            .hasLicense(
+                               Utils.convertToBool(attr.Find(x => x.Key == "HasLicense").Value, false, "HasLicense"))
                     );
                 }
                 else
@@ -76,11 +124,55 @@ namespace VisualMannschaftsverwaltung.View
                     ApplicationController.addPerson(reflectedInstance);
                 }
             }
-            catch (Exception)
+            catch (InputValidationException ie)
             {
-                dynamicFlow.Controls.Add(
-                    generateNewField("attribute-error", "reflection failed: " + selectedType));
+                violationList.Add(ie);
             }
+            catch (Exception ex)
+            {
+                errorMessages.InnerHtml =
+                   $"<b>Unbekannter Fehler aufgetreten</b><br>{ex.Message}";
+            }
+
+            violationList.ForEach(violation =>
+            {
+                errorMessages.InnerHtml =
+                   $"<b>Eingabeüberprüfung</b><br>{violation.HumanReadable}.<br>" +
+                   $"<i>Eingabefeld:</i>&emsp;{violation.Field}<br>" +
+                   $"<i>Pattern:</i>&emsp;{violation.Pattern}<br><br>";
+            });
+
+            this.fieldVorname.Text = "";
+            this.fieldNachname.Text = "";
+            this.fieldBirthdate.Text = "";
+        }
+
+        protected List<string> getAllGenericAttributes()
+        {
+            List<string> tableKeys = new List<string>();
+            List<Person> list = new List<Person>();
+
+            tableKeys.Add("Vorname");
+            tableKeys.Add("Nachname");
+            tableKeys.Add("Geburtsdatum");
+            list.Add(new FussballSpieler());
+            list.Add(new HandballSpieler());
+            list.Add(new TennisSpieler());
+            list.Add(new Trainer());
+            list.Add(new Physiotherapeut());
+
+            list.ForEach(person =>
+            {
+                person.getGenericAttribues().ForEach(attribute =>
+                {
+                    if (!tableKeys.Contains(attribute))
+                    {
+                        tableKeys.Add(attribute);
+                    }
+                });
+            });
+
+            return tableKeys;
         }
 
         protected List<string> getAllAttributes()
@@ -105,8 +197,6 @@ namespace VisualMannschaftsverwaltung.View
 
         protected void loadPersonen()
         {
-            
-
             int percent = 100 / getAllAttributes().Count;
             getAllAttributes().ForEach(attribute =>
             {
@@ -115,6 +205,7 @@ namespace VisualMannschaftsverwaltung.View
                 l.Text = attribute;
                 l.Attributes.CssStyle.Add("width", percent + "%");
                 l.Attributes.CssStyle.Add("float", "left");
+                l.Attributes.CssStyle.Add("border-bottom", "3px solid #e6e6e6");
                 staticPersonListHeader.Controls.Add(l);
             });
 
@@ -125,7 +216,8 @@ namespace VisualMannschaftsverwaltung.View
                     Label l = new Label();
                     l.Attributes.CssStyle.Add("width", percent + "%");
                     l.Attributes.CssStyle.Add("float", "left");
-                    string cellContent = "---";
+                    l.Attributes.CssStyle.Add("border-bottom", "1px solid #e6e6e6");
+                    string cellContent = "&emsp;";
 
                     if (attribute == "Vorname")
                     {
@@ -148,10 +240,9 @@ namespace VisualMannschaftsverwaltung.View
                         }
                         catch (Exception e)
                         {
-                            cellContent = e.Message;
+                            cellContent = "&emsp;";
                         }
                     }
-
 
                     l.Text = cellContent;
                     dynamicPersonList.Controls.Add(l);

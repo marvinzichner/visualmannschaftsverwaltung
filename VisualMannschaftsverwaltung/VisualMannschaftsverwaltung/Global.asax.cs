@@ -24,6 +24,8 @@ namespace VisualMannschaftsverwaltung
             ApplicationController.prepareTuple();
             ApplicationController.receiveContext(
                 ApplicationContext.createApplicationContext());
+            ApplicationController.receivePersonen(
+                ApplicationContext.createPersonData());
             
         }
     }

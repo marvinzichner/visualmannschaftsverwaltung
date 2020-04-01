@@ -52,6 +52,14 @@
     <hr />
 
     <h4>Anzeige der vorhandenen Personen</h4>
+    Sortieren nach:
+    <asp:DropDownList ID="dropDownSorting" runat="server">
+        <asp:ListItem Value="UNSORTED">Keine</asp:ListItem>
+        <asp:ListItem Value="NAME_ASC">Name (absteigend)</asp:ListItem>
+        <asp:ListItem Value="ERFOLG_ASC">Erfolg (absteigend)</asp:ListItem>
+    </asp:DropDownList>
+    <asp:Button ID="confirmSortingButton" runat="server" OnClick="dropDownSortingChanged" Text="Sortierung anwenden" />
+    <br /><br />
     <div runat="server" id="staticPersonListHeader" class="tableHeader"></div>
     <div runat="server" id="dynamicPersonList" class="clear"></div>
 

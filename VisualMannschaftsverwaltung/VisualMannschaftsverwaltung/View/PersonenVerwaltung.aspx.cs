@@ -209,7 +209,9 @@ namespace VisualMannschaftsverwaltung.View
                 staticPersonListHeader.Controls.Add(l);
             });
 
-            ApplicationController.Personen.ForEach(person =>
+            ApplicationController.getPersonen(
+                ApplicationController.StorageOrderBy.FindLast(x => x.Key == "PERSONENVERWALTUNG").Value,
+                ApplicationController.StorageSearchTerm.FindLast(x => x.Key == "PERSONENVERWALTUNG").Value).ForEach(person =>
             {
                 getAllAttributes().ForEach(attribute =>
                 {
@@ -298,5 +300,14 @@ namespace VisualMannschaftsverwaltung.View
             return c;
         }
         #endregion
+
+        protected void dropDownSortingChanged(object sender, EventArgs e)
+        {
+            string sortingRule = this.dropDownSorting.SelectedValue;
+            ApplicationController.StorageOrderBy.Add(
+                new KeyValuePair<string, Mannschaft.OrderBy>("PERSONENVERWALTUNG", Mannschaft.OrderBy.ERFOLG_ASC));
+            ApplicationController.StorageSearchTerm.Add(
+               new KeyValuePair<string, Mannschaft.SearchTerm>("PERSONENVERWALTUNG", Mannschaft.SearchTerm.ALL));
+        }
     }
 }

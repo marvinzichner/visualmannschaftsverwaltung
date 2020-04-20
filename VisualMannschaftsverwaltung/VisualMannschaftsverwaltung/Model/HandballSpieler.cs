@@ -83,6 +83,13 @@ namespace VisualMannschaftsverwaltung
             return this.SpielSiege;
         }
 
+        public override int compareByBirthdate(Person p)
+        {
+            DateTime thisDate = DateTime.Parse(this.Birthdate);
+            DateTime otherDate = DateTime.Parse(p.Birthdate);
+            return Utils.compareDates(thisDate, otherDate);
+        }
+
         public override int compareBySpielSiege(Person p)
         {
             int compareResult = -1;
@@ -127,6 +134,11 @@ namespace VisualMannschaftsverwaltung
             }
 
             return result;
+        }
+
+        public override string saySkills()
+        {
+            return $"Siege: {SpielSiege}";
         }
         #endregion
     }

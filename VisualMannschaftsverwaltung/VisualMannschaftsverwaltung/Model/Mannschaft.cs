@@ -22,7 +22,7 @@ namespace VisualMannschaftsverwaltung
         {
             UNSORTED = 0,
             ERFOLG_ASC = 1,
-            ERFOLG_DESC = 2,
+            BIRTHDATE_ASC = 2,
             NAME_ASC = 3
         }
         public enum SearchTerm
@@ -116,6 +116,12 @@ namespace VisualMannschaftsverwaltung
             return this;
         }
 
+        public Mannschaft name(string s)
+        {
+            Name = s;
+            return this;
+        }
+
         public Mannschaft rule(SearchTerm st)
         {
             FilterRule = st;
@@ -175,7 +181,8 @@ namespace VisualMannschaftsverwaltung
 
                         if(SortRule == OrderBy.ERFOLG_ASC && EnableGrouping && p1.getSportArtCode() < p2.getSportArtCode() ||
                             SortRule == OrderBy.ERFOLG_ASC && !EnableGrouping && p1.compareBySpielSiege(p2) < 0 ||
-                            SortRule == OrderBy.NAME_ASC && p1.compareByName(p2) < 0) {
+                            SortRule == OrderBy.NAME_ASC && p1.compareByName(p2) < 0 ||
+                            SortRule == OrderBy.BIRTHDATE_ASC && p1.compareByBirthdate(p2) < 0) {
                             int idx1 = persons.IndexOf(p1);
                             int idx2 = persons.IndexOf(p2);
                             persons[idx1] = p2;

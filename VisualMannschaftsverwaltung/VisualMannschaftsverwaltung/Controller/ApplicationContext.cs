@@ -30,13 +30,20 @@ namespace VisualMannschaftsverwaltung
         public static List<Mannschaft> createApplicationContext()
         {
             List<Mannschaft> returnableList = new List<Mannschaft>();
-            Mannschaft mannschaft = new Mannschaft("Köln");
+            
+            Mannschaft mannschaft = new Mannschaft();
+            //mannschaft.Personen = createPersonData();
+            returnableList.Add(
+                mannschaft
+                    .name("1. FC Köln")
+                    .sportArt(SportArt.FUSSBALL));
 
-            mannschaft
-                .sportArt(SportArt.FUSSBALL)
-                .flushPersonen();
-
-            returnableList.Add(mannschaft);
+            mannschaft = new Mannschaft();
+            returnableList.Add(
+                mannschaft
+                    .name("TC Grün-Rot Kaiserslautern")
+                    .sportArt(SportArt.TENNIS)
+                    .flushPersonen());
 
             return returnableList;
         }
@@ -56,6 +63,7 @@ namespace VisualMannschaftsverwaltung
                 .name("Marvin")
                 .nachname("Zichner")
                 .sportArt(SportArt.FUSSBALL)
+                .birthdate("09.08.1999")
                 .toFussballSpieler()
                 .isLeftFeet(true)
                 .spielerNummer(12)
@@ -65,6 +73,7 @@ namespace VisualMannschaftsverwaltung
             Henry
                 .name("Henry C.")
                 .nachname("Johnson")
+                .birthdate("16.01.2000")
                 .sportArt(SportArt.HANDBALL)
                 .toHandballSpieler()
                 .isLeftHand(false)
@@ -75,6 +84,7 @@ namespace VisualMannschaftsverwaltung
             Lars
                 .name("Lars T.-J.")
                 .nachname("Smith")
+                .birthdate("13.07.1971")
                 .sportArt(SportArt.TENNIS)
                 .toTennisSpieler()
                 .isLeftHand(true)
@@ -85,6 +95,7 @@ namespace VisualMannschaftsverwaltung
             Jeff
                 .name("Jeff")
                 .nachname("Miller")
+                .birthdate("12.06.1971")
                 .sportArt(SportArt.TENNIS)
                 .toTennisSpieler()
                 .isLeftHand(true)
@@ -95,6 +106,7 @@ namespace VisualMannschaftsverwaltung
             John
                 .name("John")
                 .nachname("de Reginald")
+                .birthdate("11.11.1981")
                 .sportArt(SportArt.KEINE)
                 .toTrainer()
                 .hasLicense(true)
@@ -103,6 +115,7 @@ namespace VisualMannschaftsverwaltung
             Zili
                 .name("Carsten")
                 .nachname("Stahl-Grubers")
+                .birthdate("09.08.1999")
                 .sportArt(SportArt.FUSSBALL)
                 .toFussballSpieler()
                 .isLeftFeet(true)
@@ -113,6 +126,7 @@ namespace VisualMannschaftsverwaltung
             Thomas
                 .name("Thomas")
                 .nachname("Britt")
+                .birthdate("23.12.2000")
                 .sportArt(SportArt.KEINE)
                 .toPhysiotherapeut()
                 .hasLicense(true);

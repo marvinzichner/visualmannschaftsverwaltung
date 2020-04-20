@@ -122,6 +122,10 @@ namespace VisualMannschaftsverwaltung
 
         public abstract int compareByName(Person p);
 
+        public abstract int compareByBirthdate(Person p);
+
+        public abstract string saySkills();
+
         public virtual Person name(string s)
         {
             this.Name = s;

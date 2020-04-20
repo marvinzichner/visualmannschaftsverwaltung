@@ -13,11 +13,13 @@ namespace VisualMannschaftsverwaltung.View
         #region Eigenschaften
         private ApplicationController applicationController;
         private string _targetPersonType;
+        private int _selectedPerson;
         #endregion
 
         #region Accessoren / Modifier
         public ApplicationController ApplicationController { get => applicationController; set => applicationController = value; }
         public string TargetPersonType { get => _targetPersonType; set => _targetPersonType = value; }
+        public int SelectedPerson { get => _selectedPerson; set => _selectedPerson = value; }
         #endregion
 
         #region Konstruktor
@@ -33,6 +35,7 @@ namespace VisualMannschaftsverwaltung.View
             fieldVorname.Enabled = false;
             fieldNachname.Enabled = false;
             fieldBirthdate.Enabled = false;
+            SelectedPerson = -1;
 
             this.loadPersonen();
         }
@@ -145,6 +148,10 @@ namespace VisualMannschaftsverwaltung.View
             this.fieldVorname.Text = "";
             this.fieldNachname.Text = "";
             this.fieldBirthdate.Text = "";
+            dynamicPersonList.Controls.Clear();
+            dynamicFlow.Controls.Clear();
+            staticPersonListHeader.Controls.Clear();
+            this.loadPersonen();
         }
 
         protected List<string> getAllGenericAttributes()
@@ -181,6 +188,7 @@ namespace VisualMannschaftsverwaltung.View
             tableKeys.Add("Vorname");
             tableKeys.Add("Nachname");
             tableKeys.Add("Geburtsdatum");
+            tableKeys.Add("Sportart");
             ApplicationController.Personen.ForEach(person =>
             {
                 person.getGenericAttribues().ForEach(attribute =>
@@ -191,12 +199,17 @@ namespace VisualMannschaftsverwaltung.View
                     }
                 });
             });
+            tableKeys.Add("Aktionen");
 
             return tableKeys;
         }
 
         protected void loadPersonen()
         {
+            dynamicPersonList.Controls.Clear();
+            dynamicFlow.Controls.Clear();
+            staticPersonListHeader.Controls.Clear();
+
             int percent = 100 / getAllAttributes().Count;
             getAllAttributes().ForEach(attribute =>
             {
@@ -209,9 +222,12 @@ namespace VisualMannschaftsverwaltung.View
                 staticPersonListHeader.Controls.Add(l);
             });
 
+            int cnt = 0;
             ApplicationController.getPersonen(
-                ApplicationController.StorageOrderBy.FindLast(x => x.Key == "PERSONENVERWALTUNG").Value,
-                ApplicationController.StorageSearchTerm.FindLast(x => x.Key == "PERSONENVERWALTUNG").Value).ForEach(person =>
+                ApplicationController.StorageOrderBy.FindLast(
+                    x => x.Key == "PERSONENVERWALTUNG").Value,
+                ApplicationController.StorageSearchTerm.FindLast(
+                    x => x.Key == "PERSONENVERWALTUNG").Value).ForEach(person =>
             {
                 getAllAttributes().ForEach(attribute =>
                 {
@@ -233,6 +249,28 @@ namespace VisualMannschaftsverwaltung.View
                     {
                         cellContent = person.Birthdate;
                     }
+                    else if (attribute == "Sportart")
+                    {
+                        cellContent = person.SportArt.ToString();
+                    }
+                    else if (attribute == "Aktionen")
+                    {
+                        cellContent = "";
+                        l.Attributes.CssStyle.Add("width","0%");
+
+                        Button b = new Button();
+                        b.Attributes.CssStyle.Add("width", percent + "%");
+                        b.Attributes.CssStyle.Add("float", "left");
+                        b.Attributes.CssStyle.Add("border", "none");
+                        b.Attributes.CssStyle.Add("background", "white");
+                        b.Attributes.CssStyle.Add("border-bottom", "1px solid #e6e6e6");
+                        b.ID = cnt.ToString();
+                        b.Click += new EventHandler(this.testClickEvent);
+                        b.Text = "auswählen";
+                        dynamicPersonList.Controls.Add(b);
+
+                        cnt += 1;
+                    }
                     else
                     {
                         try {
@@ -251,11 +289,55 @@ namespace VisualMannschaftsverwaltung.View
                 });
             });
         }
+
+        void testClickEvent(Object sender, EventArgs e)
+        {
+            Button b = (Button)sender;
+            String id = b.ID;
+            int pid = Convert.ToInt32(id);
+
+            ApplicationController.setTuple("personenverwaltung.pid", pid.ToString());
+            deleteButton.Visible = true;
+            editButton.Visible = true;
+        }
+
+        protected void removeSelectedPerson(object sender, EventArgs e)
+        {
+            Person p = new Trainer();
+            List<Person> list = ApplicationController.getPersonen(
+                ApplicationController.StorageOrderBy.FindLast(
+                    x => x.Key == "PERSONENVERWALTUNG").Value,
+                ApplicationController.StorageSearchTerm.FindLast(
+                    x => x.Key == "PERSONENVERWALTUNG").Value);
+            p = list[Convert.ToInt32(
+                ApplicationController.getFirstTupleMatch("personenverwaltung.pid"))];
+
+            ApplicationController.Personen.Remove(p);
+            deleteButton.Visible = false;
+            editButton.Visible = false;
+            this.loadPersonen();
+        }
+
+        protected void editSelectedPerson(object sender, EventArgs e)
+        {
+            Object p = new Trainer();
+            List<Person> list = ApplicationController.getPersonen(
+                ApplicationController.StorageOrderBy.FindLast(
+                    x => x.Key == "PERSONENVERWALTUNG").Value,
+                ApplicationController.StorageSearchTerm.FindLast(
+                    x => x.Key == "PERSONENVERWALTUNG").Value);
+            p = list[Convert.ToInt32(
+                ApplicationController.getFirstTupleMatch("personenverwaltung.pid"))];
+
+            PersonSelectionTypeDD.SelectedValue = p.GetType().ToString();
+            this.confirmPersonSelection(sender, e);
+        }
+
         protected void confirmPersonSelection(object sender, EventArgs e)
         {
-            string selection = this.PersonSelectionType.SelectedValue;
+            string selection = this.PersonSelectionTypeDD.SelectedValue;
             ApplicationController.buttonPersonTypeSelected(
-                this.PersonSelectionType.SelectedValue);
+                this.PersonSelectionTypeDD.SelectedValue);
 
             try { 
                 Type reflectedPerson = 
@@ -304,10 +386,25 @@ namespace VisualMannschaftsverwaltung.View
         protected void dropDownSortingChanged(object sender, EventArgs e)
         {
             string sortingRule = this.dropDownSorting.SelectedValue;
-            ApplicationController.StorageOrderBy.Add(
-                new KeyValuePair<string, Mannschaft.OrderBy>("PERSONENVERWALTUNG", Mannschaft.OrderBy.ERFOLG_ASC));
-            ApplicationController.StorageSearchTerm.Add(
-               new KeyValuePair<string, Mannschaft.SearchTerm>("PERSONENVERWALTUNG", Mannschaft.SearchTerm.ALL));
+            try
+            {
+                Mannschaft.OrderBy parsed = (Mannschaft.OrderBy)Enum.Parse(typeof(Mannschaft.OrderBy), sortingRule);
+
+                ApplicationController.StorageOrderBy.Add(
+                    new KeyValuePair<string, Mannschaft.OrderBy>("PERSONENVERWALTUNG", parsed));
+                ApplicationController.StorageSearchTerm.Add(
+                   new KeyValuePair<string, Mannschaft.SearchTerm>("PERSONENVERWALTUNG", Mannschaft.SearchTerm.ALL));
+            } 
+            catch(Exception exception)
+            {
+                errorMessages.InnerHtml =
+                   $"<b>Reflection failed</b><br>'{sortingRule}' did not match any sorting type.";
+            }
+ 
+            dynamicPersonList.Controls.Clear();
+            dynamicFlow.Controls.Clear();
+            staticPersonListHeader.Controls.Clear();
+            this.loadPersonen();
         }
     }
 }

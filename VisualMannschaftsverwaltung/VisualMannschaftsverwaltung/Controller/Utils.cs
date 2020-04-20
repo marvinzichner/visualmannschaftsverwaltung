@@ -111,6 +111,26 @@ namespace VisualMannschaftsverwaltung
             }
         }
 
+        public static int compareDates(DateTime d1, DateTime d2)
+        {
+            int result = -1;
+
+            if(d1 < d2)
+            {
+                result = -1;
+            }
+            else if (d1 == d2)
+            {
+                result = 0;
+            }
+            else if (d1 > d2)
+            {
+                result = 1;
+            }
+
+            return result;
+        }
+
         public List<Person> flushPersonList()
         {
             this.Personen = new List<Person>();

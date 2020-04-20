@@ -19,6 +19,7 @@ namespace VisualMannschaftsverwaltung
         private List<KeyValuePair<string, Mannschaft.OrderBy>> _storageOrderBy;
         private List<KeyValuePair<string, Mannschaft.SearchTerm>> _storageSearchTerm;
         private List<Person> _personen;
+        private Mannschaft _tempMannschaft;
         #endregion
 
         #region Accessoren / Modifier
@@ -27,6 +28,7 @@ namespace VisualMannschaftsverwaltung
         public List<Person> Personen { get => _personen; set => _personen = value; }
         public List<KeyValuePair<string, Mannschaft.OrderBy>> StorageOrderBy { get => _storageOrderBy; set => _storageOrderBy = value; }
         public List<KeyValuePair<string, Mannschaft.SearchTerm>> StorageSearchTerm { get => _storageSearchTerm; set => _storageSearchTerm = value; }
+        public Mannschaft TempMannschaft { get => _tempMannschaft; set => _tempMannschaft = value; }
         #endregion
 
         #region Konstruktoren
@@ -37,6 +39,7 @@ namespace VisualMannschaftsverwaltung
             this.Personen = new List<Person>();
             this.StorageOrderBy = new List<KeyValuePair<string, Mannschaft.OrderBy>>();
             this.StorageSearchTerm = new List<KeyValuePair<string, Mannschaft.SearchTerm>>();
+            this.TempMannschaft = new Mannschaft();
         }
         #endregion
 
@@ -52,6 +55,47 @@ namespace VisualMannschaftsverwaltung
                 this.UserData.Find(x => x.Item1 == key));
             this.UserData.Add(
                 new Tuple<string, string>(key, value));
+        }
+
+        public List<Mannschaft> getMannschaften()
+        {
+            return this.Mannschaften;
+        }
+
+        public List<Person> getAvailablePersonen()
+        {
+            List<Person> list = new List<Person>();
+            SportArt matchSportArt = TempMannschaft.SportArt;
+            List<Person> matchMembers = TempMannschaft.Personen;
+
+            Personen.ForEach(p => { 
+                if(p.SportArt == matchSportArt && !matchMembers.Contains(p) || 
+                    p.isPhysiotherapeut() && !matchMembers.Contains(p) ||
+                    p.isTrainer() && !matchMembers.Contains(p))
+                {
+                    list.Add(p);
+                }
+            });
+
+            return list;
+        }
+
+        public void addMannschaftIfNotExists(Mannschaft newMannschaft)
+        {
+            bool existing = false;
+            Mannschaften.ForEach(m =>
+            {
+                if(newMannschaft.Name == m.Name
+                    && newMannschaft.SportArt == m.SportArt)
+                {
+                    existing = true;
+                }
+            });
+
+            if (!existing)
+            {
+                Mannschaften.Add(newMannschaft);
+            }
         }
 
         public void receiveContext(List<Mannschaft> mns)
@@ -72,6 +116,7 @@ namespace VisualMannschaftsverwaltung
             return mannschaft
                     .rule(ob)
                     .rule(st)
+                    .enableGroupSort()
                     .applySearchPattern();
         }
 

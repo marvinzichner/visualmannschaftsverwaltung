@@ -155,6 +155,7 @@
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Site.Master" />
     <Content Include="ViewSwitcher.ascx" />
+    <Content Include="View\MannschaftsVerwaltung.aspx" />
     <Content Include="View\PersonenVerwaltung.aspx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
@@ -187,6 +188,7 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Exception\RuntimeException.cs" />
     <Compile Include="Exception\InputValidationException.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -225,6 +227,13 @@
     </Compile>
     <Compile Include="ViewSwitcher.ascx.designer.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="View\MannschaftsVerwaltung.aspx.cs">
+      <DependentUpon>MannschaftsVerwaltung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\MannschaftsVerwaltung.aspx.designer.cs">
+      <DependentUpon>MannschaftsVerwaltung.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\PersonenVerwaltung.aspx.cs">
       <DependentUpon>PersonenVerwaltung.aspx</DependentUpon>

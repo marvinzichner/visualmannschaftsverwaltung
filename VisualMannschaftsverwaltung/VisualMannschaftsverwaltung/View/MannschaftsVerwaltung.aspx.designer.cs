@@ -11,142 +11,124 @@ namespace VisualMannschaftsverwaltung.View
 {
 
 
-    public partial class PersonenVerwaltung
+    public partial class MannschaftsVerwaltung
     {
 
         /// <summary>
-        /// errorMessages-Steuerelement
+        /// teamsList-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl errorMessages;
+        protected global::System.Web.UI.WebControls.DropDownList teamsList;
 
         /// <summary>
-        /// PersonSelectionTypeDD-Steuerelement
+        /// teamsListSelect-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList PersonSelectionTypeDD;
+        protected global::System.Web.UI.WebControls.Button teamsListSelect;
 
         /// <summary>
-        /// PersonSelectionType2-Steuerelement
+        /// teamsDelete-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList PersonSelectionType2;
+        protected global::System.Web.UI.WebControls.Button teamsDelete;
 
         /// <summary>
-        /// buttonConfirmSelection-Steuerelement
+        /// newTeamnameBox-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buttonConfirmSelection;
+        protected global::System.Web.UI.WebControls.TextBox newTeamnameBox;
 
         /// <summary>
-        /// fieldVorname-Steuerelement
+        /// newTeamtype-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox fieldVorname;
+        protected global::System.Web.UI.WebControls.DropDownList newTeamtype;
 
         /// <summary>
-        /// fieldNachname-Steuerelement
+        /// newTeamBtn-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox fieldNachname;
+        protected global::System.Web.UI.WebControls.Button newTeamBtn;
 
         /// <summary>
-        /// fieldBirthdate-Steuerelement
+        /// contentContainer-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox fieldBirthdate;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl contentContainer;
 
         /// <summary>
-        /// dynamicFlow-Steuerelement
+        /// teamName-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dynamicFlow;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl teamName;
 
         /// <summary>
-        /// button2-Steuerelement
+        /// personList-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button button2;
+        protected global::System.Web.UI.WebControls.DropDownList personList;
 
         /// <summary>
-        /// dropDownSorting-Steuerelement
+        /// personListButton-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dropDownSorting;
+        protected global::System.Web.UI.WebControls.Button personListButton;
 
         /// <summary>
-        /// confirmSortingButton-Steuerelement
+        /// personListDelete-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button confirmSortingButton;
+        protected global::System.Web.UI.WebControls.DropDownList personListDelete;
 
         /// <summary>
-        /// editButton-Steuerelement
+        /// personListDeleteButton-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button editButton;
+        protected global::System.Web.UI.WebControls.Button personListDeleteButton;
 
         /// <summary>
-        /// deleteButton-Steuerelement
+        /// membersListContainer-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button deleteButton;
-
-        /// <summary>
-        /// staticPersonListHeader-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl staticPersonListHeader;
-
-        /// <summary>
-        /// dynamicPersonList-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dynamicPersonList;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl membersListContainer;
     }
 }

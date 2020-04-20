@@ -1,29 +1,28 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="PersonenVerwaltung.aspx.cs" Inherits="VisualMannschaftsverwaltung.View.PersonenVerwaltung" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <div style="
-        width: 100%; 
-        padding: 30px; 
-        background-color: #e6e6e6; 
-        color: gray; 
-        height: 100px; 
-        line-height: 100px; 
-        font-size: 15pt;
-        margin-bottom: 30px;
-    ">Personen Verwaltung</div>
-
     <div runat="server" ID="errorMessages" class="errorText"></div>
 
     <h4>1. Wählen Sie den zu erstellenden Personentyp aus:</h4>
-    <asp:RadioButtonList ID="PersonSelectionType" runat="server">
+    <asp:DropDownList ID="PersonSelectionTypeDD" runat="server">
+        <asp:ListItem Value="FussballSpieler">Fussballspieler</asp:ListItem>
+        <asp:ListItem Value="HandballSpieler">Handballspieler</asp:ListItem>
+        <asp:ListItem Value="TennisSpieler">Tennisspieler</asp:ListItem>
+        <asp:ListItem Value="Physiotherapeut">Physiotherapeut</asp:ListItem>
+        <asp:ListItem Value="Trainer">Trainer</asp:ListItem>
+    </asp:DropDownList>
+
+    <!--
+    <asp:RadioButtonList ID="PersonSelectionType2" runat="server">
         <asp:ListItem Value="FussballSpieler">Fussballspieler</asp:ListItem>
         <asp:ListItem Value="HandballSpieler">Handballspieler</asp:ListItem>
         <asp:ListItem Value="TennisSpieler">Tennisspieler</asp:ListItem>
         <asp:ListItem Value="Physiotherapeut">Physiotherapeut</asp:ListItem>
         <asp:ListItem Value="Trainer">Trainer</asp:ListItem>
     </asp:RadioButtonList>
+    -->
 
-    <br />
+    &emsp;
     <asp:Button ID="buttonConfirmSelection" runat="server" Text="Auswahl bestätigen" OnClick="confirmPersonSelection" />
     <br />
 
@@ -31,16 +30,16 @@
 
     <div class="clear">
         <div class="listSpacer">
-            <div class="listLabel">Vorname</div>
-            <asp:TextBox ID="fieldVorname" CssClass="listField" runat="server"></asp:TextBox>
+            <div class="listLabelFlow">Vorname</div>
+            <asp:TextBox class="listField" ID="fieldVorname" CssClass="listField" runat="server"></asp:TextBox>
         </div>
         <div class="listSpacer">
-            <div class="listLabel">Nachname</div>
-            <asp:TextBox ID="fieldNachname" CssClass="listField" runat="server"></asp:TextBox>
+            <div class="listLabelFlow">Nachname</div>
+            <asp:TextBox class="listField" ID="fieldNachname" CssClass="listField" runat="server"></asp:TextBox>
         </div>
         <div class="listSpacer">
-            <div class="listLabel">Geburtsdatum</div>
-            <asp:TextBox ID="fieldBirthdate" CssClass="listField" runat="server"></asp:TextBox>
+            <div class="listLabelFlow">Geburtsdatum</div>
+            <asp:TextBox class="listField" TextMode="DateTime" ID="fieldBirthdate" CssClass="listField" runat="server"></asp:TextBox>
         </div>
 
         <div class="listSpacer listSpacerDynamic" runat="server" id="dynamicFlow"></div>
@@ -54,11 +53,16 @@
     <h4>Anzeige der vorhandenen Personen</h4>
     Sortieren nach:
     <asp:DropDownList ID="dropDownSorting" runat="server">
-        <asp:ListItem Value="UNSORTED">Keine</asp:ListItem>
-        <asp:ListItem Value="NAME_ASC">Name (absteigend)</asp:ListItem>
-        <asp:ListItem Value="ERFOLG_ASC">Erfolg (absteigend)</asp:ListItem>
+        <asp:ListItem Value="UNSORTED">Bitte wählen</asp:ListItem>
+        <asp:ListItem Value="NAME_ASC">Vorname (A-Z)</asp:ListItem>
+        <asp:ListItem Value="ERFOLG_ASC">Erfolg (gut-schlecht, gruppiert)</asp:ListItem>
+        <asp:ListItem Value="BIRTHDATE_ASC">Geburtsdatum (alt-jung)</asp:ListItem>
     </asp:DropDownList>
     <asp:Button ID="confirmSortingButton" runat="server" OnClick="dropDownSortingChanged" Text="Sortierung anwenden" />
+    &emsp;&emsp;&emsp;
+    <asp:Button ID="editButton" runat="server" OnClick="editSelectedPerson" Text="Bearbeiten" Visible="false" />
+    <asp:Button ID="deleteButton" runat="server" OnClick="removeSelectedPerson" Text="Löschen" Visible="false" />
+    
     <br /><br />
     <div runat="server" id="staticPersonListHeader" class="tableHeader"></div>
     <div runat="server" id="dynamicPersonList" class="clear"></div>

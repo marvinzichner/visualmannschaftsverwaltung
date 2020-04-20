@@ -24,9 +24,18 @@
      
         Hinzufügen: <asp:DropDownList ID="personList" runat="server" CssClass="masterselect"></asp:DropDownList>
         <asp:Button ID="personListButton" runat="server" OnClick="addPersonToMannschaft" Text="Hinzufügen" />
-        <br />
+        &emsp;&emsp;&emsp;
         Löschen: <asp:DropDownList ID="personListDelete" runat="server" CssClass="masterselect"></asp:DropDownList>
         <asp:Button ID="personListDeleteButton" runat="server" OnClick="removePersonFromMannschaft" Text="Entfernen" />
+        <br />
+        Sortierung: 
+        <asp:DropDownList ID="dropDownSorting" CssClass="masterselect" runat="server">
+            <asp:ListItem Value="UNSORTED">Bitte wählen</asp:ListItem>
+            <asp:ListItem Value="NAME_ASC">Vorname (A-Z)</asp:ListItem>
+            <asp:ListItem Value="ERFOLG_ASC">Erfolg (gut-schlecht, gruppiert)</asp:ListItem>
+            <asp:ListItem Value="BIRTHDATE_ASC">Geburtsdatum (alt-jung)</asp:ListItem>
+        </asp:DropDownList>
+        <asp:Button ID="confirmSortingButton" runat="server" OnClick="appendFilter" Text="Sortierung anwenden" />
 
         <br /><br />
         <div class="clear" ID="membersListContainer" runat="server">

@@ -107,7 +107,7 @@ namespace VisualMannschaftsverwaltung
 
         public override string saySkills()
         {
-            return $"Ich habe eine Lizenz: {HasLicense}";
+            return $"Lizenz: {HasLicense} | Geburtstag: {Birthdate}";
         }
         #endregion
     }

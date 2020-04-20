@@ -139,7 +139,7 @@ namespace VisualMannschaftsverwaltung
 
         public override string saySkills()
         {
-            return $"Siege: {SpielSiege}";
+            return $"Siege: {SpielSiege} | Geburtstag: {Birthdate}";
         }
         #endregion
     }

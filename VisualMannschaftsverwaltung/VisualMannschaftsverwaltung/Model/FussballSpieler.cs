@@ -131,7 +131,7 @@ namespace VisualMannschaftsverwaltung
 
         public override string saySkills()
         {
-            return $"Siege: {SpielSiege}";
+            return $"Siege: {SpielSiege} | Geburtstag: {Birthdate}";
         }
 
         public override int compareByBirthdate(Person p)

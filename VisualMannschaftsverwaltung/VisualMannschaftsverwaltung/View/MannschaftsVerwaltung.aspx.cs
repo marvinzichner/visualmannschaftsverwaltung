@@ -44,12 +44,16 @@ namespace VisualMannschaftsverwaltung.View
                 teamsList.Items.Add(li);
             });
         }
-        protected void loadMembers() { 
+        protected void loadMembers(Mannschaft.OrderBy ob = Mannschaft.OrderBy.UNSORTED) { 
             //Team Members
             membersListContainer.Controls.Clear();
             personListDelete.Items.Clear();
             this.teamName.InnerHtml = ApplicationController.TempMannschaft.Name;
-            ApplicationController.TempMannschaft.Personen.ForEach(p =>
+            ApplicationController.TempMannschaft
+                .rule(ob)
+                .enableGroupSort()
+                .applySearchPattern()
+                    .ForEach(p =>
             {
                 createPersonEntry(p, "");
 
@@ -67,6 +71,15 @@ namespace VisualMannschaftsverwaltung.View
                 li.Value = $"{p.Name}{p.Nachname}-{p.Birthdate}";
                 personList.Items.Add(li);
             });
+        }
+
+        protected void appendFilter(object sender, EventArgs e)
+        {
+            Mannschaft.OrderBy ob = 
+                (Mannschaft.OrderBy)Enum.Parse(typeof(Mannschaft.OrderBy), this.dropDownSorting.SelectedValue);
+            
+            this.prepareData();
+            this.loadMembers(ob);
         }
 
         private void createPersonEntry(Person p, string borderclasses)

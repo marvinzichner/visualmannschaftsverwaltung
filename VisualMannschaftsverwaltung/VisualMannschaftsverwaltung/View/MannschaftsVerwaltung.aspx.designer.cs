@@ -123,6 +123,24 @@ namespace VisualMannschaftsverwaltung.View
         protected global::System.Web.UI.WebControls.Button personListDeleteButton;
 
         /// <summary>
+        /// dropDownSorting-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dropDownSorting;
+
+        /// <summary>
+        /// confirmSortingButton-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button confirmSortingButton;
+
+        /// <summary>
         /// membersListContainer-Steuerelement
         /// </summary>
         /// <remarks>

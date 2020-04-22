@@ -31,15 +31,15 @@
     <div class="clear">
         <div class="listSpacer">
             <div class="listLabelFlow">Vorname</div>
-            <asp:TextBox class="listField" ID="fieldVorname" CssClass="listField" runat="server"></asp:TextBox>
+            <asp:TextBox AutoCompleteType="Disabled" class="listField" ID="fieldVorname" CssClass="listField" runat="server"></asp:TextBox>
         </div>
         <div class="listSpacer">
             <div class="listLabelFlow">Nachname</div>
-            <asp:TextBox class="listField" ID="fieldNachname" CssClass="listField" runat="server"></asp:TextBox>
+            <asp:TextBox AutoCompleteType="Disabled" class="listField" ID="fieldNachname" CssClass="listField" runat="server"></asp:TextBox>
         </div>
         <div class="listSpacer">
             <div class="listLabelFlow">Geburtsdatum</div>
-            <asp:TextBox class="listField" TextMode="DateTime" ID="fieldBirthdate" CssClass="listField" runat="server"></asp:TextBox>
+            <asp:TextBox AutoCompleteType="Disabled" class="listField" TextMode="DateTime" ID="fieldBirthdate" CssClass="listField" runat="server"></asp:TextBox>
         </div>
 
         <div class="listSpacer listSpacerDynamic" runat="server" id="dynamicFlow"></div>

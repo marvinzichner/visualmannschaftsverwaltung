@@ -373,6 +373,7 @@ namespace VisualMannschaftsverwaltung.View
             l.Text = text;
             l.CssClass = "listLabelFlow";
             tb.CssClass = "listField";
+            tb.AutoCompleteType = AutoCompleteType.Disabled;
             tb.ID = "generatedField-" + id;
 
             div.Controls.Add(l);

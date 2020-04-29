@@ -96,7 +96,7 @@ namespace VisualMannschaftsverwaltung.View
             skills.CssClass = "rolename";
 
             roleType.Text = $"{basetypeName(p)} <br />";
-            personName.Text = $"{p.Name} {p.Nachname} <br />";
+            personName.Text = $"{p.Nachname}, {p.Name} <br />";
             skills.Text = $"{p.saySkills()}";
 
             div.Controls.Add(roleType);
@@ -116,6 +116,15 @@ namespace VisualMannschaftsverwaltung.View
             this.contentContainer.Visible = false;
             this.prepareData();
             this.loadMembers();
+        }
+
+        protected void changeTeam(object sender, EventArgs e)
+        {
+            newTeamnameBox.Text = ApplicationController.TempMannschaft.Name;
+            newTeamtype.Text = ApplicationController.TempMannschaft.SportArt.ToString();
+            newTeamtype.SelectedValue = ApplicationController.TempMannschaft.SportArt.ToString();
+            ApplicationController.EditMode = true;
+            newTeamBtn.Text = "Änderung anwenden";
         }
 
         protected void addPersonToMannschaft(object sender, EventArgs e)
@@ -155,12 +164,23 @@ namespace VisualMannschaftsverwaltung.View
             string type = this.newTeamtype.SelectedValue;
             SportArt sa = (SportArt)Enum.Parse(typeof(SportArt), type);
 
-            Mannschaft mannschaft = new Mannschaft();
-            mannschaft
-                .name(teamname)
-                .sportArt(sa);
-            
-            ApplicationController.addMannschaftIfNotExists(mannschaft);
+            if (ApplicationController.EditMode)
+            {
+                ApplicationController.TempMannschaft.Name = teamname;
+                ApplicationController.TempMannschaft.SportArt = sa;
+            }
+            else
+            {
+                Mannschaft mannschaft = new Mannschaft();
+                mannschaft
+                    .name(teamname)
+                    .sportArt(sa);
+
+                ApplicationController.addMannschaftIfNotExists(mannschaft);
+            }
+
+            ApplicationController.EditMode = false;
+            newTeamBtn.Text = "Anlegen";
             //ApplicationController.TempMannschaft = mannschaft;
             this.prepareData();
             this.loadMembers();

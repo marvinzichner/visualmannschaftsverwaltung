@@ -20,6 +20,7 @@ namespace VisualMannschaftsverwaltung
         private List<KeyValuePair<string, Mannschaft.SearchTerm>> _storageSearchTerm;
         private List<Person> _personen;
         private Mannschaft _tempMannschaft;
+        private bool _editMode;
         #endregion
 
         #region Accessoren / Modifier
@@ -29,6 +30,7 @@ namespace VisualMannschaftsverwaltung
         public List<KeyValuePair<string, Mannschaft.OrderBy>> StorageOrderBy { get => _storageOrderBy; set => _storageOrderBy = value; }
         public List<KeyValuePair<string, Mannschaft.SearchTerm>> StorageSearchTerm { get => _storageSearchTerm; set => _storageSearchTerm = value; }
         public Mannschaft TempMannschaft { get => _tempMannschaft; set => _tempMannschaft = value; }
+        public bool EditMode { get => _editMode; set => _editMode = value; }
         #endregion
 
         #region Konstruktoren
@@ -40,6 +42,7 @@ namespace VisualMannschaftsverwaltung
             this.StorageOrderBy = new List<KeyValuePair<string, Mannschaft.OrderBy>>();
             this.StorageSearchTerm = new List<KeyValuePair<string, Mannschaft.SearchTerm>>();
             this.TempMannschaft = new Mannschaft();
+            this.EditMode = false;
         }
         #endregion
 

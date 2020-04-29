@@ -3,8 +3,8 @@
 
     <asp:DropDownList ID="teamsList" runat="server" CssClass="masterselect">
     </asp:DropDownList>
-    <asp:Button ID="teamsListSelect" runat="server" OnClick="teamSelected" Text="Mannschaft öffnen" />
-    <asp:Button ID="teamsDelete" runat="server" OnClick="removeTeam" Text="Mannschaft löschen" />
+    <asp:Button ID="teamsListSelect" runat="server" OnClick="teamSelected" Text="Öffnen" />
+    <asp:Button ID="teamsDelete" runat="server" OnClick="removeTeam" Text="Löschen" />
     
     <div style="float: right; margin-top: 15px;">
         Neue Mannschaft anlegen:
@@ -20,8 +20,10 @@
     <hr />
 
     <div id="contentContainer" runat="server" visible="false">
+        <asp:Button ID="teamsEdit" runat="server" OnClick="changeTeam" Text="Mannschaft bearbeiten" CssClass="floater" />
         <h3 runat="server" ID="teamName">Mannschaftsname</h3>
-     
+        
+        <hr />
         Hinzufügen: <asp:DropDownList ID="personList" runat="server" CssClass="masterselect"></asp:DropDownList>
         <asp:Button ID="personListButton" runat="server" OnClick="addPersonToMannschaft" Text="Hinzufügen" />
         &emsp;&emsp;&emsp;
@@ -36,6 +38,7 @@
             <asp:ListItem Value="BIRTHDATE_ASC">Geburtsdatum (alt-jung)</asp:ListItem>
         </asp:DropDownList>
         <asp:Button ID="confirmSortingButton" runat="server" OnClick="appendFilter" Text="Sortierung anwenden" />
+        <hr />
 
         <br /><br />
         <div class="clear" ID="membersListContainer" runat="server">
@@ -51,6 +54,10 @@
         .masterselect {
             margin: 15px;
             padding: 5px;
+        }
+        .floater {
+            float: left;
+            margin-right: 20px;
         }
         .member {
             width: calc(100% / 3  - 40px);

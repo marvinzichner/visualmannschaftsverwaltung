@@ -157,6 +157,7 @@
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="View\MannschaftsVerwaltung.aspx" />
     <Content Include="View\PersonenVerwaltung.aspx" />
+    <Content Include="View\Spiele.aspx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
     <Content Include="Site.Mobile.Master" />
@@ -241,6 +242,13 @@
     </Compile>
     <Compile Include="View\PersonenVerwaltung.aspx.designer.cs">
       <DependentUpon>PersonenVerwaltung.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\Spiele.aspx.cs">
+      <DependentUpon>Spiele.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\Spiele.aspx.designer.cs">
+      <DependentUpon>Spiele.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

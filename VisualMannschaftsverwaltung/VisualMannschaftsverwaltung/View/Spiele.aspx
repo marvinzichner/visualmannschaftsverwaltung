@@ -2,12 +2,21 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <h3>Aktives Spiel</h3>
+   
     <div class="text-center">
         <span class="big">Mannschaft1</span> &emsp; VS &emsp; <span class="big">Mannschaft2</span>
+        <br /><br />
+        <asp:TextBox ID="TextBox1" runat="server" CssClass="pointsizer"></asp:TextBox>
+        <asp:Button ID="Button1" runat="server" Text="Ergebnis eintragen" />
+        <asp:TextBox ID="TextBox2" runat="server" CssClass="pointsizer"></asp:TextBox>
     </div>
     <br />
     <h4>Geplante Spiele</h4>
-        <div class="planned">MANNSCHAFT &emsp; VS &emsp; MANNSCHAFT</div>
+        <div class="text-centerized">
+            <asp:Button ID="Button2" runat="server" Text="Neues Spiel erstellen" /><br />
+        </div>
+        <br />
+        <div class="planned">FC HHEK &emsp; VS &emsp; FC IA118</div>
         <div class="planned">MANNSCHAFT &emsp; VS &emsp; MANNSCHAFT</div>
     <hr />
 
@@ -43,6 +52,7 @@
             <td class="td-score">1</td>
             <td class="td-score">4</td>
             <td class="td-name td-right">FC Bayern München</td>
+        </tr>
     </table>
 
     <style>
@@ -67,8 +77,12 @@
             border: none;
             text-transform: uppercase;
         }
+        .text-centerized {
+            text-align: center;
+        }
         .tr-section {
             margin-top: 10px;
+            cursor: pointer;
         }
         .tr-section:hover td {
             background-color: #f2f2f2;
@@ -88,6 +102,10 @@
         }
         .td-right {
             text-align: right;
+        }
+        .pointsizer {
+            width: 60px;
+            text-align: center;
         }
     </style>
 

@@ -48,8 +48,18 @@ namespace VisualMannschaftsverwaltung
             return returnableList;
         }
 
+        public static void createDatabaseContext()
+        {
+            DataRepository repo = new DataRepository();
+            repo.executeSql($"" +
+                $"  insert into MVW_PERSON (VORNAME, NACHNAME, GEBURTSDATUM, MANNSCHAFT_FK) " +
+                $"  values ('Meine', 'Review', STR_TO_DATE('09.08.1999', '%d.%m.%Y'), 1);");
+        }
+
         public static List<Person> createPersonData()
         {
+            createDatabaseContext();
+
             List<Person> personen = new List<Person>();
             FussballSpieler Marvin = new FussballSpieler();
             HandballSpieler Henry = new HandballSpieler();

@@ -142,6 +142,12 @@ namespace VisualMannschaftsverwaltung
         {
             this.Personen.Add(person);
         }
+
+        public List<Person> loadPersonen()
+        {
+            DataRepository repo = new DataRepository();
+            return repo.loadPersonen();
+        }
         #endregion
     }
 }

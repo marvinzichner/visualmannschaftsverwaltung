@@ -223,11 +223,12 @@ namespace VisualMannschaftsverwaltung.View
             });
 
             int cnt = 0;
-            ApplicationController.getPersonen(
+            /*ApplicationController.getPersonen(
                 ApplicationController.StorageOrderBy.FindLast(
                     x => x.Key == "PERSONENVERWALTUNG").Value,
                 ApplicationController.StorageSearchTerm.FindLast(
-                    x => x.Key == "PERSONENVERWALTUNG").Value).ForEach(person =>
+                    x => x.Key == "PERSONENVERWALTUNG").Value).ForEach(person => */
+            ApplicationController.loadPersonen().ForEach(person => 
             {
                 getAllAttributes().ForEach(attribute =>
                 {

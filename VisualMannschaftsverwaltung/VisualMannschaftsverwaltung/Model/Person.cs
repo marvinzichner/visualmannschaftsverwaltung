@@ -18,6 +18,7 @@ namespace VisualMannschaftsverwaltung
         private string _nachname;
         private string _bithdate;
         private SportArt _sportArt;
+        private int _ID;
         private List<string> _genericAttributes;
         #endregion
 
@@ -27,6 +28,7 @@ namespace VisualMannschaftsverwaltung
         public List<string> GenericAttributes { get => _genericAttributes; set => _genericAttributes = value; }
         public string Nachname { get => _nachname; set => _nachname = value; }
         public string Birthdate { get => _bithdate; set => _bithdate = value; }
+        public int ID { get => _ID; set => _ID = value; }
         #endregion
 
         #region Konstruktoren

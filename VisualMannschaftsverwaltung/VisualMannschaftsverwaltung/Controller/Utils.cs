@@ -137,6 +137,29 @@ namespace VisualMannschaftsverwaltung
             return this.Personen;
         }
 
+        public static string basicClassName(object o)
+        {
+            return o.GetType().Name.ToString();
+        }
+
+        public static bool convertFromBasic(string s)
+        {
+            int basicInt = 0;
+
+            try { 
+                basicInt = Convert.ToInt32(s);
+            } catch(Exception) { }
+
+            if(basicInt == 0)
+            {
+                return false;
+            } 
+            else
+            {
+                return true;
+            }
+        }
+
         public List<Person> addPerson(Person p)
         {
             this.Personen.Add(p);

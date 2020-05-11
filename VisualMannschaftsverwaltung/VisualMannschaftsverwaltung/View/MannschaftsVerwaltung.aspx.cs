@@ -24,12 +24,21 @@ namespace VisualMannschaftsverwaltung.View
         protected void Page_Init(object sender, EventArgs e)
         {
             ApplicationController = Global.ApplicationController;
+            this.checkAlerts();
             this.prepareData();
             this.loadMembers();
         }
         protected void Page_Load(object sender, EventArgs e)
         {
             
+        }
+
+        protected void checkAlerts()
+        {
+            if (!ApplicationController.DatabaseOk)
+            {
+                configMismatch.Visible = true;
+            }
         }
 
         protected void prepareData()
@@ -108,8 +117,8 @@ namespace VisualMannschaftsverwaltung.View
         protected void removeTeam(object sender, EventArgs e)
         {
             string team = teamsList.SelectedValue;
-            ApplicationController.Mannschaften.Remove(
-                ApplicationController.Mannschaften.Find(
+            ApplicationController.removeMannschaft(
+                 ApplicationController.Mannschaften.Find(
                     m => m.Name == team));
             
             ApplicationController.TempMannschaft = new Mannschaft("_GENERATED");
@@ -137,6 +146,7 @@ namespace VisualMannschaftsverwaltung.View
                     ApplicationController.TempMannschaft.Personen.Add(p);
                     ApplicationController.Mannschaften.Remove(copy);
                     ApplicationController.Mannschaften.Add(ApplicationController.TempMannschaft);
+                    ApplicationController.addPersonToMannschaft(p, copy);
                 }
             });
 
@@ -147,9 +157,12 @@ namespace VisualMannschaftsverwaltung.View
         protected void removePersonFromMannschaft(object sender, EventArgs e)
         {
             Mannschaft work = ApplicationController.TempMannschaft;
+            DataRepository repo = new DataRepository();
             string searchPattern = this.personListDelete.SelectedValue;
-            work.Personen.Remove(
-                work.Personen.Find(p => searchPattern == $"{p.Name}{p.Nachname}-{p.Birthdate}"));
+            Person person = work.Personen.Find(p => searchPattern == $"{p.Name}{p.Nachname}-{p.Birthdate}");
+
+            work.Personen.Remove(person);
+            repo.removePersonFromMannschaft(person, work);
            
             ApplicationController.Mannschaften.Remove(ApplicationController.TempMannschaft);
             ApplicationController.Mannschaften.Add(work);
@@ -168,6 +181,10 @@ namespace VisualMannschaftsverwaltung.View
             {
                 ApplicationController.TempMannschaft.Name = teamname;
                 ApplicationController.TempMannschaft.SportArt = sa;
+
+                DataRepository repo = new DataRepository();
+                repo.updateMannschaftSettings(
+                    ApplicationController.TempMannschaft.ID.ToString(), teamname, sa.ToString());
             }
             else
             {
@@ -200,13 +217,18 @@ namespace VisualMannschaftsverwaltung.View
             { 
                 if(m.Name == teamNameSel)
                 {
-                    ApplicationController.TempMannschaft = m;
+                    Mannschaft copy = m;
+                    DataRepository repo = new DataRepository();
+                    
+                    copy.personen(repo.loadPersonen(m.ID.ToString()));
+                    ApplicationController.TempMannschaft = copy;
                 }
             });
 
             this.loadMembers();
             contentContainer.Visible = true;
         }
+
         #endregion
 
     }

@@ -1,6 +1,17 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="MannschaftsVerwaltung.aspx.cs" Inherits="VisualMannschaftsverwaltung.View.MannschaftsVerwaltung" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
+    <div class="config" id="configMismatch" runat="server" visible="false">
+        Die Datenbank ist derzeit nicht erreichbar. Möglicherweise sind die Verbindungsdaten nicht korrekt.  
+    </div>
+    <style>
+        .config {
+            margin: 20px;
+            padding: 20px;
+            background-color: #ffb3b3;
+        }
+    </style>
+
     <asp:DropDownList ID="teamsList" runat="server" CssClass="masterselect">
     </asp:DropDownList>
     <asp:Button ID="teamsListSelect" runat="server" OnClick="teamSelected" Text="Öffnen" />
@@ -60,7 +71,7 @@
             margin-right: 20px;
         }
         .member {
-            width: calc(100% / 3  - 40px);
+            width: calc(100% / 3 - 40px);
             padding: 20px;
             border: 1px solid #e6e6e6;
             margin-left: 20px;

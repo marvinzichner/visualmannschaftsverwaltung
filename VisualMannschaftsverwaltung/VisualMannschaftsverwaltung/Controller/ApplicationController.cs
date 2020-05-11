@@ -21,6 +21,7 @@ namespace VisualMannschaftsverwaltung
         private List<Person> _personen;
         private Mannschaft _tempMannschaft;
         private bool _editMode;
+        private bool _DatabaseOk;
         #endregion
 
         #region Accessoren / Modifier
@@ -31,6 +32,7 @@ namespace VisualMannschaftsverwaltung
         public List<KeyValuePair<string, Mannschaft.SearchTerm>> StorageSearchTerm { get => _storageSearchTerm; set => _storageSearchTerm = value; }
         public Mannschaft TempMannschaft { get => _tempMannschaft; set => _tempMannschaft = value; }
         public bool EditMode { get => _editMode; set => _editMode = value; }
+        public bool DatabaseOk { get => _DatabaseOk; set => _DatabaseOk = value; }
         #endregion
 
         #region Konstruktoren
@@ -43,6 +45,7 @@ namespace VisualMannschaftsverwaltung
             this.StorageSearchTerm = new List<KeyValuePair<string, Mannschaft.SearchTerm>>();
             this.TempMannschaft = new Mannschaft();
             this.EditMode = false;
+            this.DatabaseOk = false;
         }
         #endregion
 
@@ -62,22 +65,25 @@ namespace VisualMannschaftsverwaltung
 
         public List<Mannschaft> getMannschaften()
         {
+            DataRepository repo = new DataRepository();
+            this.Mannschaften = repo.getMannschaften();
             return this.Mannschaften;
         }
 
         public List<Person> getAvailablePersonen()
         {
+            DataRepository repo = new DataRepository();
             List<Person> list = new List<Person>();
             SportArt matchSportArt = TempMannschaft.SportArt;
             List<Person> matchMembers = TempMannschaft.Personen;
 
             Personen.ForEach(p => { 
-                if(p.SportArt == matchSportArt && !matchMembers.Contains(p) || 
-                    p.isPhysiotherapeut() && !matchMembers.Contains(p) ||
-                    p.isTrainer() && !matchMembers.Contains(p))
+                if(p.SportArt == matchSportArt && matchMembers.Find(x => x.ID == p.ID) == null || 
+                    p.isPhysiotherapeut() && matchMembers.Find(x => x.ID == p.ID) == null ||
+                    p.isTrainer() && matchMembers.Find(x => x.ID == p.ID) == null)
                 {
                     list.Add(p);
-                }
+                } 
             });
 
             return list;
@@ -85,6 +91,7 @@ namespace VisualMannschaftsverwaltung
 
         public void addMannschaftIfNotExists(Mannschaft newMannschaft)
         {
+            DataRepository repo = new DataRepository();
             bool existing = false;
             Mannschaften.ForEach(m =>
             {
@@ -95,8 +102,9 @@ namespace VisualMannschaftsverwaltung
                 }
             });
 
-            if (!existing)
+            if (!existing && newMannschaft.Name != "")
             {
+                repo.createMannschaft(newMannschaft);
                 Mannschaften.Add(newMannschaft);
             }
         }
@@ -140,13 +148,43 @@ namespace VisualMannschaftsverwaltung
 
         public void addPerson(Person person)
         {
-            this.Personen.Add(person);
+            DataRepository repo = new DataRepository();
+
+            loadPersonenFromRepository();
         }
 
-        public List<Person> loadPersonen()
+        public void loadPersonenFromRepository()
         {
             DataRepository repo = new DataRepository();
-            return repo.loadPersonen();
+            this.DatabaseOk = repo.checkConnection();
+            this.Personen = repo.loadPersonen();
+        }
+
+        public void loadMannschaftenFromRepository()
+        {
+            DataRepository repo = new DataRepository();
+            this.DatabaseOk = repo.checkConnection();
+            this.Mannschaften = repo.getMannschaften();
+        }
+
+        public void removePerson(Person p)
+        {
+            DataRepository repo = new DataRepository();
+            repo.removePerson(p);
+            loadPersonenFromRepository();
+        }
+
+        public void addPersonToMannschaft(Person p, Mannschaft m)
+        {
+            DataRepository repo = new DataRepository();
+            repo.addPersonToMannschaft(p, m);
+            loadMannschaftenFromRepository();
+        }
+        public void removeMannschaft(Mannschaft m)
+        {
+            DataRepository repo = new DataRepository();
+            repo.removeMannschaft(m);
+            Mannschaften.Remove(m);
         }
         #endregion
     }

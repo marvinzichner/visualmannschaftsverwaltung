@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace VisualMannschaftsverwaltung
 {
@@ -51,15 +52,30 @@ namespace VisualMannschaftsverwaltung
         public static void createDatabaseContext()
         {
             DataRepository repo = new DataRepository();
-            repo.executeSql($"" +
-                $"  insert into MVW_PERSON (VORNAME, NACHNAME, GEBURTSDATUM, MANNSCHAFT_FK) " +
-                $"  values ('Meine', 'Review', STR_TO_DATE('09.08.1999', '%d.%m.%Y'), 1);");
+            int DB_VERSION = repo.getLatestVersion();
+            int currentFile = 0;
+
+            string currentPath = System.AppDomain.CurrentDomain.BaseDirectory.ToString();
+            string migrationPath = $"{currentPath}\\Controller\\Repository\\Migration";
+            string[] scripts = Directory.GetFiles(migrationPath);
+            foreach(string script in scripts)
+            {
+                if (currentFile > DB_VERSION)
+                {
+                    string sql = File.ReadAllText(script, Encoding.UTF8);
+                    repo.executeSql(sql);
+
+                    string versionInserter = $"insert into MVW_MIGRATION (VERSION, NAME, CREATED) values ({currentFile}, '{script}', NOW())";
+                    repo.executeSql(versionInserter);
+                }
+
+                currentFile++;
+            }
+
         }
 
         public static List<Person> createPersonData()
         {
-            createDatabaseContext();
-
             List<Person> personen = new List<Person>();
             FussballSpieler Marvin = new FussballSpieler();
             HandballSpieler Henry = new HandballSpieler();

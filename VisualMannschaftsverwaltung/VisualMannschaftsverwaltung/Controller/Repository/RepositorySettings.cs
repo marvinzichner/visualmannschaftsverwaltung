@@ -29,10 +29,10 @@ namespace VisualMannschaftsverwaltung
         #region Konstruktoren
         public RepositorySettings()
         {
-            Server = "127.0.0.1";
-            Database = "database";
-            Uid = "username";
-            Password = "password";
+            Server = "localhost";
+            Database = "mannschaftsverwaltung";
+            Uid = "mvw_app";
+            Password = "mvw_app";
         }
         #endregion
 

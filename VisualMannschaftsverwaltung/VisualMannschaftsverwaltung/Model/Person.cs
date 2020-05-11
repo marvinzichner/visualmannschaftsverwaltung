@@ -140,6 +140,12 @@ namespace VisualMannschaftsverwaltung
             return this;
         }
 
+        public virtual Person id(int id)
+        {
+            this.ID = id;
+            return this;
+        }
+
         public virtual Person birthdate(string s)
         {
             this.Birthdate = s;

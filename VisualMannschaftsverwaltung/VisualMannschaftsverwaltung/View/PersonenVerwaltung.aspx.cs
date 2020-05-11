@@ -223,12 +223,11 @@ namespace VisualMannschaftsverwaltung.View
             });
 
             int cnt = 0;
-            /*ApplicationController.getPersonen(
+            ApplicationController.getPersonen(
                 ApplicationController.StorageOrderBy.FindLast(
                     x => x.Key == "PERSONENVERWALTUNG").Value,
                 ApplicationController.StorageSearchTerm.FindLast(
-                    x => x.Key == "PERSONENVERWALTUNG").Value).ForEach(person => */
-            ApplicationController.loadPersonen().ForEach(person => 
+                    x => x.Key == "PERSONENVERWALTUNG").Value).ForEach(person =>
             {
                 getAllAttributes().ForEach(attribute =>
                 {
@@ -313,7 +312,7 @@ namespace VisualMannschaftsverwaltung.View
             p = list[Convert.ToInt32(
                 ApplicationController.getFirstTupleMatch("personenverwaltung.pid"))];
 
-            ApplicationController.Personen.Remove(p);
+            ApplicationController.removePerson(p);
             deleteButton.Visible = false;
             editButton.Visible = false;
             this.loadPersonen();
@@ -408,5 +407,6 @@ namespace VisualMannschaftsverwaltung.View
             staticPersonListHeader.Controls.Clear();
             this.loadPersonen();
         }
+
     }
 }

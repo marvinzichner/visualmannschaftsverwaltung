@@ -18,6 +18,9 @@ namespace VisualMannschaftsverwaltung
         private SearchTerm _filterRule;
         private SportArt _sportArt;
         private bool _enableGrouping;
+        private int _ID;
+        private int _gewonneneSpiele;
+        private int _gesamteSpiele;
         public enum OrderBy
         {
             UNSORTED = 0,
@@ -43,6 +46,9 @@ namespace VisualMannschaftsverwaltung
         public SportArt SportArt { get => _sportArt; set => _sportArt = value; }
         public int OrderTimes { get => _orderTimes; set => _orderTimes = value; }
         public bool EnableGrouping { get => _enableGrouping; set => _enableGrouping = value; }
+        public int ID { get => _ID; set => _ID = value; }
+        public int GewonneneSpiele { get => _gewonneneSpiele; set => _gewonneneSpiele = value; }
+        public int GesamteSpiele { get => _gesamteSpiele; set => _gesamteSpiele = value; }
         #endregion
 
         #region Konstruktoren
@@ -102,6 +108,21 @@ namespace VisualMannschaftsverwaltung
             SortRule = ob;
             return this;
         }
+        public Mannschaft gesamteSpiele(int i)
+        {
+            GesamteSpiele = i;
+            return this;
+        }
+        public Mannschaft gewonneneSpiele(int i)
+        {
+            GewonneneSpiele = i;
+            return this;
+        }
+        public Mannschaft id(int id)
+        {
+            ID = id;
+            return this;
+        }
         public Mannschaft enableGroupSort()
         {
             OrderTimes = 2;
@@ -125,6 +146,12 @@ namespace VisualMannschaftsverwaltung
         public Mannschaft rule(SearchTerm st)
         {
             FilterRule = st;
+            return this;
+        }
+
+        public Mannschaft personen(List<Person> ps)
+        {
+            this.Personen = ps;
             return this;
         }
 

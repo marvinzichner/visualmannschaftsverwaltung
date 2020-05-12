@@ -149,7 +149,7 @@ namespace VisualMannschaftsverwaltung
         public void addPerson(Person person)
         {
             DataRepository repo = new DataRepository();
-
+            repo.addPerson(person);
             loadPersonenFromRepository();
         }
 

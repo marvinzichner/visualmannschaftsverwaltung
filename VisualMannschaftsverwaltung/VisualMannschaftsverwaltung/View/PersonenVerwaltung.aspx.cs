@@ -297,6 +297,7 @@ namespace VisualMannschaftsverwaltung.View
             int pid = Convert.ToInt32(id);
 
             ApplicationController.setTuple("personenverwaltung.pid", pid.ToString());
+
             deleteButton.Visible = true;
             editButton.Visible = true;
         }

@@ -160,6 +160,18 @@ namespace VisualMannschaftsverwaltung
             }
         }
 
+        public static string convertToBasic(bool b)
+        {
+            if (b)
+            {
+                return "1";
+            }
+            else
+            {
+                return "0";
+            }     
+        }
+
         public List<Person> addPerson(Person p)
         {
             this.Personen.Add(p);

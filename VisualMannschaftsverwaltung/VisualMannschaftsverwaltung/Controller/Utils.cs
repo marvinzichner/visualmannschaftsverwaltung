@@ -178,6 +178,12 @@ namespace VisualMannschaftsverwaltung
             return this.Personen;
         }
 
+        public static string simpleFileDate()
+        {
+            return $"{DateTime.Now.Year.ToString()}{DateTime.Now.Month.ToString()}{DateTime.Now.Day.ToString()}" +
+                $"{DateTime.Now.Hour.ToString()}{DateTime.Now.Minute.ToString()}{DateTime.Now.Second.ToString()}";
+        }
+
         static public bool convertToBool(object o, bool standard, string field)
         {
             bool b = standard;

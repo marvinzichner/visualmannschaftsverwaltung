@@ -59,6 +59,7 @@
         <asp:ListItem Value="BIRTHDATE_ASC">Geburtsdatum (alt-jung)</asp:ListItem>
     </asp:DropDownList>
     <asp:Button ID="confirmSortingButton" runat="server" OnClick="dropDownSortingChanged" Text="Sortierung anwenden" />
+    <asp:Button ID="downloadButton" runat="server" OnClick="generateXML" Text="XML Export" />
     &emsp;&emsp;&emsp;
     <asp:Button ID="editButton" runat="server" OnClick="editSelectedPerson" Text="Bearbeiten" Visible="false" />
     <asp:Button ID="deleteButton" runat="server" OnClick="removeSelectedPerson" Text="Löschen" Visible="false" />

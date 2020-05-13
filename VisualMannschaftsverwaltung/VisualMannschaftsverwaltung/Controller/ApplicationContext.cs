@@ -15,15 +15,17 @@ namespace VisualMannschaftsverwaltung
     public class ApplicationContext
     {
         #region Eigenschaften
+        private static string _basePath;
         #endregion
 
         #region Accessoren / Modifier
+        public static string BasePath { get => _basePath; set => _basePath = value; }
         #endregion
 
         #region Konstruktoren
         public ApplicationContext()
         {
-           
+            BasePath = "\\Mac\\Home\\Documents\\dev\\repo\\visualmannschaftsverwaltung\\VisualMannschaftsverwaltung\\VisualMannschaftsverwaltung";
         }
         #endregion
 
@@ -72,6 +74,16 @@ namespace VisualMannschaftsverwaltung
                 currentFile++;
             }
 
+        }
+
+        public static void createFilesystemStructure()
+        {
+            Directory.CreateDirectory($"{System.AppDomain.CurrentDomain.BaseDirectory.ToString()}\\mv.data\\");
+        }
+
+        public static string getContextPath()
+        {
+            return $"{System.AppDomain.CurrentDomain.BaseDirectory.ToString()}\\mv.data\\";
         }
 
         public static List<Person> createPersonData()

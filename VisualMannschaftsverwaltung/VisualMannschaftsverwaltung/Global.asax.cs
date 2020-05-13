@@ -23,6 +23,7 @@ namespace VisualMannschaftsverwaltung
             ApplicationContext.createDatabaseContext();
 
             ApplicationController = new ApplicationController();
+            ApplicationContext.createFilesystemStructure();
             ApplicationController.prepareTuple();
             ApplicationController.receiveContext(
                 ApplicationContext.createApplicationContext());

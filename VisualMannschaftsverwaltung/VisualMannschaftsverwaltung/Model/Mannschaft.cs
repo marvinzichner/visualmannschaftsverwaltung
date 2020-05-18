@@ -232,6 +232,22 @@ namespace VisualMannschaftsverwaltung
         {
             Console.WriteLine("==>  [ OrderBy." + SortRule + " with SearchTerm." + FilterRule + " ]");
         }
+
+        public static Type[] getTypes()
+        {
+            Type[] types = {
+                typeof(Mannschaft),
+                typeof(Person),
+                typeof(Spieler),
+                typeof(FussballSpieler),
+                typeof(HandballSpieler),
+                typeof(TennisSpieler),
+                typeof(Trainer),
+                typeof(Physiotherapeut)
+            };
+            
+            return types;
+        }
         #endregion
     }
 }

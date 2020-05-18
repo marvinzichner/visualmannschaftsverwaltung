@@ -109,6 +109,12 @@ namespace VisualMannschaftsverwaltung
         {
             return $"Lizenz: {HasLicense} | Geburtstag: {Birthdate}";
         }
+
+        public override string getSpecifiedSqlStatement()
+        {
+            return $"insert into MVW_physiotherapeut (PERSON_FK, GEWONNENE_SPIELE, HAS_LICENSE) " +
+                    $"values (LAST_INSERT_ID(), 0, {Utils.convertToBasic(HasLicense)})";
+        }
         #endregion
     }
 }

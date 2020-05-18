@@ -140,6 +140,12 @@ namespace VisualMannschaftsverwaltung
         {
             return $"Siege: {SpielSiege} | Geburtstag: {Birthdate}";
         }
+
+        public override string getSpecifiedSqlStatement()
+        {
+            return $"insert into MVW_HANDBALLSPIELER (PERSON_FK, GEWONNENE_SPIELE, LEFT_HAND) " +
+                    $"values (LAST_INSERT_ID(), {SpielSiege.ToString()}, {Utils.convertToBasic(IsLeftHand)})";
+        }
         #endregion
     }
 }

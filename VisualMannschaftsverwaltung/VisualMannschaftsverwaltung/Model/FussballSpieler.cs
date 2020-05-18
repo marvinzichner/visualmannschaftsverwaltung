@@ -140,6 +140,12 @@ namespace VisualMannschaftsverwaltung
             DateTime otherDate = DateTime.Parse(p.Birthdate);
             return Utils.compareDates(thisDate, otherDate);
         }
+
+        public override string getSpecifiedSqlStatement()
+        {
+            return $"insert into MVW_FUSSBALLSPIELER (PERSON_FK, GEWONNENE_SPIELE, LEFT_FOOT) " +
+                    $"values (LAST_INSERT_ID(), {SpielSiege.ToString()}, {Utils.convertToBasic(IsLeftFeet)})";
+        }
         #endregion
     }
 }

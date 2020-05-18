@@ -413,41 +413,7 @@ namespace VisualMannschaftsverwaltung.View
 
         protected void generateXML(object sender, EventArgs e)
         {
-            Type[] personTypes = {
-                typeof(Person),
-                typeof(Spieler),
-                typeof(FussballSpieler),
-                typeof(HandballSpieler),
-                typeof(TennisSpieler),
-                typeof(Trainer),
-                typeof(Physiotherapeut)
-            };
-
-            string filename = $"{Utils.simpleFileDate()}.pse.xml";
-            string path = $"{ApplicationContext.getContextPath()}{filename}";
-
-            try { 
-                XmlSerializer xmlSerializer = new XmlSerializer(
-                    ApplicationController.Personen.GetType(), personTypes);
-                StreamWriter streamWriter = new StreamWriter(
-                    new FileStream(path, FileMode.Create), System.Text.Encoding.UTF8);
-                xmlSerializer.Serialize(streamWriter, ApplicationController.Personen);
-                streamWriter.Close();
-
-                System.Web.HttpResponse response = System.Web.HttpContext.Current.Response;
-                byte[] Content = File.ReadAllBytes(path); //missing ;
-                response.ContentType = "text/xml";
-                response.AddHeader("content-disposition", "attachment; filename=" + filename);
-                response.BufferOutput = true;
-                response.OutputStream.Write(Content, 0, Content.Length);
-                response.End();
-
-                File.Delete(path);
-            } 
-            catch (Exception)
-            {
-
-            }
+            ApplicationController.generatePersonenXML();
         }
 
     }

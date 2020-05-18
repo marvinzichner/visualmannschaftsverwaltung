@@ -51,6 +51,15 @@ namespace VisualMannschaftsverwaltung.View
         protected global::System.Web.UI.WebControls.Button teamsDelete;
 
         /// <summary>
+        /// downloadButton-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button downloadButton;
+
+        /// <summary>
         /// newTeamnameBox-Steuerelement
         /// </summary>
         /// <remarks>

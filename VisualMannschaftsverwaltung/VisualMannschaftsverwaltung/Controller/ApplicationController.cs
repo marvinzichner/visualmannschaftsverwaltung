@@ -5,9 +5,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace VisualMannschaftsverwaltung
 {
@@ -185,6 +187,28 @@ namespace VisualMannschaftsverwaltung
             DataRepository repo = new DataRepository();
             repo.removeMannschaft(m);
             Mannschaften.Remove(m);
+        }
+
+        public void generatePersonenXML()
+        {
+            Export export = new Export();
+            string filename = $"{Utils.simpleFileDate()}.pse.xml";
+            string path = $"{ApplicationContext.getContextPath()}{filename}";
+
+            export.configure(path, filename);
+            export.doXmlExport(Personen, Person.getTypes());
+            export.doDownload();
+        }
+
+        public void generateMannschaftenXML()
+        {
+            Export export = new Export();
+            string filename = $"{Utils.simpleFileDate()}.mne.xml";
+            string path = $"{ApplicationContext.getContextPath()}{filename}";
+
+            export.configure(path, filename);
+            export.doXmlExport(Mannschaften, Mannschaft.getTypes());
+            export.doDownload();
         }
         #endregion
     }

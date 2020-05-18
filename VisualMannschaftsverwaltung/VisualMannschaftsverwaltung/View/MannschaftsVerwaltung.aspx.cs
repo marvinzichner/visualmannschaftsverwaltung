@@ -229,6 +229,10 @@ namespace VisualMannschaftsverwaltung.View
             contentContainer.Visible = true;
         }
 
+        protected void generateXML(object sender, EventArgs e)
+        {
+            ApplicationController.generateMannschaftenXML();
+        }
         #endregion
 
     }

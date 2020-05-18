@@ -233,38 +233,7 @@ namespace VisualMannschaftsverwaltung
         {
             string addPerson = $"insert into MVW_PERSON (VORNAME, NACHNAME, GEBURTSDATUM) " +
                 $"values ('{p.Name}', '{p.Nachname}', STR_TO_DATE('{p.Birthdate}', '%d.%m.%Y'))";
-            string details = $"";
-
-            if (p.isFussballSpieler())
-            {
-                FussballSpieler f = p.toFussballSpieler();
-                details = $"insert into MVW_FUSSBALLSPIELER (PERSON_FK, GEWONNENE_SPIELE, LEFT_FOOT) " +
-                    $"values (LAST_INSERT_ID(), {f.SpielSiege.ToString()}, {Utils.convertToBasic(f.IsLeftFeet)})";
-            }
-            else if (p.isHandballSpieler())
-            {
-                HandballSpieler h = p.toHandballSpieler();
-                details = $"insert into MVW_HANDBALLSPIELER (PERSON_FK, GEWONNENE_SPIELE, LEFT_HAND) " +
-                    $"values (LAST_INSERT_ID(), {h.SpielSiege.ToString()}, {Utils.convertToBasic(h.IsLeftHand)})";
-            }
-            else if (p.isTennisSpieler())
-            {
-                TennisSpieler t = p.toTennisSpieler();
-                details = $"insert into MVW_TENNISSPIELER (PERSON_FK, GEWONNENE_SPIELE, LEFT_ARM) " +
-                    $"values (LAST_INSERT_ID(), {t.SpielSiege.ToString()}, {Utils.convertToBasic(t.IsLeftHand)})";
-            }
-            else if (p.isTrainer())
-            {
-                Trainer t = p.toTrainer();
-                details = $"insert into MVW_TRAINER (PERSON_FK, GEWONNENE_SPIELE, HAS_LICENSE) " +
-                    $"values (LAST_INSERT_ID(), 0, {Utils.convertToBasic(t.HasLicense)})";
-            }
-            else if (p.isPhysiotherapeut())
-            {
-                Physiotherapeut pt = p.toPhysiotherapeut();
-                details = $"insert into MVW_physiotherapeut (PERSON_FK, GEWONNENE_SPIELE, HAS_LICENSE) " +
-                    $"values (LAST_INSERT_ID(), 0, {Utils.convertToBasic(pt.HasLicense)})";
-            }
+            string details = p.getSpecifiedSqlStatement();
 
             executeSql(addPerson);
             executeSql(details);

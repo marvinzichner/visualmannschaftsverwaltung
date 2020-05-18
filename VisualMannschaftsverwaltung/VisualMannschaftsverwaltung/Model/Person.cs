@@ -126,6 +126,8 @@ namespace VisualMannschaftsverwaltung
 
         public abstract int compareByBirthdate(Person p);
 
+        public abstract string getSpecifiedSqlStatement();
+
         public abstract string saySkills();
 
         public virtual Person name(string s)
@@ -157,6 +159,20 @@ namespace VisualMannschaftsverwaltung
             return this;
         }
 
+        public static Type[] getTypes()
+        {
+            Type[] personTypes = {
+                typeof(Person),
+                typeof(Spieler),
+                typeof(FussballSpieler),
+                typeof(HandballSpieler),
+                typeof(TennisSpieler),
+                typeof(Trainer),
+                typeof(Physiotherapeut)
+            };
+
+            return personTypes;
+        }
         #endregion
     }
 }

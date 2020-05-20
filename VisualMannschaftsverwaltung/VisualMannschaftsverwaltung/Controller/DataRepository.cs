@@ -119,12 +119,12 @@ namespace VisualMannschaftsverwaltung
             }
             if (SessionQuery)
             {
-                sessionSql = $"and SESSION_ID = '{Session}'";
+                sessionSql = $"and p.SESSION_ID = '{Session}'";
             }
 
             if (createConnection()) {
                 //Fussballspieler
-                string sql = $"select * from MVW_PERSON as p left join MVW_FUSSBALLSPIELER as f on p.ID = f.PERSON_FK {joinCondition} where p.ID = f.PERSON_FK {mannschaftId};";
+                string sql = $"select * from MVW_PERSON as p left join MVW_FUSSBALLSPIELER as f on p.ID = f.PERSON_FK {joinCondition} where p.ID = f.PERSON_FK {mannschaftId} {sessionSql};";
                 MySqlCommand command = new MySqlCommand(sql, MySqlConnection);
                 MySqlDataReader reader = command.ExecuteReader();
 
@@ -147,7 +147,7 @@ namespace VisualMannschaftsverwaltung
                 reader.Close();
 
                 //Handballspieler
-                sql = $"select * from MVW_PERSON as p left join MVW_HANDBALLSPIELER as h on p.ID = h.PERSON_FK {joinCondition} where p.ID = h.PERSON_FK {mannschaftId};";
+                sql = $"select * from MVW_PERSON as p left join MVW_HANDBALLSPIELER as h on p.ID = h.PERSON_FK {joinCondition} where p.ID = h.PERSON_FK {mannschaftId} {sessionSql};";
                 command = new MySqlCommand(sql, MySqlConnection);
                 reader = command.ExecuteReader();
 
@@ -170,7 +170,7 @@ namespace VisualMannschaftsverwaltung
                 reader.Close();
 
                 //Tennisspieler
-                sql = $"select * from MVW_PERSON as p left join MVW_TENNISSPIELER as t on p.ID = t.PERSON_FK {joinCondition} where p.ID = t.PERSON_FK {mannschaftId};";
+                sql = $"select * from MVW_PERSON as p left join MVW_TENNISSPIELER as t on p.ID = t.PERSON_FK {joinCondition} where p.ID = t.PERSON_FK {mannschaftId} {sessionSql};";
                 command = new MySqlCommand(sql, MySqlConnection);
                 reader = command.ExecuteReader();
 
@@ -193,7 +193,7 @@ namespace VisualMannschaftsverwaltung
                 reader.Close();
 
                 //Trainer
-                sql = $"select * from MVW_PERSON as p left join MVW_TRAINER as t on p.ID = t.PERSON_FK {joinCondition} where p.ID = t.PERSON_FK {mannschaftId};";
+                sql = $"select * from MVW_PERSON as p left join MVW_TRAINER as t on p.ID = t.PERSON_FK {joinCondition} where p.ID = t.PERSON_FK {mannschaftId} {sessionSql};";
                 command = new MySqlCommand(sql, MySqlConnection);
                 reader = command.ExecuteReader();
 
@@ -215,7 +215,7 @@ namespace VisualMannschaftsverwaltung
                 reader.Close();
 
                 //Trainer
-                sql = $"select * from MVW_PERSON as p left join MVW_PHYSIOTHERAPEUT as t on p.ID = t.PERSON_FK {joinCondition} where p.ID = t.PERSON_FK {mannschaftId};";
+                sql = $"select * from MVW_PERSON as p left join MVW_PHYSIOTHERAPEUT as t on p.ID = t.PERSON_FK {joinCondition} where p.ID = t.PERSON_FK {mannschaftId} {sessionSql};";
                 command = new MySqlCommand(sql, MySqlConnection);
                 reader = command.ExecuteReader();
 

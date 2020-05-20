@@ -155,9 +155,12 @@ namespace VisualMannschaftsverwaltung
             loadPersonenFromRepository();
         }
 
-        public void loadPersonenFromRepository()
+        public void loadPersonenFromRepository(string session = "ALL")
         {
             DataRepository repo = new DataRepository();
+            repo.setSession(session)
+                .enableSessionbasedQueries();
+         
             this.DatabaseOk = repo.checkConnection();
             this.Personen = repo.loadPersonen();
         }

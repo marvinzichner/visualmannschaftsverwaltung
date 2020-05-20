@@ -416,5 +416,22 @@ namespace VisualMannschaftsverwaltung.View
             ApplicationController.generatePersonenXML();
         }
 
+        public string getOrCreateSession()
+        {
+            string session = "undefined";
+
+            if (this.Session["User"] != null)
+            {
+                session = (string)this.Session["User"];
+            }
+            else
+            {
+                session = Guid.NewGuid().ToString();
+                this.Session["User"] = session;
+                Console.WriteLine($"WebContext started with SessionId {session}");
+            }
+
+            return session;
+        }
     }
 }

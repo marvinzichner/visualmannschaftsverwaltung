@@ -20,6 +20,7 @@ create table MVW_PERSON (
   VORNAME text not null,
   NACHNAME text not null,
   GEBURTSDATUM date not null,
+  SESSION_ID text,
   primary key (ID)
 );
 

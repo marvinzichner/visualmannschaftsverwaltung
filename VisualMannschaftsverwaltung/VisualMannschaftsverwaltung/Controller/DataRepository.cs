@@ -20,12 +20,16 @@ namespace VisualMannschaftsverwaltung
         private RepositorySettings _repositorySettings;
         private MySqlConnection _mySqlConnection;
         private bool _connectionReady;
+        private string _session;
+        private bool _sessionQuery;
         #endregion
 
         #region Accessoren / Modifier
         public RepositorySettings RepositorySettings { get => _repositorySettings; set => _repositorySettings = value; }
         public MySqlConnection MySqlConnection { get => _mySqlConnection; set => _mySqlConnection = value; }
         public bool ConnectionReady { get => _connectionReady; set => _connectionReady = value; }
+        public string Session { get => _session; set => _session = value; }
+        public bool SessionQuery { get => _sessionQuery; set => _sessionQuery = value; }
         #endregion
 
         #region Konstruktoren
@@ -83,16 +87,39 @@ namespace VisualMannschaftsverwaltung
             return rowsAffected;
         }
 
+        public DataRepository setSession(string s)
+        {
+            this.Session = s;
+            return this;
+        }
+
+        public DataRepository enableSessionbasedQueries()
+        {
+            this.SessionQuery = true;
+            return this;
+        }
+
+        public DataRepository disableSessionbasedQueries()
+        {
+            this.SessionQuery = false;
+            return this;
+        }
+
         public List<Person> loadPersonen(string mid = "")
         {
             List<Person> Personen = new List<Person>();
             string joinCondition = "";
             string mannschaftId = "";
+            string sessionSql = "";
             
             if(mid != "")
             {
                 joinCondition = "left join mvw_mannschaft_person as mp on mp.FK_PERSON = p.ID";
                 mannschaftId = $"and mp.FK_MANNSCHAFT = {mid}";
+            }
+            if (SessionQuery)
+            {
+                sessionSql = $"and SESSION_ID = '{Session}'";
             }
 
             if (createConnection()) {

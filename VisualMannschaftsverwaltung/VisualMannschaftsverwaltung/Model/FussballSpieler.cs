@@ -146,6 +146,18 @@ namespace VisualMannschaftsverwaltung
             return $"insert into MVW_FUSSBALLSPIELER (PERSON_FK, GEWONNENE_SPIELE, LEFT_FOOT) " +
                     $"values (LAST_INSERT_ID(), {SpielSiege.ToString()}, {Utils.convertToBasic(IsLeftFeet)})";
         }
+
+        public override Person buildFromKeyValueAttributeList(List<KeyValuePair<string, string>> attr)
+        {
+            this.sportArt(SportArt.FUSSBALL)
+                .toFussballSpieler()
+                .spielSiege(
+                    Utils.convertToInt(attr.Find(x => x.Key == "SpielSiege").Value, 0, "SpielSiege"))
+                .isLeftFeet(
+                    Utils.convertToBool(attr.Find(x => x.Key == "IsLeftFeet").Value, false, "IsLeftFeet"));
+
+            return this;
+        }
         #endregion
     }
 }

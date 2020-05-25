@@ -53,8 +53,10 @@ namespace VisualMannschaftsverwaltung.View
                 teamsList.Items.Add(li);
             });
         }
-        protected void loadMembers(Mannschaft.OrderBy ob = Mannschaft.OrderBy.UNSORTED) { 
+        protected void loadMembers(Mannschaft.OrderBy ob = Mannschaft.OrderBy.UNSORTED) {
             //Team Members
+            ApplicationController.loadPersonenFromRepository(getOrCreateSession());
+       
             membersListContainer.Controls.Clear();
             personListDelete.Items.Clear();
             this.teamName.InnerHtml = ApplicationController.TempMannschaft.Name;
@@ -232,6 +234,24 @@ namespace VisualMannschaftsverwaltung.View
         protected void generateXML(object sender, EventArgs e)
         {
             ApplicationController.generateMannschaftenXML();
+        }
+
+        public string getOrCreateSession()
+        {
+            string session = "undefined";
+
+            if (this.Session["User"] != null)
+            {
+                session = (string)this.Session["User"];
+            }
+            else
+            {
+                session = Guid.NewGuid().ToString();
+                this.Session["User"] = session;
+                Console.WriteLine($"WebContext started with SessionId {session}");
+            }
+
+            return session;
         }
         #endregion
 

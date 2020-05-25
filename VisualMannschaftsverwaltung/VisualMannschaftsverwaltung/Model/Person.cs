@@ -130,6 +130,8 @@ namespace VisualMannschaftsverwaltung
 
         public abstract string saySkills();
 
+        public abstract Person buildFromKeyValueAttributeList(List<KeyValuePair<string, string>> attr);
+
         public virtual Person name(string s)
         {
             this.Name = s;

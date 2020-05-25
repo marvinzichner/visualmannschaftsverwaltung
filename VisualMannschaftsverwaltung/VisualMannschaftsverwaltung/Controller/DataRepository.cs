@@ -138,8 +138,8 @@ namespace VisualMannschaftsverwaltung
                          .birthdate(String.Concat(reader.GetValue(3).ToString().Substring(0, 10)))
                          .sportArt(SportArt.FUSSBALL)
                             .toFussballSpieler()
-                            .spielSiege(Convert.ToInt32(reader.GetValue(7).ToString()))
-                            .isLeftFeet(Utils.convertFromBasic(reader.GetValue(8).ToString()));  
+                            .spielSiege(Convert.ToInt32(reader.GetValue(8).ToString()))
+                            .isLeftFeet(Utils.convertFromBasic(reader.GetValue(9).ToString()));  
 
                     Personen.Add(fussballSpieler);
                 }
@@ -161,8 +161,8 @@ namespace VisualMannschaftsverwaltung
                          .birthdate(String.Concat(reader.GetValue(3).ToString().Substring(0, 10)))
                          .sportArt(SportArt.HANDBALL)
                             .toHandballSpieler()
-                            .spielSiege(Convert.ToInt32(reader.GetValue(7).ToString()))
-                            .isLeftHand(Utils.convertFromBasic(reader.GetValue(8).ToString()));
+                            .spielSiege(Convert.ToInt32(reader.GetValue(8).ToString()))
+                            .isLeftHand(Utils.convertFromBasic(reader.GetValue(9).ToString()));
 
                     Personen.Add(handballSpieler);
                 }
@@ -184,8 +184,8 @@ namespace VisualMannschaftsverwaltung
                          .birthdate(String.Concat(reader.GetValue(3).ToString().Substring(0, 10)))
                          .sportArt(SportArt.TENNIS)
                             .toTennisSpieler()
-                            .spielSiege(Convert.ToInt32(reader.GetValue(7).ToString()))
-                            .isLeftHand(Utils.convertFromBasic(reader.GetValue(8).ToString()));
+                            .spielSiege(Convert.ToInt32(reader.GetValue(8).ToString()))
+                            .isLeftHand(Utils.convertFromBasic(reader.GetValue(9).ToString()));
 
                     Personen.Add(tennisSpieler);
                 }
@@ -201,37 +201,37 @@ namespace VisualMannschaftsverwaltung
                 {
                     Trainer trainer = new Trainer();
                     trainer
-                         .id(Convert.ToInt32(reader.GetValue(0).ToString()))
-                         .name(reader.GetValue(1).ToString())
-                         .nachname(reader.GetValue(2).ToString())
-                         .birthdate(String.Concat(reader.GetValue(3).ToString().Substring(0, 10)))
+                         .id(Convert.ToInt32(reader["ID"].ToString()))
+                         .name(reader["VORNAME"].ToString())
+                         .nachname(reader["NACHNAME"].ToString())
+                         .birthdate(String.Concat(reader["GEBURTSDATUM"].ToString().Substring(0, 10)))
                          .sportArt(SportArt.KEINE)
                             .toTrainer()
-                            .hasLicense(Utils.convertFromBasic(reader.GetValue(7).ToString()));
+                            .hasLicense(Utils.convertFromBasic(reader["HAS_LICENSE"].ToString()));
 
                     Personen.Add(trainer);
                 }
 
                 reader.Close();
 
-                //Trainer
+                //PHYSIOTHERAPEUT
                 sql = $"select * from MVW_PERSON as p left join MVW_PHYSIOTHERAPEUT as t on p.ID = t.PERSON_FK {joinCondition} where p.ID = t.PERSON_FK {mannschaftId} {sessionSql};";
                 command = new MySqlCommand(sql, MySqlConnection);
                 reader = command.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    Physiotherapeut trainer = new Physiotherapeut();
-                    trainer
-                         .id(Convert.ToInt32(reader.GetValue(0).ToString()))
-                         .name(reader.GetValue(1).ToString())
-                         .nachname(reader.GetValue(2).ToString())
-                         .birthdate(String.Concat(reader.GetValue(3).ToString().Substring(0, 10)))
+                    Physiotherapeut physiotherapeut = new Physiotherapeut();
+                    physiotherapeut
+                         .id(Convert.ToInt32(reader["ID"].ToString()))
+                         .name(reader["VORNAME"].ToString())
+                         .nachname(reader["NACHNAME"].ToString())
+                         .birthdate(String.Concat(reader["GEBURTSDATUM"].ToString().Substring(0, 10)))
                          .sportArt(SportArt.KEINE)
                             .toPhysiotherapeut()
-                            .hasLicense(Utils.convertFromBasic(reader.GetValue(7).ToString()));
+                            .hasLicense(Utils.convertFromBasic(reader["HAS_LICENSE"].ToString()));
 
-                    Personen.Add(trainer);
+                    Personen.Add(physiotherapeut);
                 }
 
                 reader.Close();
@@ -256,10 +256,10 @@ namespace VisualMannschaftsverwaltung
             executeSql(removeMannschaftEntries);
         }
 
-        public void addPerson(Person p)
+        public void addPerson(Person p, string session)
         {
-            string addPerson = $"insert into MVW_PERSON (VORNAME, NACHNAME, GEBURTSDATUM) " +
-                $"values ('{p.Name}', '{p.Nachname}', STR_TO_DATE('{p.Birthdate}', '%d.%m.%Y'))";
+            string addPerson = $"insert into MVW_PERSON (VORNAME, NACHNAME, GEBURTSDATUM, SESSION_ID) " +
+                $"values ('{p.Name}', '{p.Nachname}', STR_TO_DATE('{p.Birthdate}', '%d.%m.%Y'), '{session}')";
             string details = p.getSpecifiedSqlStatement();
 
             executeSql(addPerson);
@@ -338,11 +338,15 @@ namespace VisualMannschaftsverwaltung
 
                     Mannschaften.Add(mannschaft);
                 }
-
+                
                 reader.Close();
             }
-
             closeConnection();
+
+            Mannschaften.ForEach(mannschaft => {
+                mannschaft.personen(loadPersonen(mannschaft.ID.ToString()));
+            });
+
             return Mannschaften;
         }
 

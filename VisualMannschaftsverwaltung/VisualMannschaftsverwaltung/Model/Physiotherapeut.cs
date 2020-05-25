@@ -112,8 +112,18 @@ namespace VisualMannschaftsverwaltung
 
         public override string getSpecifiedSqlStatement()
         {
-            return $"insert into MVW_physiotherapeut (PERSON_FK, GEWONNENE_SPIELE, HAS_LICENSE) " +
-                    $"values (LAST_INSERT_ID(), 0, {Utils.convertToBasic(HasLicense)})";
+            return $"insert into MVW_physiotherapeut (PERSON_FK, HAS_LICENSE) " +
+                    $"values (LAST_INSERT_ID(), {Utils.convertToBasic(HasLicense)})";
+        }
+
+        public override Person buildFromKeyValueAttributeList(List<KeyValuePair<string, string>> attr)
+        {
+            this.sportArt(SportArt.KEINE)
+                .toPhysiotherapeut()
+                .hasLicense(
+                    Utils.convertToBool(attr.Find(x => x.Key == "HasLicense").Value, false, "HasLicense"));
+
+            return this;
         }
         #endregion
     }

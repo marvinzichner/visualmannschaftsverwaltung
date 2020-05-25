@@ -68,66 +68,9 @@ namespace VisualMannschaftsverwaltung.View
                         attribute, Request["ctl00$MainContent$generatedField-attribute-" + attribute]));
                 });
 
-                if (selectedType == "FussballSpieler")
-                {
-                    ApplicationController.addPerson(
-                        reflectedInstance
-                            .sportArt(SportArt.FUSSBALL)
-                            .toFussballSpieler()
-                            .spielSiege(
-                                Utils.convertToInt(attr.Find(x => x.Key == "SpielSiege").Value, 0, "SpielSiege"))
-                            .isLeftFeet(
-                                Utils.convertToBool(attr.Find(x => x.Key == "IsLeftFeet").Value, false, "IsLeftFeet"))
-                    );
-                }
-                else if (selectedType == "HandballSpieler")
-                {
-                    ApplicationController.addPerson(
-                        reflectedInstance
-                            .sportArt(SportArt.HANDBALL)
-                            .toHandballSpieler()
-                            .spielSiege(
-                                Utils.convertToInt(attr.Find(x => x.Key == "SpielSiege").Value, 0, "SpielSiege"))
-                            .isLeftHand(
-                                Utils.convertToBool(attr.Find(x => x.Key == "IsLeftHand").Value, false, "IsLeftHand"))
-                    );
-                }
-                else if (selectedType == "TennisSpieler")
-                {
-                    ApplicationController.addPerson(
-                        reflectedInstance
-                            .sportArt(SportArt.TENNIS)
-                            .toTennisSpieler()
-                            .spielSiege(
-                                Utils.convertToInt(attr.Find(x => x.Key == "SpielSiege").Value, 0, "SpielSiege"))
-                            .isLeftHand(
-                                Utils.convertToBool(attr.Find(x => x.Key == "IsLeftHand").Value, false, "IsLeftHand"))
-                    );
-                }
-                else if (selectedType == "Trainer")
-                {
-                    ApplicationController.addPerson(
-                        reflectedInstance
-                            .sportArt(SportArt.KEINE)
-                            .toTrainer()
-                            .hasLicense(
-                               Utils.convertToBool(attr.Find(x => x.Key == "HasLicense").Value, false, "HasLicense"))
-                    );
-                }
-                else if (selectedType == "Physiotherapeut")
-                {
-                    ApplicationController.addPerson(
-                        reflectedInstance
-                            .sportArt(SportArt.KEINE)
-                            .toPhysiotherapeut()
-                            .hasLicense(
-                               Utils.convertToBool(attr.Find(x => x.Key == "HasLicense").Value, false, "HasLicense"))
-                    );
-                }
-                else
-                {
-                    ApplicationController.addPerson(reflectedInstance);
-                }
+                ApplicationController.addPerson(
+                        reflectedInstance.buildFromKeyValueAttributeList(attr),
+                        getOrCreateSession());
             }
             catch (InputValidationException ie)
             {
@@ -229,7 +172,8 @@ namespace VisualMannschaftsverwaltung.View
                 ApplicationController.StorageOrderBy.FindLast(
                     x => x.Key == "PERSONENVERWALTUNG").Value,
                 ApplicationController.StorageSearchTerm.FindLast(
-                    x => x.Key == "PERSONENVERWALTUNG").Value).ForEach(person =>
+                    x => x.Key == "PERSONENVERWALTUNG").Value,
+                getOrCreateSession()).ForEach(person =>
             {
                 getAllAttributes().ForEach(attribute =>
                 {
@@ -311,7 +255,8 @@ namespace VisualMannschaftsverwaltung.View
                 ApplicationController.StorageOrderBy.FindLast(
                     x => x.Key == "PERSONENVERWALTUNG").Value,
                 ApplicationController.StorageSearchTerm.FindLast(
-                    x => x.Key == "PERSONENVERWALTUNG").Value);
+                    x => x.Key == "PERSONENVERWALTUNG").Value,
+                getOrCreateSession());
             p = list[Convert.ToInt32(
                 ApplicationController.getFirstTupleMatch("personenverwaltung.pid"))];
 
@@ -328,7 +273,8 @@ namespace VisualMannschaftsverwaltung.View
                 ApplicationController.StorageOrderBy.FindLast(
                     x => x.Key == "PERSONENVERWALTUNG").Value,
                 ApplicationController.StorageSearchTerm.FindLast(
-                    x => x.Key == "PERSONENVERWALTUNG").Value);
+                    x => x.Key == "PERSONENVERWALTUNG").Value,
+                getOrCreateSession());
             p = list[Convert.ToInt32(
                 ApplicationController.getFirstTupleMatch("personenverwaltung.pid"))];
 
@@ -428,7 +374,6 @@ namespace VisualMannschaftsverwaltung.View
             {
                 session = Guid.NewGuid().ToString();
                 this.Session["User"] = session;
-                Console.WriteLine($"WebContext started with SessionId {session}");
             }
 
             return session;

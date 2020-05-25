@@ -27,6 +27,8 @@
     <br />
 
     <h4>2. Geben Sie Detailinformationen zu dieser Person an:</h4>
+    <i>HILFE: </i><b>Birthdate</b> dd.mm.yyyy &emsp; <b>IsLeftFeet</b> True/False &emsp; <b>IsLeftHand</b> True/False  &emsp; <b>HasLicense</b> True/False<br />
+    <br />
 
     <div class="clear">
         <div class="listSpacer">

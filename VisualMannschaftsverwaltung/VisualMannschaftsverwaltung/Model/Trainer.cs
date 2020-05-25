@@ -115,6 +115,16 @@ namespace VisualMannschaftsverwaltung
             return $"insert into MVW_TRAINER (PERSON_FK, GEWONNENE_SPIELE, HAS_LICENSE) " +
                     $"values (LAST_INSERT_ID(), 0, {Utils.convertToBasic(HasLicense)})";
         }
+
+        public override Person buildFromKeyValueAttributeList(List<KeyValuePair<string, string>> attr)
+        {
+            this.sportArt(SportArt.KEINE)
+                .toTrainer()
+                .hasLicense(
+                    Utils.convertToBool(attr.Find(x => x.Key == "HasLicense").Value, false, "HasLicense"));
+
+            return this;
+        }
         #endregion
     }
 }

@@ -75,6 +75,7 @@ namespace VisualMannschaftsverwaltung
         public List<Person> getAvailablePersonen()
         {
             DataRepository repo = new DataRepository();
+
             List<Person> list = new List<Person>();
             SportArt matchSportArt = TempMannschaft.SportArt;
             List<Person> matchMembers = TempMannschaft.Personen;
@@ -121,8 +122,10 @@ namespace VisualMannschaftsverwaltung
             this.Personen = mns;
         }
 
-        public List<Person> getPersonen(Mannschaft.OrderBy ob, Mannschaft.SearchTerm st)
+        public List<Person> getPersonen(Mannschaft.OrderBy ob, Mannschaft.SearchTerm st, string session = "ALL")
         {
+            loadPersonenFromRepository(session);
+
             Mannschaft mannschaft = new Mannschaft("TRANSFERRING_OBJECT");
             mannschaft.Personen = this.Personen;
 
@@ -148,11 +151,11 @@ namespace VisualMannschaftsverwaltung
                 new Tuple<string, string>("typematcher", "value"));
         }
 
-        public void addPerson(Person person)
+        public void addPerson(Person person, string session = "ALL")
         {
             DataRepository repo = new DataRepository();
-            repo.addPerson(person);
-            loadPersonenFromRepository();
+            repo.addPerson(person, session);
+            loadPersonenFromRepository(session);
         }
 
         public void loadPersonenFromRepository(string session = "ALL")
@@ -199,18 +202,20 @@ namespace VisualMannschaftsverwaltung
             string path = $"{ApplicationContext.getContextPath()}{filename}";
 
             export.configure(path, filename);
-            export.doXmlExport(Personen, Person.getTypes());
+            //export.doXmlExport(Personen, Person.getTypes());
             export.doDownload();
         }
 
         public void generateMannschaftenXML()
         {
+            DataRepository repo = new DataRepository();
             Export export = new Export();
             string filename = $"{Utils.simpleFileDate()}.mne.xml";
             string path = $"{ApplicationContext.getContextPath()}{filename}";
 
+            repo.disableSessionbasedQueries();
             export.configure(path, filename);
-            export.doXmlExport(Mannschaften, Mannschaft.getTypes());
+            export.doXmlExport(repo.getMannschaften(), Mannschaft.getTypes());
             export.doDownload();
         }
         #endregion

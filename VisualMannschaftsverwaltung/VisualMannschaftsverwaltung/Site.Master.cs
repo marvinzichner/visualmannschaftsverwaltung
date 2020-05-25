@@ -12,7 +12,19 @@ namespace VisualMannschaftsverwaltung
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            string session = "undefined";
 
+            if (this.Session["User"] != null)
+            {
+                session = (string)this.Session["User"];
+            }
+            else
+            {
+                session = Guid.NewGuid().ToString();
+                this.Session["User"] = session;
+            }
+
+            SessionText.InnerText = session;
         }
 
     }

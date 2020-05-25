@@ -38,9 +38,7 @@ create table MVW_SPIEL (
   MANNSCHAFT_B_FK int not null,
   RESULT_A int,
   RESULT_B int,
-  primary key (ID),
-  foreign key (MANNSCHAFT_A_FK) references MVW_MANNSCHAFT(ID),
-  foreign key (MANNSCHAFT_B_FK) references MVW_MANNSCHAFT(ID)
+  primary key (ID)
 );
 
 create table MVW_SPIELERROLLE (
@@ -55,8 +53,7 @@ create table MVW_FUSSBALLSPIELER (
   SPIELERROLLE_FK int not null,
   GEWONNENE_SPIELE int not null,
   LEFT_FOOT int not null,
-  primary key (ID),
-  foreign key (PERSON_FK) references MVW_PERSON(ID)
+  primary key (ID)
 );
 
 create table MVW_HANDBALLSPIELER (
@@ -65,9 +62,7 @@ create table MVW_HANDBALLSPIELER (
   SPIELERROLLE_FK int not null,
   GEWONNENE_SPIELE int not null,
   LEFT_HAND int not null,
-  primary key (ID),
-  foreign key (PERSON_FK) references MVW_PERSON(ID),
-  foreign key (SPIELERROLLE_FK) references MVW_SPIELERROLLE(ID)
+  primary key (ID)
 );
 
 create table MVW_TENNISSPIELER (
@@ -76,9 +71,7 @@ create table MVW_TENNISSPIELER (
   SPIELERROLLE_FK int not null,
   GEWONNENE_SPIELE int not null,
   LEFT_ARM int not null,
-  primary key (ID),
-  foreign key (PERSON_FK) references MVW_PERSON(ID),
-  foreign key (SPIELERROLLE_FK) references MVW_SPIELERROLLE(ID)
+  primary key (ID)
 );
 
 create table MVW_TRAINER (
@@ -87,9 +80,7 @@ create table MVW_TRAINER (
   SPIELERROLLE_FK int not null,
   GEWONNENE_SPIELE int not null,
   HAS_LICENSE int not null,
-  primary key (ID),
-  foreign key (PERSON_FK) references MVW_PERSON(ID),
-  foreign key (SPIELERROLLE_FK) references MVW_SPIELERROLLE(ID)
+  primary key (ID)
 );
 
 create table MVW_PHYSIOTHERAPEUT (
@@ -97,9 +88,7 @@ create table MVW_PHYSIOTHERAPEUT (
   PERSON_FK int not null,
   SPIELERROLLE_FK int not null,
   HAS_LICENSE int not null,
-  primary key (ID),
-  foreign key (PERSON_FK) references MVW_PERSON(ID),
-  foreign key (SPIELERROLLE_FK) references MVW_SPIELERROLLE(ID)
+  primary key (ID)
 );
 
 insert into MVW_SPIELERROLLE (name) values ('FussballSpieler');

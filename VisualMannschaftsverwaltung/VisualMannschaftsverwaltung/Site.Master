@@ -64,7 +64,7 @@
             </asp:ContentPlaceHolder>
             <hr />
             <footer>
-                <p>&copy; <%: DateTime.Now.Year %> - Marvin Zichner - VisualMannschaftsverwaltung</p>
+                <p>&copy; <%: DateTime.Now.Year %> - Marvin Zichner | Session: <span id="SessionText" runat="server"></span></p>
             </footer>
         </div>
 

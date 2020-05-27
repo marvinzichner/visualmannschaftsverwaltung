@@ -60,6 +60,15 @@
             </div>
         </div>
         <div class="container body-content">
+            <div id="authRequired" runat="server" class="auth">
+                <b>Anmeldung erforderlich</b> &emsp;
+                Benutzername: <asp:TextBox ID="username" runat="server"></asp:TextBox> 
+                &emsp;
+                Kennwort: <asp:TextBox ID="password" runat="server"></asp:TextBox>
+                &emsp; 
+                <asp:Button ID="login" runat="server" OnClick="authenticate" Text="Login / Konto erstellen" />
+            </div>
+
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
             <hr />
@@ -69,5 +78,14 @@
         </div>
 
     </form>
+
+    <style>
+        .auth {
+            width:100%;
+            padding: 20px;
+            background-color: #ffb3b3;
+            color: black;
+        }
+    </style>
 </body>
 </html>

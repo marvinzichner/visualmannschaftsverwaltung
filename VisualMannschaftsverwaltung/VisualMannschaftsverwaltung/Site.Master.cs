@@ -16,15 +16,29 @@ namespace VisualMannschaftsverwaltung
 
             if (this.Session["User"] != null)
             {
+                authRequired.Visible = false;
+                MainContent.Visible = true;
+
                 session = (string)this.Session["User"];
             }
             else
             {
-                session = Guid.NewGuid().ToString();
-                this.Session["User"] = session;
+                authRequired.Visible = true;
+                MainContent.Visible = false;
             }
 
             SessionText.InnerText = session;
+        }
+
+        protected void authenticate(object sender, EventArgs e)
+        {
+            string session = "undefined";
+
+            session = $"{username.Text}{password.Text}";
+            this.Session["User"] = session;
+
+            authRequired.Controls.Clear();
+            authRequired.InnerHtml = $"Laden Sie die Seite neu, um die Anmeldung abzuschließen.";
         }
 
     }

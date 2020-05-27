@@ -372,8 +372,8 @@ namespace VisualMannschaftsverwaltung.View
             }
             else
             {
-                session = Guid.NewGuid().ToString();
-                this.Session["User"] = session;
+                //session = Guid.NewGuid().ToString();
+                //this.Session["User"] = session;
             }
 
             return session;

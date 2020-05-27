@@ -246,9 +246,9 @@ namespace VisualMannschaftsverwaltung.View
             }
             else
             {
-                session = Guid.NewGuid().ToString();
-                this.Session["User"] = session;
-                Console.WriteLine($"WebContext started with SessionId {session}");
+                //session = Guid.NewGuid().ToString();
+                //this.Session["User"] = session;
+                //Console.WriteLine($"WebContext started with SessionId {session}");
             }
 
             return session;

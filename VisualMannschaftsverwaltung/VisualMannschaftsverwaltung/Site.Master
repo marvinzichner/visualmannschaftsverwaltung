@@ -60,11 +60,16 @@
             </div>
         </div>
         <div class="container body-content">
+            <div id="auth" runat="server" class="activeAuth">
+                Hallo, <span id="displayName" runat="server"></span> &emsp;
+                <asp:Button ID="logout" runat="server" OnClick="destroySession" Text="Abmelden" />
+            </div>
             <div id="authRequired" runat="server" class="auth">
                 <b>Anmeldung erforderlich</b> &emsp;
                 Benutzername: <asp:TextBox ID="username" runat="server"></asp:TextBox> 
                 &emsp;
-                Kennwort: <asp:TextBox ID="password" runat="server"></asp:TextBox>
+                Kennwort: <asp:TextBox ID="password" runat="server" TextMode="Password"></asp:TextBox>
+
                 &emsp; 
                 <asp:Button ID="login" runat="server" OnClick="authenticate" Text="Login / Konto erstellen" />
             </div>
@@ -85,6 +90,12 @@
             padding: 20px;
             background-color: #ffb3b3;
             color: black;
+        }
+        .activeAuth {
+            width:100%;
+            border-bottom: 2px solid #b2b2b2;
+            padding: 10px;
+            margin-bottom: 5px;
         }
     </style>
 </body>

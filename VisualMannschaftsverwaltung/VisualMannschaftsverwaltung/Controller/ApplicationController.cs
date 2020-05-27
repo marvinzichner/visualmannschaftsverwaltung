@@ -202,7 +202,7 @@ namespace VisualMannschaftsverwaltung
             string path = $"{ApplicationContext.getContextPath()}{filename}";
 
             export.configure(path, filename);
-            //export.doXmlExport(Personen, Person.getTypes());
+            export.doXmlExport(Personen, Person.getTypes());
             export.doDownload();
         }
 

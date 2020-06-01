@@ -7,6 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml.Serialization;
 using System.IO;
+using System.Web.UI.HtmlControls;
 
 namespace VisualMannschaftsverwaltung.View
 {
@@ -60,7 +61,7 @@ namespace VisualMannschaftsverwaltung.View
                     .name(fieldVorname)
                     .nachname(fieldNachname)
                     .birthdate(fieldBirthdate);
-
+                
                 List<KeyValuePair<string, string>> attr = new List<KeyValuePair<string, string>>();
                 getAllGenericAttributes().ForEach(attribute =>
                 {
@@ -68,9 +69,22 @@ namespace VisualMannschaftsverwaltung.View
                         attribute, Request["ctl00$MainContent$generatedField-attribute-" + attribute]));
                 });
 
-                ApplicationController.addPerson(
-                        reflectedInstance.buildFromKeyValueAttributeList(attr),
-                        getOrCreateSession());
+                if (btnCreatePerson.Text == "ÄNDERUNGEN SPEICHERN")
+                {
+                    Person loader = ApplicationController.Personen[
+                        Convert.ToInt32(
+                            ApplicationController.getFirstTupleMatch("personenverwaltung.pid"))];
+
+                    ApplicationController.updatePerson(
+                            reflectedInstance.buildFromKeyValueAttributeList(attr).id(loader.ID),
+                            getOrCreateSession());
+                }
+                else
+                {
+                    ApplicationController.addPerson(
+                            reflectedInstance.buildFromKeyValueAttributeList(attr),
+                            getOrCreateSession());
+                }
             }
             catch (InputValidationException ie)
             {
@@ -96,6 +110,7 @@ namespace VisualMannschaftsverwaltung.View
             dynamicPersonList.Controls.Clear();
             dynamicFlow.Controls.Clear();
             staticPersonListHeader.Controls.Clear();
+            btnCreatePerson.Text = "Person hinzufügen";
             this.loadPersonen();
         }
 
@@ -134,6 +149,7 @@ namespace VisualMannschaftsverwaltung.View
             tableKeys.Add("Nachname");
             tableKeys.Add("Geburtsdatum");
             tableKeys.Add("Sportart");
+            ApplicationController.loadPersonenFromRepository(getOrCreateSession());
             ApplicationController.Personen.ForEach(person =>
             {
                 person.getGenericAttribues().ForEach(attribute =>
@@ -153,19 +169,24 @@ namespace VisualMannschaftsverwaltung.View
         {
             dynamicPersonList.Controls.Clear();
             dynamicFlow.Controls.Clear();
+            usertable.Rows.Clear();
             staticPersonListHeader.Controls.Clear();
 
             int percent = 100 / getAllAttributes().Count;
+            HtmlTableRow tr = new HtmlTableRow();
             getAllAttributes().ForEach(attribute =>
             {
-                Label l = new Label();
+                HtmlTableCell tc = new HtmlTableCell();
 
-                l.Text = attribute;
-                l.Attributes.CssStyle.Add("width", percent + "%");
-                l.Attributes.CssStyle.Add("float", "left");
-                l.Attributes.CssStyle.Add("border-bottom", "3px solid #e6e6e6");
-                staticPersonListHeader.Controls.Add(l);
+                tc.InnerHtml = attribute;
+                tc.Attributes.Add("class", "tableHeader");
+                //tc.Attributes.CssStyle.Add("width", percent + "%");
+                //tc.Attributes.CssStyle.Add("float", "left");
+                //tc.Attributes.CssStyle.Add("border-bottom", "3px solid #e6e6e6");
+                tr.Cells.Add(tc);
             });
+            usertable.Rows.Add(tr);
+
 
             int cnt = 0;
             ApplicationController.getPersonen(
@@ -175,12 +196,15 @@ namespace VisualMannschaftsverwaltung.View
                     x => x.Key == "PERSONENVERWALTUNG").Value,
                 getOrCreateSession()).ForEach(person =>
             {
+                tr = new HtmlTableRow();
+                tr.Attributes.Add("class", "hoverRow");
+
                 getAllAttributes().ForEach(attribute =>
                 {
-                    Label l = new Label();
-                    l.Attributes.CssStyle.Add("width", percent + "%");
-                    l.Attributes.CssStyle.Add("float", "left");
-                    l.Attributes.CssStyle.Add("border-bottom", "1px solid #e6e6e6");
+                    HtmlTableCell tc = new HtmlTableCell();
+                    //tc.Attributes.CssStyle.Add("width", percent + "%");
+                    //tc.Attributes.CssStyle.Add("float", "left");
+                    //tc.Attributes.CssStyle.Add("border-bottom", "1px solid #e6e6e6");
                     string cellContent = "&emsp;";
 
                     if (attribute == "Vorname")
@@ -202,18 +226,19 @@ namespace VisualMannschaftsverwaltung.View
                     else if (attribute == "Aktionen")
                     {
                         cellContent = "";
-                        l.Attributes.CssStyle.Add("width","0%");
+                        //tc.Attributes.CssStyle.Add("width","0%");
 
-                        Button b = new Button();
-                        b.Attributes.CssStyle.Add("width", percent + "%");
-                        b.Attributes.CssStyle.Add("float", "left");
-                        b.Attributes.CssStyle.Add("border", "none");
-                        b.Attributes.CssStyle.Add("background", "white");
-                        b.Attributes.CssStyle.Add("border-bottom", "1px solid #e6e6e6");
-                        b.ID = cnt.ToString();
-                        b.Click += new EventHandler(this.testClickEvent);
-                        b.Text = "auswählen";
-                        dynamicPersonList.Controls.Add(b);
+                        Button edit = new Button();
+                        edit.ID = "E" + cnt.ToString();
+                        edit.Click += new EventHandler(this.editSelectedPerson);
+                        edit.Text = "Bearbeiten";
+                        tc.Controls.Add(edit);
+
+                        Button delete = new Button();
+                        delete.ID = "D" + cnt.ToString();
+                        delete.Click += new EventHandler(this.removeSelectedPerson);
+                        delete.Text = "Löschen";
+                        tc.Controls.Add(delete);
 
                         cnt += 1;
                     }
@@ -230,9 +255,14 @@ namespace VisualMannschaftsverwaltung.View
                         }
                     }
 
-                    l.Text = cellContent;
-                    dynamicPersonList.Controls.Add(l);
+                    if (attribute != "Aktionen") { 
+                        tc.InnerHtml = cellContent;
+                    }
+
+                    tr.Cells.Add(tc);
                 });
+
+                usertable.Rows.Add(tr);
             });
         }
 
@@ -240,7 +270,7 @@ namespace VisualMannschaftsverwaltung.View
         {
             Button b = (Button)sender;
             String id = b.ID;
-            int pid = Convert.ToInt32(id);
+            int pid = Convert.ToInt32(id.Substring(1));
 
             ApplicationController.setTuple("personenverwaltung.pid", pid.ToString());
 
@@ -250,6 +280,11 @@ namespace VisualMannschaftsverwaltung.View
 
         protected void removeSelectedPerson(object sender, EventArgs e)
         {
+            Button b = (Button)sender;
+            String id = b.ID;
+            int pid = Convert.ToInt32(id.Substring(1));
+            ApplicationController.setTuple("personenverwaltung.pid", pid.ToString());
+
             Person p = new Trainer();
             List<Person> list = ApplicationController.getPersonen(
                 ApplicationController.StorageOrderBy.FindLast(
@@ -257,8 +292,7 @@ namespace VisualMannschaftsverwaltung.View
                 ApplicationController.StorageSearchTerm.FindLast(
                     x => x.Key == "PERSONENVERWALTUNG").Value,
                 getOrCreateSession());
-            p = list[Convert.ToInt32(
-                ApplicationController.getFirstTupleMatch("personenverwaltung.pid"))];
+            p = list[pid];
 
             ApplicationController.removePerson(p);
             deleteButton.Visible = false;
@@ -268,6 +302,11 @@ namespace VisualMannschaftsverwaltung.View
 
         protected void editSelectedPerson(object sender, EventArgs e)
         {
+            Button b = (Button)sender;
+            String id = b.ID;
+            int pid = Convert.ToInt32(id.Substring(1));
+            ApplicationController.setTuple("personenverwaltung.pid", pid.ToString());
+
             Object p = new Trainer();
             List<Person> list = ApplicationController.getPersonen(
                 ApplicationController.StorageOrderBy.FindLast(
@@ -275,10 +314,10 @@ namespace VisualMannschaftsverwaltung.View
                 ApplicationController.StorageSearchTerm.FindLast(
                     x => x.Key == "PERSONENVERWALTUNG").Value,
                 getOrCreateSession());
-            p = list[Convert.ToInt32(
-                ApplicationController.getFirstTupleMatch("personenverwaltung.pid"))];
+            p = list[pid];
 
             PersonSelectionTypeDD.SelectedValue = p.GetType().ToString();
+            btnCreatePerson.Text = "ÄNDERUNGEN SPEICHERN";
             this.confirmPersonSelection(sender, e);
         }
 
@@ -293,11 +332,28 @@ namespace VisualMannschaftsverwaltung.View
                     Type.GetType("VisualMannschaftsverwaltung." + selection);
                 Person reflectedInstance = 
                     (Person) Activator.CreateInstance(reflectedPerson);
+                
+                if(btnCreatePerson.Text == "ÄNDERUNGEN SPEICHERN") { 
+                    reflectedInstance = ApplicationController.Personen[
+                        Convert.ToInt32(
+                            ApplicationController.getFirstTupleMatch("personenverwaltung.pid"))];
+
+                    fieldVorname.Text = reflectedInstance.Name;
+                    fieldNachname.Text = reflectedInstance.Nachname;
+                    fieldBirthdate.Text = reflectedInstance.Birthdate.ToString();
+                }
 
                 reflectedInstance.getGenericAttribues().ForEach(genericType =>
                 {
-                    dynamicFlow.Controls.Add(
-                        generateNewField("attribute-" + genericType, genericType));
+                    if (btnCreatePerson.Text == "ÄNDERUNGEN SPEICHERN")
+                    {
+                        dynamicFlow.Controls.Add(
+                            generateNewField("attribute-" + genericType, genericType,
+                            reflectedInstance.GetType().GetProperty(genericType).GetValue(reflectedInstance, null).ToString()));
+                    } else {
+                        dynamicFlow.Controls.Add(
+                           generateNewField("attribute-" + genericType, genericType));
+                    }
                 });
 
                 fieldVorname.Enabled = true;
@@ -311,7 +367,7 @@ namespace VisualMannschaftsverwaltung.View
             }
         }
 
-        protected Control generateNewField(string id, string text)
+        protected Control generateNewField(string id, string text, string val = "")
         {
             Control c = new Control();
             Label l = new Label();
@@ -322,6 +378,7 @@ namespace VisualMannschaftsverwaltung.View
             l.Text = text;
             l.CssClass = "listLabelFlow";
             tb.CssClass = "listField";
+            tb.Text = val;
             tb.AutoCompleteType = AutoCompleteType.Disabled;
             tb.ID = "generatedField-" + id;
 
@@ -331,8 +388,7 @@ namespace VisualMannschaftsverwaltung.View
    
             return c;
         }
-        #endregion
-
+    
         protected void dropDownSortingChanged(object sender, EventArgs e)
         {
             string sortingRule = this.dropDownSorting.SelectedValue;
@@ -378,5 +434,6 @@ namespace VisualMannschaftsverwaltung.View
 
             return session;
         }
+        #endregion
     }
 }

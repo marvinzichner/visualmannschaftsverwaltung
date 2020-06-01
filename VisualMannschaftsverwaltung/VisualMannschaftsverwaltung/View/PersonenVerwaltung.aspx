@@ -47,7 +47,7 @@
         <div class="listSpacer listSpacerDynamic" runat="server" id="dynamicFlow"></div>
     </div>
 
-    <asp:Button ID="button2" runat="server" OnClick="createNewPerson" Text="Person erstellen" />
+    <asp:Button ID="btnCreatePerson" runat="server" OnClick="createNewPerson" Text="Person erstellen" />
     <br />
 
     <hr />
@@ -67,12 +67,24 @@
     <asp:Button ID="deleteButton" runat="server" OnClick="removeSelectedPerson" Text="Löschen" Visible="false" />
     
     <br /><br />
+    <table runat="server" id="usertable" class="table"></table>
     <div runat="server" id="staticPersonListHeader" class="tableHeader"></div>
     <div runat="server" id="dynamicPersonList" class="clear"></div>
 
     <br /><br />
 
     <style>
+        .table {
+            width: 100%;
+            padding: 10px;
+        }
+        .tableHeader {
+            font-weight: bold;
+            background-color: #f2f2f2;
+        }
+        .hoverRow:hover {
+            background-color: #f2f2f2;
+        }
         .listSpacer {
             height: 30px;
             line-height: 30px;

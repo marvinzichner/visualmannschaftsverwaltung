@@ -128,6 +128,8 @@ namespace VisualMannschaftsverwaltung
 
         public abstract string getSpecifiedSqlStatement();
 
+        public abstract string getSpecifiedUpdateSqlStatement(string id);
+
         public abstract string saySkills();
 
         public abstract Person buildFromKeyValueAttributeList(List<KeyValuePair<string, string>> attr);

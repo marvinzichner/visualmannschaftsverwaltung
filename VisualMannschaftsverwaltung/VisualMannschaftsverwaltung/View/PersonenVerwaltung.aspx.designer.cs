@@ -85,13 +85,13 @@ namespace VisualMannschaftsverwaltung.View {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dynamicFlow;
         
         /// <summary>
-        /// button2 control.
+        /// btnCreatePerson control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button button2;
+        protected global::System.Web.UI.WebControls.Button btnCreatePerson;
         
         /// <summary>
         /// dropDownSorting control.
@@ -137,6 +137,15 @@ namespace VisualMannschaftsverwaltung.View {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button deleteButton;
+        
+        /// <summary>
+        /// usertable control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTable usertable;
         
         /// <summary>
         /// staticPersonListHeader control.

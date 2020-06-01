@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace VisualMannschaftsverwaltung
 {
@@ -100,8 +101,9 @@ namespace VisualMannschaftsverwaltung
 
         public override int compareByBirthdate(Person p)
         {
-            DateTime thisDate = DateTime.Parse(this.Birthdate);
-            DateTime otherDate = DateTime.Parse(p.Birthdate);
+            CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture("de-DE");
+            DateTime thisDate = DateTime.Parse(this.Birthdate, cultureInfo);
+            DateTime otherDate = DateTime.Parse(p.Birthdate, cultureInfo);
             return Utils.compareDates(thisDate, otherDate);
         }
 
@@ -114,6 +116,13 @@ namespace VisualMannschaftsverwaltung
         {
             return $"insert into MVW_TRAINER (PERSON_FK, GEWONNENE_SPIELE, HAS_LICENSE) " +
                     $"values (LAST_INSERT_ID(), 0, {Utils.convertToBasic(HasLicense)})";
+        }
+
+        public override string getSpecifiedUpdateSqlStatement(string id)
+        {
+            return $"update MVW_FUSSBALLSPIELER set " +
+                     $"HAS_LICENSE={Utils.convertToBasic(HasLicense)} " +
+                     $"where FK_PERSON = {id}";
         }
 
         public override Person buildFromKeyValueAttributeList(List<KeyValuePair<string, string>> attr)

@@ -76,6 +76,7 @@ namespace VisualMannschaftsverwaltung
         {
             DataRepository repo = new DataRepository();
 
+            TempMannschaft.rule(Mannschaft.OrderBy.NAME_ASC);
             List<Person> list = new List<Person>();
             SportArt matchSportArt = TempMannschaft.SportArt;
             List<Person> matchMembers = TempMannschaft.Personen;
@@ -129,11 +130,21 @@ namespace VisualMannschaftsverwaltung
             Mannschaft mannschaft = new Mannschaft("TRANSFERRING_OBJECT");
             mannschaft.Personen = this.Personen;
 
-            return mannschaft
-                    .rule(ob)
-                    .rule(st)
-                    .enableGroupSort()
-                    .applySearchPattern();
+            if(ob == Mannschaft.OrderBy.NAME_ASC) {
+                return mannschaft
+                   .rule(ob)
+                   .rule(st)
+                   .disableGroupSort()
+                   .applySearchPattern();
+            }
+            else
+            {
+                return mannschaft
+                   .rule(ob)
+                   .rule(st)
+                   .enableGroupSort()
+                   .applySearchPattern();
+            }
         }
 
         public string getFirstTupleMatch(string key)
@@ -155,6 +166,13 @@ namespace VisualMannschaftsverwaltung
         {
             DataRepository repo = new DataRepository();
             repo.addPerson(person, session);
+            loadPersonenFromRepository(session);
+        }
+
+        public void updatePerson(Person person, string session = "ALL")
+        {
+            DataRepository repo = new DataRepository();
+            repo.updatePerson(person, session);
             loadPersonenFromRepository(session);
         }
 

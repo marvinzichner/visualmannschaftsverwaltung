@@ -130,6 +130,13 @@ namespace VisualMannschaftsverwaltung
             return this;
         }
 
+        public Mannschaft disableGroupSort()
+        {
+            OrderTimes = 1;
+            EnableGrouping = false;
+            return this;
+        }
+
 
         public Mannschaft sportArt(SportArt sa)
         {
@@ -197,7 +204,7 @@ namespace VisualMannschaftsverwaltung
             }
 
            
-            for(int o = 1; o < OrderTimes; o++)
+            for(int o = 0; o < OrderTimes; o++)
             { 
                 for(int i = 0; i < persons.Count; i++)
                 {

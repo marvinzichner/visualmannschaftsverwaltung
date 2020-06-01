@@ -124,7 +124,7 @@ namespace VisualMannschaftsverwaltung
 
             if (createConnection()) {
                 //Fussballspieler
-                string sql = $"select * from MVW_PERSON as p left join MVW_FUSSBALLSPIELER as f on p.ID = f.PERSON_FK {joinCondition} where p.ID = f.PERSON_FK {mannschaftId} {sessionSql};";
+                string sql = $"select *, DATE_FORMAT(GEBURTSDATUM, \"%d.%m.%Y\") as BDAY from MVW_PERSON as p left join MVW_FUSSBALLSPIELER as f on p.ID = f.PERSON_FK {joinCondition} where p.ID = f.PERSON_FK {mannschaftId} {sessionSql};";
                 MySqlCommand command = new MySqlCommand(sql, MySqlConnection);
                 MySqlDataReader reader = command.ExecuteReader();
 
@@ -135,7 +135,7 @@ namespace VisualMannschaftsverwaltung
                          .id(Convert.ToInt32(reader.GetValue(0).ToString()))
                          .name(reader.GetValue(1).ToString())
                          .nachname(reader.GetValue(2).ToString())
-                         .birthdate(String.Concat(reader.GetValue(3).ToString().Substring(0, 10)))
+                         .birthdate(reader["BDAY"].ToString())
                          .sportArt(SportArt.FUSSBALL)
                             .toFussballSpieler()
                             .spielSiege(Convert.ToInt32(reader.GetValue(8).ToString()))
@@ -147,7 +147,7 @@ namespace VisualMannschaftsverwaltung
                 reader.Close();
 
                 //Handballspieler
-                sql = $"select * from MVW_PERSON as p left join MVW_HANDBALLSPIELER as h on p.ID = h.PERSON_FK {joinCondition} where p.ID = h.PERSON_FK {mannschaftId} {sessionSql};";
+                sql = $"select *, DATE_FORMAT(GEBURTSDATUM, \"%d.%m.%Y\") as BDAY from MVW_PERSON as p left join MVW_HANDBALLSPIELER as h on p.ID = h.PERSON_FK {joinCondition} where p.ID = h.PERSON_FK {mannschaftId} {sessionSql};";
                 command = new MySqlCommand(sql, MySqlConnection);
                 reader = command.ExecuteReader();
 
@@ -158,7 +158,7 @@ namespace VisualMannschaftsverwaltung
                          .id(Convert.ToInt32(reader.GetValue(0).ToString()))
                          .name(reader.GetValue(1).ToString())
                          .nachname(reader.GetValue(2).ToString())
-                         .birthdate(String.Concat(reader.GetValue(3).ToString().Substring(0, 10)))
+                         .birthdate(reader["BDAY"].ToString())
                          .sportArt(SportArt.HANDBALL)
                             .toHandballSpieler()
                             .spielSiege(Convert.ToInt32(reader.GetValue(8).ToString()))
@@ -170,7 +170,7 @@ namespace VisualMannschaftsverwaltung
                 reader.Close();
 
                 //Tennisspieler
-                sql = $"select * from MVW_PERSON as p left join MVW_TENNISSPIELER as t on p.ID = t.PERSON_FK {joinCondition} where p.ID = t.PERSON_FK {mannschaftId} {sessionSql};";
+                sql = $"select *, DATE_FORMAT(GEBURTSDATUM, \"%d.%m.%Y\") as BDAY from MVW_PERSON as p left join MVW_TENNISSPIELER as t on p.ID = t.PERSON_FK {joinCondition} where p.ID = t.PERSON_FK {mannschaftId} {sessionSql};";
                 command = new MySqlCommand(sql, MySqlConnection);
                 reader = command.ExecuteReader();
 
@@ -181,7 +181,7 @@ namespace VisualMannschaftsverwaltung
                          .id(Convert.ToInt32(reader.GetValue(0).ToString()))
                          .name(reader.GetValue(1).ToString())
                          .nachname(reader.GetValue(2).ToString())
-                         .birthdate(String.Concat(reader.GetValue(3).ToString().Substring(0, 10)))
+                         .birthdate(reader["BDAY"].ToString())
                          .sportArt(SportArt.TENNIS)
                             .toTennisSpieler()
                             .spielSiege(Convert.ToInt32(reader.GetValue(8).ToString()))
@@ -193,7 +193,7 @@ namespace VisualMannschaftsverwaltung
                 reader.Close();
 
                 //Trainer
-                sql = $"select * from MVW_PERSON as p left join MVW_TRAINER as t on p.ID = t.PERSON_FK {joinCondition} where p.ID = t.PERSON_FK {mannschaftId} {sessionSql};";
+                sql = $"select *, DATE_FORMAT(GEBURTSDATUM, \"%d.%m.%Y\") as BDAY from MVW_PERSON as p left join MVW_TRAINER as t on p.ID = t.PERSON_FK {joinCondition} where p.ID = t.PERSON_FK {mannschaftId} {sessionSql};";
                 command = new MySqlCommand(sql, MySqlConnection);
                 reader = command.ExecuteReader();
 
@@ -204,7 +204,7 @@ namespace VisualMannschaftsverwaltung
                          .id(Convert.ToInt32(reader["ID"].ToString()))
                          .name(reader["VORNAME"].ToString())
                          .nachname(reader["NACHNAME"].ToString())
-                         .birthdate(String.Concat(reader["GEBURTSDATUM"].ToString().Substring(0, 10)))
+                         .birthdate(reader["BDAY"].ToString())
                          .sportArt(SportArt.KEINE)
                             .toTrainer()
                             .hasLicense(Utils.convertFromBasic(reader["HAS_LICENSE"].ToString()));
@@ -215,7 +215,7 @@ namespace VisualMannschaftsverwaltung
                 reader.Close();
 
                 //PHYSIOTHERAPEUT
-                sql = $"select * from MVW_PERSON as p left join MVW_PHYSIOTHERAPEUT as t on p.ID = t.PERSON_FK {joinCondition} where p.ID = t.PERSON_FK {mannschaftId} {sessionSql};";
+                sql = $"select *, DATE_FORMAT(GEBURTSDATUM, \"%d.%m.%Y\") as BDAY from MVW_PERSON as p left join MVW_PHYSIOTHERAPEUT as t on p.ID = t.PERSON_FK {joinCondition} where p.ID = t.PERSON_FK {mannschaftId} {sessionSql};";
                 command = new MySqlCommand(sql, MySqlConnection);
                 reader = command.ExecuteReader();
 
@@ -226,7 +226,7 @@ namespace VisualMannschaftsverwaltung
                          .id(Convert.ToInt32(reader["ID"].ToString()))
                          .name(reader["VORNAME"].ToString())
                          .nachname(reader["NACHNAME"].ToString())
-                         .birthdate(String.Concat(reader["GEBURTSDATUM"].ToString().Substring(0, 10)))
+                         .birthdate(reader["BDAY"].ToString())
                          .sportArt(SportArt.KEINE)
                             .toPhysiotherapeut()
                             .hasLicense(Utils.convertFromBasic(reader["HAS_LICENSE"].ToString()));
@@ -261,6 +261,17 @@ namespace VisualMannschaftsverwaltung
             string addPerson = $"insert into MVW_PERSON (VORNAME, NACHNAME, GEBURTSDATUM, SESSION_ID) " +
                 $"values ('{p.Name}', '{p.Nachname}', STR_TO_DATE('{p.Birthdate}', '%d.%m.%Y'), '{session}')";
             string details = p.getSpecifiedSqlStatement();
+
+            executeSql(addPerson);
+            executeSql(details);
+        }
+
+        public void updatePerson(Person p, string session)
+        {
+            string addPerson = $"update MVW_PERSON set " +
+                $"VORNAME='{p.Name}', NACHNAME='{p.Nachname}', GEBURTSDATUM=STR_TO_DATE('{p.Birthdate}', '%d.%m.%Y') " +
+                $"where ID = {p.ID}";
+            string details = p.getSpecifiedUpdateSqlStatement(p.ID.ToString());
 
             executeSql(addPerson);
             executeSql(details);

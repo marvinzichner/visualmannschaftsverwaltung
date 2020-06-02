@@ -64,14 +64,19 @@
                 Hallo, <span id="displayName" runat="server"></span> &emsp;
                 <asp:Button ID="logout" runat="server" OnClick="destroySession" Text="Abmelden" />
             </div>
-            <div id="authRequired" runat="server" class="auth">
-                <b>Anmeldung erforderlich</b> &emsp;
-                Benutzername: <asp:TextBox ID="username" runat="server"></asp:TextBox> 
-                &emsp;
-                Kennwort: <asp:TextBox ID="password" runat="server" TextMode="Password"></asp:TextBox>
+            <div id="authRequired" runat="server">
+                <div  class="auth">
+                    <b>Anmeldung erforderlich</b> &emsp;
+                    Benutzername: <asp:TextBox ID="username" runat="server"></asp:TextBox> 
+                    &emsp;
+                    Kennwort: <asp:TextBox ID="password" runat="server" TextMode="Password"></asp:TextBox>
 
-                &emsp; 
-                <asp:Button ID="login" runat="server" OnClick="authenticate" Text="Login / Konto erstellen" />
+                    &emsp; 
+                    <asp:Button ID="login" runat="server" OnClick="authenticate" Text="Login / Konto erstellen" />
+                </div>
+                <br />
+                Sie können ein neues Konto erstellen, indem Sie ein beliebigen Username und ein beliebiges Kennwort in den Textfeldern eingeben. <br />
+                Sollte der Benutzer bereits bekannt sein, so werden die Daten Ihres Profils geladen. 
             </div>
 
             <asp:ContentPlaceHolder ID="MainContent" runat="server">

@@ -86,6 +86,11 @@ namespace VisualMannschaftsverwaltung
             return $"{System.AppDomain.CurrentDomain.BaseDirectory.ToString()}\\mv.data\\";
         }
 
+        public static string getBasePath()
+        {
+            return $"{System.AppDomain.CurrentDomain.BaseDirectory.ToString()}\\";
+        }
+
         public static List<Person> createPersonData()
         {
             List<Person> personen = new List<Person>();

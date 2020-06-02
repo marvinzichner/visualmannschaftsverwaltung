@@ -192,6 +192,7 @@
     <Compile Include="Controller\ApplicationContext.cs" />
     <Compile Include="Controller\ApplicationController.cs" />
     <Compile Include="Controller\Export.cs" />
+    <Compile Include="Controller\Property.cs" />
     <Compile Include="Controller\Repository\RepositorySettings.cs" />
     <Compile Include="Controller\DataRepository.cs" />
     <Compile Include="Controller\Utils.cs" />

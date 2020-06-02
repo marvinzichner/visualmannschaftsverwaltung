@@ -29,10 +29,10 @@ namespace VisualMannschaftsverwaltung
         #region Konstruktoren
         public RepositorySettings()
         {
-            Server = "127.0.0.1";
-            Database = "mannschaftsverwaltung";
-            Uid = "root";
-            Password = "";
+            Server = Global.PropertyManager.getProperty("DB_SERVER");
+            Database = Global.PropertyManager.getProperty("DB_DATABASE");
+            Uid = Global.PropertyManager.getProperty("DB_UID");
+            Password = Global.PropertyManager.getProperty("DB_PASSWORD");
         }
         #endregion
 

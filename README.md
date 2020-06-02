@@ -5,24 +5,24 @@ Dieses Projekt ist Teil einer Lernsituation im Unterrichtsfach Anwendungsentwick
 
 ### Vorbereitung der Applikation
 
-Die Anwendung funktioniert nur mit angeschlossener Datenbank.
-1. Ein User muss in der Datenbank angelegt werden:
+#### Die Datenbank muss konfiguriert werden:
+Die Anwendung funktioniert nur mit angeschlossener Datenbank. 
+Beim Starten der Anwendung wird das Datenbankschema automatisch eingerichtet. 
+Der erste Stat kann dadurch etwas länger dauern.
 ```
-username:    mvw_app
-password:    mvw_app
-database:    mannschaftsverwaltung
++ user
+|-- username:    mvw_app
+|-- password:    mvw_app
+|-- permissions: SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER
 
-Permissions: SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER
++ database
+|-- name:        mannschaftsverwaltung
 ```
-Bei Abweichungen muss die Datei "Application.properties" angepasst werden. Diese befindet sich im Root-Path des Projektordners.
+
+Bei Änderungen des Datenbankusers muss die Datei "Application.properties" angepasst werden. Diese befindet sich im Root-Path des Projektordners.
 ```
 DB_SERVER=127.0.0.1
 DB_DATABASE=mannschaftsverwaltung
 DB_UID=mvw_app
 DB_PASSWORD=mvw_app
 ```
-
-2. Die Datenbank "mannschaftsverwaltung" muss angelegt werden.
-
-Beim Starten der Anwendung wird das Datenbankschema automatisch eingerichtet. 
-Der erste Stat kann dadurch etwas länger dauern.

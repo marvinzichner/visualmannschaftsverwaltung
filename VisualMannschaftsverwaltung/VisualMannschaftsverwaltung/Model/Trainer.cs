@@ -120,9 +120,9 @@ namespace VisualMannschaftsverwaltung
 
         public override string getSpecifiedUpdateSqlStatement(string id)
         {
-            return $"update MVW_FUSSBALLSPIELER set " +
+            return $"update MVW_TRAINER set " +
                      $"HAS_LICENSE={Utils.convertToBasic(HasLicense)} " +
-                     $"where FK_PERSON = {id}";
+                     $"where PERSON_FK = {id}";
         }
 
         public override Person buildFromKeyValueAttributeList(List<KeyValuePair<string, string>> attr)

@@ -54,6 +54,15 @@ namespace VisualMannschaftsverwaltung.View
 
             try
             {
+                if (btnCreatePerson.Text == "ÄNDERUNGEN SPEICHERN")
+                {
+                    Person loader = ApplicationController.Personen.Find(
+                        person => person.ID == 
+                            Convert.ToInt32(
+                                ApplicationController.getFirstTupleMatch("personenverwaltung.pid")));
+                    selectedType = loader.GetType().Name;
+                }
+
                 Type targetType = Type.GetType("VisualMannschaftsverwaltung." + selectedType);
                 Person reflectedInstance = (Person)Activator.CreateInstance(targetType);
                 
@@ -71,9 +80,12 @@ namespace VisualMannschaftsverwaltung.View
 
                 if (btnCreatePerson.Text == "ÄNDERUNGEN SPEICHERN")
                 {
-                    Person loader = ApplicationController.Personen[
-                        Convert.ToInt32(
-                            ApplicationController.getFirstTupleMatch("personenverwaltung.pid"))];
+                    Person loader = ApplicationController.Personen.Find(
+                       person => person.ID ==
+                           Convert.ToInt32(
+                               ApplicationController.getFirstTupleMatch("personenverwaltung.pid")));
+
+                    //reflectedInstance.toDefinedPlayerBy(loader.GetType());
 
                     ApplicationController.updatePerson(
                             reflectedInstance.buildFromKeyValueAttributeList(attr).id(loader.ID),
@@ -111,6 +123,9 @@ namespace VisualMannschaftsverwaltung.View
             dynamicFlow.Controls.Clear();
             staticPersonListHeader.Controls.Clear();
             btnCreatePerson.Text = "Person hinzufügen";
+
+            ApplicationController.loadPersonenFromRepository(
+                getOrCreateSession());
             this.loadPersonen();
         }
 
@@ -229,13 +244,13 @@ namespace VisualMannschaftsverwaltung.View
                         //tc.Attributes.CssStyle.Add("width","0%");
 
                         Button edit = new Button();
-                        edit.ID = "E" + cnt.ToString();
+                        edit.ID = "E" + person.ID.ToString();
                         edit.Click += new EventHandler(this.editSelectedPerson);
                         edit.Text = "Bearbeiten";
                         tc.Controls.Add(edit);
 
                         Button delete = new Button();
-                        delete.ID = "D" + cnt.ToString();
+                        delete.ID = "D" + person.ID.ToString();
                         delete.Click += new EventHandler(this.removeSelectedPerson);
                         delete.Text = "Löschen";
                         tc.Controls.Add(delete);
@@ -292,8 +307,8 @@ namespace VisualMannschaftsverwaltung.View
                 ApplicationController.StorageSearchTerm.FindLast(
                     x => x.Key == "PERSONENVERWALTUNG").Value,
                 getOrCreateSession());
-            p = list[pid];
-
+            p = list.Find(player => player.ID == pid);
+       
             ApplicationController.removePerson(p);
             deleteButton.Visible = false;
             editButton.Visible = false;
@@ -314,7 +329,7 @@ namespace VisualMannschaftsverwaltung.View
                 ApplicationController.StorageSearchTerm.FindLast(
                     x => x.Key == "PERSONENVERWALTUNG").Value,
                 getOrCreateSession());
-            p = list[pid];
+            p = list.Find(player => player.ID == pid);
 
             PersonSelectionTypeDD.SelectedValue = p.GetType().ToString();
             btnCreatePerson.Text = "ÄNDERUNGEN SPEICHERN";
@@ -334,9 +349,10 @@ namespace VisualMannschaftsverwaltung.View
                     (Person) Activator.CreateInstance(reflectedPerson);
                 
                 if(btnCreatePerson.Text == "ÄNDERUNGEN SPEICHERN") { 
-                    reflectedInstance = ApplicationController.Personen[
-                        Convert.ToInt32(
-                            ApplicationController.getFirstTupleMatch("personenverwaltung.pid"))];
+                    reflectedInstance = ApplicationController.Personen.Find(
+                       person => person.ID ==
+                           Convert.ToInt32(
+                               ApplicationController.getFirstTupleMatch("personenverwaltung.pid")));
 
                     fieldVorname.Text = reflectedInstance.Name;
                     fieldNachname.Text = reflectedInstance.Nachname;

@@ -152,8 +152,8 @@ namespace VisualMannschaftsverwaltung
 
         public override string getSpecifiedUpdateSqlStatement(string id)
         {
-            return $"update MVW_FUSSBALLSPIELER set " +
-                     $"GEWONNENE_SPIELE={SpielSiege.ToString()}, LEFT_FOOT={Utils.convertToBasic(IsLeftHand)} " +
+            return $"update MVW_TENNISSPIELER set " +
+                     $"GEWONNENE_SPIELE={SpielSiege.ToString()}, LEFT_ARM={Utils.convertToBasic(IsLeftHand)} " +
                      $"where PERSON_FK = {id}";
         }
 

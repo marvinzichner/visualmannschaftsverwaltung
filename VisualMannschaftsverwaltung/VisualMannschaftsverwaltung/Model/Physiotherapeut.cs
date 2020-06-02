@@ -120,7 +120,7 @@ namespace VisualMannschaftsverwaltung
 
         public override string getSpecifiedUpdateSqlStatement(string id)
         {
-            return $"update MVW_FUSSBALLSPIELER set " +
+            return $"update MVW_physiotherapeut set " +
                     $"HAS_LICENSE={Utils.convertToBasic(HasLicense)} " +
                     $"where PERSON_FK = {id}";
         }

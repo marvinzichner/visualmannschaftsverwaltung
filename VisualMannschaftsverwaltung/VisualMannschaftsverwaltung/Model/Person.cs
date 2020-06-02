@@ -117,6 +117,33 @@ namespace VisualMannschaftsverwaltung
         {
             return (Spieler)this;
         }
+        public Person toDefinedPlayerBy(Type t)
+        {
+            if(t == typeof(FussballSpieler))
+            {
+                return (FussballSpieler)this;
+            }
+            if (t == typeof(HandballSpieler))
+            {
+                return (HandballSpieler)this;
+            }
+            if (t == typeof(TennisSpieler))
+            {
+                return (TennisSpieler)this;
+            }
+            if (t == typeof(Trainer))
+            {
+                return (Trainer)this;
+            }
+            if (t == typeof(Physiotherapeut))
+            {
+                return (Physiotherapeut)this;
+            }
+            else
+            {
+                return (Trainer)this;
+            }
+        }
 
         public abstract int getSpielSiege();
 

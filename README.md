@@ -8,19 +8,21 @@ Dieses Projekt ist Teil einer Lernsituation im Unterrichtsfach Anwendungsentwick
 #### Die Datenbank muss konfiguriert werden
 Die Anwendung funktioniert nur mit angeschlossener Datenbank. 
 Beim Starten der Anwendung wird das Datenbankschema automatisch eingerichtet. 
-Der erste Stat kann dadurch etwas länger dauern.
+Der erste Start kann dadurch etwas länger dauern.
+
+In dem Datenbanksystem muss ein User und eine Datenbank angelegt werden. Diese sollten nach dem folgenden Schema angelegt werden. Bei Abweichungen der Datenbankkonfiguration muss die Application.properties Datei geändert werden.
 ```
 + user
 |-- username:    mvw_app
 |-- password:    mvw_app
-|-- hostname:    localhost     (Wildcard funktioniert ggf. nicht)
+|-- access from hostname:    localhost     (Wildcard funktioniert ggf. nicht)
 |-- permissions: SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, GRANT
 
 + database
 |-- name:        mannschaftsverwaltung
 ```
 
-Bei Änderungen des Datenbankusers muss die Datei "Application.properties" angepasst werden. Diese befindet sich im Root-Path des Projektordners.
+Bei Änderungen muss die Datei "Application.properties" angepasst werden. Hier wird auch der Hostname angegeben. Diese Datei befindet sich im Root-Path des Projektordners.
 ```
 DB_SERVER=127.0.0.1
 DB_DATABASE=mannschaftsverwaltung

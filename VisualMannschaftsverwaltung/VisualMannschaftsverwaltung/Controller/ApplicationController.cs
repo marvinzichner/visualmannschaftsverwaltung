@@ -76,7 +76,6 @@ namespace VisualMannschaftsverwaltung
         {
             DataRepository repo = new DataRepository();
 
-            TempMannschaft.rule(Mannschaft.OrderBy.NAME_ASC);
             List<Person> list = new List<Person>();
             SportArt matchSportArt = TempMannschaft.SportArt;
             List<Person> matchMembers = TempMannschaft.Personen;

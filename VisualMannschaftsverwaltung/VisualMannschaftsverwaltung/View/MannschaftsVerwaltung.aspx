@@ -12,7 +12,7 @@
         }
     </style>
 
-    <asp:DropDownList ID="teamsList" runat="server" CssClass="masterselect">
+    <asp:DropDownList ID="teamsList" runat="server" CssClass="masterselect" AutoPostBack="True" OnTextChanged="teamSelected">
     </asp:DropDownList>
     <asp:Button ID="teamsListSelect" runat="server" OnClick="teamSelected" Text="Öffnen" />
     <asp:Button ID="teamsDelete" runat="server" OnClick="removeTeam" Text="Löschen" />

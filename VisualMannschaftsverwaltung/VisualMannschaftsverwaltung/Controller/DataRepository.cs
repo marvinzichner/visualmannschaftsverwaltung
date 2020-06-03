@@ -331,7 +331,7 @@ namespace VisualMannschaftsverwaltung
             List<Mannschaft> Mannschaften = new List<Mannschaft>();
             if (createConnection())
             {
-                string sql = $"select * from MVW_MANNSCHAFT;";
+                string sql = $"select * from MVW_MANNSCHAFT order by NAME ASC;";
                 MySqlCommand command = new MySqlCommand(sql, MySqlConnection);
                 MySqlDataReader reader = command.ExecuteReader();
 

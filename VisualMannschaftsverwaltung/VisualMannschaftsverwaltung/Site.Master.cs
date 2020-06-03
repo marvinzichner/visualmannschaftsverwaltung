@@ -38,19 +38,21 @@ namespace VisualMannschaftsverwaltung
         {
             string session = "undefined";
 
-            session = $"{username.Text}{password.Text}";
-            byte[] encodedPassword = new UTF8Encoding().GetBytes(session);
-            byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(encodedPassword);
-            string encoded = BitConverter.ToString(hash)
-                .Replace("-", string.Empty)
-                .ToLower();
+            if(username.Text != "" && password.Text != "") { 
+                session = $"{username.Text}{password.Text}";
+                byte[] encodedPassword = new UTF8Encoding().GetBytes(session);
+                byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(encodedPassword);
+                string encoded = BitConverter.ToString(hash)
+                    .Replace("-", string.Empty)
+                    .ToLower();
 
-            this.Session["User"] = encoded;
-            this.Session["Username"] = username.Text;
+                this.Session["User"] = encoded;
+                this.Session["Username"] = username.Text;
 
-            authRequired.Controls.Clear();
-            authRequired.InnerHtml = $"Laden Sie die Seite neu, um die Anmeldung abzuschließen.";
-            Page.Response.Redirect("/", true);
+                authRequired.Controls.Clear();
+                authRequired.InnerHtml = $"Laden Sie die Seite neu, um die Anmeldung abzuschließen.";
+                Page.Response.Redirect("/", true);
+            }
         }
 
         protected void destroySession(object sender, EventArgs e)

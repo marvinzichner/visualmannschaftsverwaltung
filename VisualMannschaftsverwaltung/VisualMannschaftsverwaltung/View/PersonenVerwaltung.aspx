@@ -1,6 +1,17 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="PersonenVerwaltung.aspx.cs" Inherits="VisualMannschaftsverwaltung.View.PersonenVerwaltung" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
+    <div class="config" id="configMismatch" runat="server" visible="false">
+        Die Datenbank ist derzeit nicht erreichbar. Möglicherweise sind die Verbindungsdaten nicht korrekt.  
+    </div>
+    <style>
+        .config {
+            margin: 20px;
+            padding: 20px;
+            background-color: #ffb3b3;
+        }
+    </style>
+
     <div runat="server" ID="errorMessages" class="errorText"></div>
 
     <h4>1. Wählen Sie den zu erstellenden Personentyp aus:</h4>

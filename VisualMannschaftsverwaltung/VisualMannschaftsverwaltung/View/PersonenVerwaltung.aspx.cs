@@ -40,7 +40,16 @@ namespace VisualMannschaftsverwaltung.View
             fieldBirthdate.Enabled = false;
             SelectedPerson = -1;
 
+            this.checkAlerts();
             this.loadPersonen();
+        }
+
+        protected void checkAlerts()
+        {
+            if (!ApplicationController.DatabaseOk)
+            {
+                configMismatch.Visible = true;
+            }
         }
 
         protected void createNewPerson(object sender, EventArgs e)

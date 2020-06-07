@@ -34,7 +34,7 @@ namespace VisualMannschaftsverwaltung
             ApplicationController.receiveContext(
                 ApplicationContext.createApplicationContext());
             ApplicationController.loadPersonenFromRepository();
-            ApplicationController.loadMannschaftenFromRepository();
+            ApplicationController.loadMannschaftenFromRepository("");
             
         }
     }

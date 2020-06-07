@@ -121,6 +121,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Controller\Repository\Migration\V1_Base.sql" />
+    <Content Include="Controller\Repository\Migration\V3_SessionAuth.sql" />
     <Content Include="Controller\Repository\Migration\V2_FakeData.sql" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />

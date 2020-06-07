@@ -45,7 +45,8 @@ namespace VisualMannschaftsverwaltung.View
         {
             //Dropdown
             teamsList.Items.Clear();
-            ApplicationController.getMannschaften().ForEach(m =>
+            ApplicationController.getMannschaften(
+                getOrCreateSession()).ForEach(m =>
             {
                 ListItem li = new ListItem();
                 li.Text = $"{m.Name} ({m.SportArt.ToString()})";
@@ -121,7 +122,8 @@ namespace VisualMannschaftsverwaltung.View
             string team = teamsList.SelectedValue;
             ApplicationController.removeMannschaft(
                  ApplicationController.Mannschaften.Find(
-                    m => m.Name == team));
+                    m => m.Name == team),
+                 getOrCreateSession());
             
             ApplicationController.TempMannschaft = new Mannschaft("_GENERATED");
             this.contentContainer.Visible = false;
@@ -148,7 +150,7 @@ namespace VisualMannschaftsverwaltung.View
                     ApplicationController.TempMannschaft.Personen.Add(p);
                     ApplicationController.Mannschaften.Remove(copy);
                     ApplicationController.Mannschaften.Add(ApplicationController.TempMannschaft);
-                    ApplicationController.addPersonToMannschaft(p, copy);
+                    ApplicationController.addPersonToMannschaft(p, copy, getOrCreateSession());
                 }
             });
 
@@ -185,8 +187,10 @@ namespace VisualMannschaftsverwaltung.View
                 ApplicationController.TempMannschaft.SportArt = sa;
 
                 DataRepository repo = new DataRepository();
-                repo.updateMannschaftSettings(
-                    ApplicationController.TempMannschaft.ID.ToString(), teamname, sa.ToString());
+                repo.enableSessionbasedQueries()
+                    .setSession(getOrCreateSession())
+                    .updateMannschaftSettings(
+                        ApplicationController.TempMannschaft.ID.ToString(), teamname, sa.ToString());
             }
             else
             {
@@ -195,7 +199,7 @@ namespace VisualMannschaftsverwaltung.View
                     .name(teamname)
                     .sportArt(sa);
 
-                ApplicationController.addMannschaftIfNotExists(mannschaft);
+                ApplicationController.addMannschaftIfNotExists(mannschaft, getOrCreateSession());
             }
 
             ApplicationController.EditMode = false;
@@ -215,7 +219,8 @@ namespace VisualMannschaftsverwaltung.View
         protected void teamSelected(object sender, EventArgs e)
         {
             string teamNameSel = this.teamsList.SelectedValue;
-            ApplicationController.getMannschaften().ForEach(m =>
+            ApplicationController.getMannschaften(
+                getOrCreateSession()).ForEach(m =>
             { 
                 if(m.Name == teamNameSel)
                 {

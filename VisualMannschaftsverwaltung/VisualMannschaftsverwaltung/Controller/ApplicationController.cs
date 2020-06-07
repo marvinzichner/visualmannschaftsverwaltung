@@ -65,9 +65,11 @@ namespace VisualMannschaftsverwaltung
                 new Tuple<string, string>(key, value));
         }
 
-        public List<Mannschaft> getMannschaften()
+        public List<Mannschaft> getMannschaften(string session)
         {
             DataRepository repo = new DataRepository();
+            repo.enableSessionbasedQueries()
+                .setSession(session);
             this.Mannschaften = repo.getMannschaften();
             return this.Mannschaften;
         }
@@ -92,9 +94,11 @@ namespace VisualMannschaftsverwaltung
             return list;
         }
 
-        public void addMannschaftIfNotExists(Mannschaft newMannschaft)
+        public void addMannschaftIfNotExists(Mannschaft newMannschaft, string session)
         {
             DataRepository repo = new DataRepository();
+            repo.enableSessionbasedQueries()
+                .setSession(session);
             bool existing = false;
             Mannschaften.ForEach(m =>
             {
@@ -185,9 +189,11 @@ namespace VisualMannschaftsverwaltung
             this.Personen = repo.loadPersonen();
         }
 
-        public void loadMannschaftenFromRepository()
+        public void loadMannschaftenFromRepository(string session)
         {
             DataRepository repo = new DataRepository();
+            repo.enableSessionbasedQueries()
+                .setSession(session);
             this.DatabaseOk = repo.checkConnection();
             this.Mannschaften = repo.getMannschaften();
         }
@@ -199,16 +205,18 @@ namespace VisualMannschaftsverwaltung
             loadPersonenFromRepository();
         }
 
-        public void addPersonToMannschaft(Person p, Mannschaft m)
+        public void addPersonToMannschaft(Person p, Mannschaft m, string s)
         {
             DataRepository repo = new DataRepository();
             repo.addPersonToMannschaft(p, m);
-            loadMannschaftenFromRepository();
+            loadMannschaftenFromRepository(s);
         }
-        public void removeMannschaft(Mannschaft m)
+        public void removeMannschaft(Mannschaft m, string session)
         {
             DataRepository repo = new DataRepository();
-            repo.removeMannschaft(m);
+            repo.setSession(session)
+                .enableSessionbasedQueries()
+                .removeMannschaft(m);
             Mannschaften.Remove(m);
         }
 

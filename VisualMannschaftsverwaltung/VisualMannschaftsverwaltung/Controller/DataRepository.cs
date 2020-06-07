@@ -38,6 +38,7 @@ namespace VisualMannschaftsverwaltung
             RepositorySettings = new RepositorySettings();
             MySqlConnection = new MySqlConnection();
             ConnectionReady = false;
+            Session = "ALL";
         }
         #endregion
 
@@ -328,10 +329,16 @@ namespace VisualMannschaftsverwaltung
 
         public List<Mannschaft> getMannschaften()
         {
+            string sessionLoader = "";
+            if (SessionQuery)
+            {
+                sessionLoader = $" where SESSION_ID = '{Session}' ";
+            }
+
             List<Mannschaft> Mannschaften = new List<Mannschaft>();
             if (createConnection())
             {
-                string sql = $"select * from MVW_MANNSCHAFT order by NAME ASC;";
+                string sql = $"select * from MVW_MANNSCHAFT {sessionLoader} order by NAME ASC;";
                 MySqlCommand command = new MySqlCommand(sql, MySqlConnection);
                 MySqlDataReader reader = command.ExecuteReader();
 
@@ -375,8 +382,8 @@ namespace VisualMannschaftsverwaltung
 
         public void createMannschaft(Mannschaft m)
         {
-            string sql = $"insert into MVW_MANNSCHAFT (NAME, TYP, GEWONNENE_SPIELE, GESAMTE_SPIELE) " +
-                $"values ('{m.Name}', '{m.SportArt.ToString()}', 0, 0)";
+            string sql = $"insert into MVW_MANNSCHAFT (NAME, TYP, GEWONNENE_SPIELE, GESAMTE_SPIELE, SESSION_ID) " +
+                $"values ('{m.Name}', '{m.SportArt.ToString()}', 0, 0, '{Session}')";
             executeSql(sql);
         }
 

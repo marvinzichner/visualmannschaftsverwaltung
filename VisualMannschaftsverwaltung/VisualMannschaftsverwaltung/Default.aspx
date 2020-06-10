@@ -18,6 +18,13 @@
             </div>
         </a>
 
+         <a runat="server" href="~/View/TurnierVerwaltung">
+            <div class="member clear">
+                <div class="rolename">QUICK LINK</div>
+                Turniere
+            </div>
+        </a>
+
         <a runat="server" href="~/View/Contact">
             <div class="member clear">
                 <div class="rolename">QUICK LINK</div>

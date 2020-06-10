@@ -401,6 +401,55 @@ namespace VisualMannschaftsverwaltung
             string sql = $"update mvw_mannschaft set NAME='{name}', TYP='{type}' where ID={id}";
             executeSql(sql);
         }
+
+        public List<Turnier> getTurniere()
+        {
+            List<Turnier> Turniere = new List<Turnier>();
+            string sessionLoader = "";
+
+            if (SessionQuery) { sessionLoader = $" where SESSION_ID = '{Session}' "; }
+
+            if (createConnection())
+            {
+                string sql = $"select * from MVW_TURNIER {sessionLoader} order by NAME ASC;";
+                MySqlCommand command = new MySqlCommand(sql, MySqlConnection);
+                MySqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Turnier turnier = new Turnier();
+                    turnier
+                        .setId(reader["ID"].ToString())
+                        .setType(reader["TYPE"].ToString())
+                        .setName(reader["NAME"].ToString());
+                    Turniere.Add(turnier);
+                }
+
+                closeConnection();
+            }
+
+            disableSessionbasedQueries();
+            List<Mannschaft> possibleMannschaften = getMannschaften();
+            enableSessionbasedQueries();
+            Turniere.ForEach(turnier =>
+            {
+                if (createConnection()) { 
+                    string query = $"select * from MVW_MANNSCHAFT_TURNIER where TURNIER_ID='{turnier.getId()}'";
+                    MySqlCommand command2 = new MySqlCommand(query, MySqlConnection);
+                    MySqlDataReader reader2 = command2.ExecuteReader();
+
+                    while (reader2.Read())
+                    {
+                        Mannschaft m = new Mannschaft();
+                        m = possibleMannschaften.Find(x => x.ID == Convert.ToInt32(reader2["MANNSCHAFT_ID"]));
+                        turnier.addMannschaft(m);
+                    }
+                    closeConnection();
+                }
+            });
+
+            return Turniere;
+        }
         #endregion
     }
 }

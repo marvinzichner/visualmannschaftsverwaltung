@@ -53,6 +53,7 @@
                     <ul class="nav navbar-nav">
                         <li><a runat="server" href="~/View/PersonenVerwaltung">Personen</a></li>
                         <li><a runat="server" href="~/View/MannschaftsVerwaltung">Mannschaften</a></li>
+                        <li><a runat="server" href="~/View/TurnierVerwaltung">Turniere</a></li>
                         <li><a runat="server" href="~/View/Spiele">Spiele</a></li>
                         <li><a runat="server" href="~/Contact">Informationen</a></li>
                     </ul>

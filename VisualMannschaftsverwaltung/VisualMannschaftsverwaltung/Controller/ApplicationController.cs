@@ -220,6 +220,18 @@ namespace VisualMannschaftsverwaltung
             Mannschaften.Remove(m);
         }
 
+        public List<Turnier> getTurniere(string session = "ALL")
+        {
+            List<Turnier> Turniere = new List<Turnier>();
+            DataRepository repo = new DataRepository();
+
+            repo.enableSessionbasedQueries()
+                .setSession(session);
+            Turniere = repo.getTurniere();
+
+            return Turniere;
+        }
+
         public void generatePersonenXML()
         {
             Export export = new Export();

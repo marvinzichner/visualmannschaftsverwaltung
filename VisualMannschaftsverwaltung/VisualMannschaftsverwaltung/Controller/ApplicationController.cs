@@ -232,6 +232,24 @@ namespace VisualMannschaftsverwaltung
             return Turniere;
         }
 
+        public void addMappingOfTurnierAndMannschaft(string mannschaft, string turnier)
+        {
+            DataRepository repo = new DataRepository();
+            repo.addMappingOfTurnierAndMannschaft(mannschaft, turnier);
+        }
+
+        public void deleteMappingOfTurnierAndMannschaft(string mannschaft, string turnier)
+        {
+            DataRepository repo = new DataRepository();
+            repo.deleteMappingOfTurnierAndMannschaft(mannschaft, turnier);
+        }
+
+        public void deleteTurnierAndAllDependentEntities(string turnier)
+        {
+            DataRepository repo = new DataRepository();
+            repo.deleteTurnierAndAllDependentEntities(turnier);
+        }
+
         public void generatePersonenXML()
         {
             Export export = new Export();
@@ -254,6 +272,14 @@ namespace VisualMannschaftsverwaltung
             export.configure(path, filename);
             export.doXmlExport(repo.getMannschaften(), Mannschaft.getTypes());
             export.doDownload();
+        }
+
+        public void createNewTurnier(string name, SportArt sportArt, string session)
+        {
+            DataRepository repo = new DataRepository();
+            repo
+                .setSession(session)
+                .addTurnier(name, sportArt);
         }
         #endregion
     }

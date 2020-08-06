@@ -402,6 +402,27 @@ namespace VisualMannschaftsverwaltung
             executeSql(sql);
         }
 
+        public void addMappingOfTurnierAndMannschaft(string mannschaft, string turnier)
+        {
+            string sql = $"insert into MVW_MANNSCHAFT_TURNIER (MANNSCHAFT_ID, TURNIER_ID) values ('{mannschaft}', '{turnier}')";
+            executeSql(sql);
+        }
+
+        public void deleteMappingOfTurnierAndMannschaft(string mannschaft, string turnier)
+        {
+            string sql = $"delete from MVW_MANNSCHAFT_TURNIER where MANNSCHAFT_ID={mannschaft} and TURNIER_ID={turnier}";
+            executeSql(sql);
+        }
+
+        public void deleteTurnierAndAllDependentEntities(string turnier)
+        {
+            string sql = $"delete from MVW_MANNSCHAFT_TURNIER where TURNIER_ID={turnier}";
+            executeSql(sql);
+
+            string sqlTurnier = $"delete from MVW_TURNIER where ID={turnier}";
+            executeSql(sqlTurnier);
+        }
+
         public List<Turnier> getTurniere()
         {
             List<Turnier> Turniere = new List<Turnier>();
@@ -449,6 +470,13 @@ namespace VisualMannschaftsverwaltung
             });
 
             return Turniere;
+        }
+        
+        public void addTurnier(string name, SportArt sportArt)
+        {
+            string sql = $"insert into MVW_TURNIER (NAME, TYPE, SESSION_ID) " +
+                $"values ('{name}', '{sportArt.ToString()}', '{this.Session}')";
+            executeSql(sql);
         }
         #endregion
     }

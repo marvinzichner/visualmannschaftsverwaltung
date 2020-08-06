@@ -1,6 +1,12 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Spiele.aspx.cs" Inherits="VisualMannschaftsverwaltung.View.Spiele" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
+    <h3>Spieleübersicht</h3>
+    <table class="table" runat="server" id="presenterTable">
+       
+    </table>
+
+    <!--
     <h3>Aktives Spiel</h3>
    
     <div class="text-center">
@@ -54,8 +60,46 @@
             <td class="td-name td-right">FC Bayern München</td>
         </tr>
     </table>
+    -->
 
     <style>
+        .rotate {
+            -webkit-transform: rotate(-90deg);
+            -moz-transform: rotate(-90deg);
+            -ms-transform: rotate(-90deg);
+            -o-transform: rotate(-90deg);
+            float: left;
+        }
+        .table {
+            width: 100%;
+            padding: 10px;
+        }
+        .section-turnier {
+            padding: 10px;
+            background-color: #e6e6e6;
+            color: rgba(0, 0, 0, .8);
+        }
+        .cellHead {
+            font-weight: bold;
+            background-color: #f2f2f2;
+        }
+        .cellBodyHover:hover {
+            background-color: #f2f2f2;
+        }
+        .cellReadOnly {
+            font-size: 9pt;
+            color: #808080;
+        }
+        .cellInteraction {
+            font-size: 9pt;
+            color: #0094ff;
+            text-decoration: underline;
+        }
+        .cellEnd {
+            border-bottom: 2px solid #cccccc;
+        }
+
+
         .planned {
             padding: 5px;
             width: 100%;

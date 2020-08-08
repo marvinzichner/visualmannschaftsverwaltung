@@ -53,6 +53,7 @@ namespace VisualMannschaftsverwaltung.View
             loadDropdownContext();
             loadMannschaftenContext();
             loadAllData();
+            loadAllRanks();
         }
 
         public void loadMannschaftenContext()
@@ -113,7 +114,60 @@ namespace VisualMannschaftsverwaltung.View
 
             reloadContext();
         }
-        
+
+        public void loadAllRanks()
+        {
+            presenterRank.Rows.Clear();
+            string ID = "";
+            if ((string)this.Session["SelectedTurnier"] != null)
+            {
+                ID = (string)this.Session["SelectedTurnier"];
+                selectedContext = true;
+            }
+
+            KeyValueList kv = new KeyValueList();
+            int relativeCounter = 1;
+            int lastResult = -1;
+
+            HtmlTableRow trHead = new HtmlTableRow();
+            trHead.Cells.Add(createCell($"Position", "tablecell cellHead"));
+            trHead.Cells.Add(createCell($"Mannschaft", "tablecell cellHead"));
+            trHead.Cells.Add(createCell($"Absolutes Ergebnis", "tablecell cellHead"));
+            presenterRank.Rows.Add(trHead);
+
+            if (selectedContext)
+                ApplicationController.getSpiele(getOrCreateSession())
+                    .FindAll(search => search.getTurnierId().ToString().Equals(ID))
+                    .ForEach(spiel =>
+                    {
+                        kv.increaseOrUpdateKeyByInt32(
+                            spiel.getMannschaft(Spiel.TeamUnit.TEAM_A).ToString(),
+                            spiel.getResult(Spiel.TeamUnit.TEAM_A));
+
+                        kv.increaseOrUpdateKeyByInt32(
+                            spiel.getMannschaft(Spiel.TeamUnit.TEAM_B).ToString(),
+                            spiel.getResult(Spiel.TeamUnit.TEAM_B));
+                    });
+
+            kv.sortByNumericValue().ForEach(team =>
+            {
+                int mannschaftKey = Convert.ToInt32(team.Key);
+                int mannschaftValue = Convert.ToInt32(team.Value);
+                HtmlTableRow tr = new HtmlTableRow();
+
+                tr.Cells.Add(createCell($"{relativeCounter}", "tablecell cellReadOnly"));
+                tr.Cells.Add(createCell($"{getMannschaftByKey(mannschaftKey).Name}", "tablecell cellReadOnly"));
+                tr.Cells.Add(createCell($"{team.Value}", "tablecell cellReadOnly"));
+
+                presenterRank.Rows.Add(tr);
+
+                if (!lastResult.Equals(mannschaftValue))
+                    relativeCounter++;
+                //lastResult = mannschaftValue;
+            });
+        }
+
+
         public void loadAllData()
         {
             presenterTable.Rows.Clear();

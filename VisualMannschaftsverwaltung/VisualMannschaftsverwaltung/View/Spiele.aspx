@@ -10,6 +10,11 @@
     <asp:Button ID="randomResults" runat="server" OnClick="generateRandomResults" AutoPostBack="true" Text="Zufällige Ergebnisse generieren"/>
     <br />
     <br />
+    <h3>Tabelle</h3>
+    <table class="table" runat="server" id="presenterRank">
+    </table>
+    <br /><br />
+    <h3>Ergebnisse der Spiele</h3>
     <table class="table" runat="server" id="presenterTable">
        
     </table>

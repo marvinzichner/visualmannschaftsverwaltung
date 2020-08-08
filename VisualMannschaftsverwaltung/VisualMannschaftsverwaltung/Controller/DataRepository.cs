@@ -267,6 +267,13 @@ namespace VisualMannschaftsverwaltung
             executeSql(details);
         }
 
+        public void getRankedMannschaftenByTurnier(int turnierId)
+        {
+            string sqlPartA = $"SELECT *, SUM(RESULT_A) as CALCULATED_A FROM `mvw_spiel` where TURNIER_FK={turnierId.ToString()} group by `MANNSCHAFT_A_FK` order by CALCULATED_A desc";
+
+        
+        }
+
         public void createNewSpielOfTurnier(string title, int playerA, int playerB, string spieltag, int turnierFk)
         {
             string sql = $"insert into MVW_SPIEL (TITEL, MANNSCHAFT_A_FK, MANNSCHAFT_B_FK, RESULT_A, RESULT_B, SPIELTAG, TURNIER_FK, SESSION_ID) " +

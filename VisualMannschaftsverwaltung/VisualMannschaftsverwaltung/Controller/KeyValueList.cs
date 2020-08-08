@@ -45,6 +45,39 @@ namespace VisualMannschaftsverwaltung
             this.kvList = extractedData;
         }
 
+        public List<KeyValuePair<string, string>> sortByNumericValue()
+        {
+            this.kvList.Sort(
+                (x, y) => Convert.ToInt32(x.Value).CompareTo(Convert.ToInt32(y.Value)));
+            this.kvList.Reverse();
+
+            return this.kvList;
+        }
+
+        public void increaseOrUpdateKeyByInt32(string key, int increase)
+        {
+            KeyValuePair<string, string> result = this.kvList.FindLast(x => x.Key.Equals(key));
+            try
+            {
+                if (!result.Equals(""))
+                {
+                    int current = Convert.ToInt32(result.Value);
+                    int newValue = current + increase;
+                    this.kvList.Remove(result);
+                    this.kvList.Add(new KeyValuePair<string, string>(key, newValue.ToString()));
+                }
+            }
+            catch (Exception e)
+            {
+                this.kvList.Add(new KeyValuePair<string, string>(key, increase.ToString()));
+            }
+        }
+
+        public List<KeyValuePair<string, string>> getKeyList()
+        {
+            return this.kvList;
+        }
+
         public string getValueFromKeyValueList(string key)
         {
             string result = this.kvList.Find(x => x.Key.Equals(key)).Value;

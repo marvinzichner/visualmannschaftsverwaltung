@@ -232,6 +232,31 @@ namespace VisualMannschaftsverwaltung
             return Turniere;
         }
 
+        public List<Spiel> getSpiele(string session = "ALL")
+        {
+            List<Spiel> Spiele = new List<Spiel>();
+            DataRepository repo = new DataRepository();
+
+            repo.enableSessionbasedQueries()
+                .setSession(session);
+            Spiele = repo.getSpiele();
+
+            return Spiele;
+        }
+
+        public void generateRandomResults(string id, string session)
+        {
+            DataRepository repo = new DataRepository();
+            getSpiele(session).ForEach(spiel =>
+            {
+                Random rnd = new Random();
+
+                int playerA = rnd.Next(0, 13);
+                int playerB = rnd.Next(0, 13);
+                repo.updateSpielWithResults(spiel.getId(), playerA, playerB);
+            });
+        }
+
         public void addMappingOfTurnierAndMannschaft(string mannschaft, string turnier)
         {
             DataRepository repo = new DataRepository();
@@ -248,6 +273,13 @@ namespace VisualMannschaftsverwaltung
         {
             DataRepository repo = new DataRepository();
             repo.deleteTurnierAndAllDependentEntities(turnier);
+        }
+
+        public void createNewSpielOfTurnier(string title, int playerA, int playerB, string spieltag, int turnierFk, string session)
+        {
+            DataRepository repo = new DataRepository();
+            repo.setSession(session)
+                .createNewSpielOfTurnier(title, playerA, playerB, spieltag, turnierFk);
         }
 
         public void generatePersonenXML()

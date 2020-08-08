@@ -267,6 +267,21 @@ namespace VisualMannschaftsverwaltung
             executeSql(details);
         }
 
+        public void createNewSpielOfTurnier(string title, int playerA, int playerB, string spieltag, int turnierFk)
+        {
+            string sql = $"insert into MVW_SPIEL (TITEL, MANNSCHAFT_A_FK, MANNSCHAFT_B_FK, RESULT_A, RESULT_B, SPIELTAG, TURNIER_FK, SESSION_ID) " +
+                $"values ('{title}', {playerA.ToString()}, {playerB.ToString()}, 0, 0, '{spieltag}', {turnierFk}, '{Session}')";
+
+            executeSql(sql);
+        }
+
+        public void updateSpielWithResults(int id, int a, int b)
+        {
+            string sql = $"update MVW_SPIEL set RESULT_A = {a.ToString()}, RESULT_B = {b.ToString()} where ID = {id.ToString()}";
+
+            executeSql(sql);
+        }
+
         public void updatePerson(Person p, string session)
         {
             string addPerson = $"update MVW_PERSON set " +
@@ -421,6 +436,43 @@ namespace VisualMannschaftsverwaltung
 
             string sqlTurnier = $"delete from MVW_TURNIER where ID={turnier}";
             executeSql(sqlTurnier);
+        }
+
+        public List<Spiel> getSpiele()
+        {
+            List<Spiel> Spiele = new List<Spiel>();
+
+            if (createConnection())
+            {
+                string sql = $"select * from MVW_SPIEL where SESSION_ID = '{Session}';";
+                MySqlCommand command = new MySqlCommand(sql, MySqlConnection);
+                MySqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Spiel spiel = new Spiel();
+                    spiel.setId(Utils.convertToInteger32(reader["ID"].ToString()))
+                        .setTitle(reader["TITEL"].ToString())
+                        .setMannschaft(
+                            Spiel.TeamUnit.TEAM_A, 
+                            Utils.convertToInteger32(reader["MANNSCHAFT_A_FK"].ToString()))
+                        .setMannschaft(
+                            Spiel.TeamUnit.TEAM_B,
+                            Utils.convertToInteger32(reader["MANNSCHAFT_B_FK"].ToString()))
+                        .setResult(
+                            Spiel.TeamUnit.TEAM_A,
+                            Utils.convertToInteger32(reader["RESULT_A"].ToString()))
+                        .setResult(
+                            Spiel.TeamUnit.TEAM_B,
+                            Utils.convertToInteger32(reader["RESULT_B"].ToString()))
+                        .setSpieltag(reader["SPIELTAG"].ToString())
+                        .setTurnierId(Utils.convertToInteger32(reader["TURNIER_FK"].ToString()));
+
+                    Spiele.Add(spiel);
+                }
+            }
+
+            return Spiele;
         }
 
         public List<Turnier> getTurniere()

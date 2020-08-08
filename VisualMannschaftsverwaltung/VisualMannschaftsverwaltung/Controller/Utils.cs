@@ -172,6 +172,21 @@ namespace VisualMannschaftsverwaltung
             }     
         }
 
+        public static int convertToInteger32(string s)
+        {
+            int result = 0;
+
+            try
+            {
+                result = Convert.ToInt32(s);
+            } catch (Exception e)
+            {
+                result = 0;
+            }
+
+            return result;
+        }
+
         public List<Person> addPerson(Person p)
         {
             this.Personen.Add(p);

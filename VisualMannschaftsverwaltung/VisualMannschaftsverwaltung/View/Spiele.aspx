@@ -1,7 +1,15 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Spiele.aspx.cs" Inherits="VisualMannschaftsverwaltung.View.Spiele" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h3>Spieleübersicht</h3>
+    <h3 id="spielTitle" runat="server">Bitte wählen Sie ein Turnier aus</h3>
+    Lade alle Spiele aus dem Turnier (<span id="storedNumber" runat="server" AutoPostBack="true"></span>)
+    <asp:DropDownList ID="turniereDropdown" runat="server"></asp:DropDownList>
+    <asp:Button ID="turnierLoadButton" runat="server" OnClick="selectTurnier" Text="Anwenden"/><br /><br />
+    <asp:Button ID="addNewTurnier" runat="server" OnClick="generateKnockoutSpiele" AutoPostBack="true" Text="Neues Spiel erstellen"/>
+    <asp:Button ID="generateTurniere" runat="server" OnClick="generateKnockoutSpiele" AutoPostBack="true" Text="Knockout: Alle erforderlichen Spiele generieren"/>
+    <asp:Button ID="randomResults" runat="server" OnClick="generateRandomResults" AutoPostBack="true" Text="Zufällige Ergebnisse generieren"/>
+    <br />
+    <br />
     <table class="table" runat="server" id="presenterTable">
        
     </table>

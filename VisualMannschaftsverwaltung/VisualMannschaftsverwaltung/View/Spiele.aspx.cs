@@ -12,10 +12,16 @@ namespace VisualMannschaftsverwaltung.View
     {
         #region Eigenschaften
         private ApplicationController applicationController;
+        private bool selectedContext;
+        private string selectedTurnierId;
+        private List<Mannschaft> mannschaftenList;
         #endregion
 
         #region Accessoren / Modifier
         public ApplicationController ApplicationController { get => applicationController; set => applicationController = value; }
+        public bool SelectedContext { get => selectedContext; set => selectedContext = value; }
+        public string SelectedTurnierId { get => selectedTurnierId; set => selectedTurnierId = value; }
+        public List<Mannschaft> MannschaftenList { get => mannschaftenList; set => mannschaftenList = value; }
         #endregion
 
         #region Konstruktor
@@ -23,7 +29,7 @@ namespace VisualMannschaftsverwaltung.View
         {
             ApplicationController = Global.ApplicationController;
 
-            loadAllData();
+            reloadContext();
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -32,7 +38,7 @@ namespace VisualMannschaftsverwaltung.View
         }
         #endregion
 
-        #region woker
+        #region Woker
         private HtmlTableCell createCell(string text, string classes)
         {
             HtmlTableCell tc = new HtmlTableCell();
@@ -42,36 +48,126 @@ namespace VisualMannschaftsverwaltung.View
             return tc;
         }
 
+        public void reloadContext()
+        {
+            loadDropdownContext();
+            loadMannschaftenContext();
+            loadAllData();
+        }
+
+        public void loadMannschaftenContext()
+        {
+            this.mannschaftenList = ApplicationController.getMannschaften(getOrCreateSession());
+        }
+
+        public Mannschaft getMannschaftByKey(int id)
+        {
+            return this.mannschaftenList.Find(mannschaft => mannschaft.ID.Equals(id));
+        }
+
+        public void loadDropdownContext()
+        {
+            turniereDropdown.Items.Clear();
+            ApplicationController.getTurniere(getOrCreateSession()).ForEach(turnier => {
+                ListItem listItem = new ListItem();
+                listItem.Text = turnier.getName();
+                listItem.Value = $"method=dataTurnier#turnier={turnier.getId()}";
+
+                turniereDropdown.Items.Add(listItem);
+            });
+        }
+
+        public void generateRandomResults(Object sender, EventArgs e)
+        {
+            ApplicationController.generateRandomResults(
+                (string)this.Session["SelectedTurnier"],
+                getOrCreateSession());
+            reloadContext();
+        }
+
+        // SELECT *, SUM(RESULT_A) as CALCULATED_A FROM `mvw_spiel` where TURNIER_FK=7 group by `MANNSCHAFT_A_FK` order by CALCULATED_A desc
+        public void generateKnockoutSpiele(Object sender, EventArgs e)
+        {
+            string id = this.selectedTurnierId;
+            List<Mannschaft> turnierMannschaften =
+                ApplicationController.getTurniere(getOrCreateSession())
+                .Find(t => t.getId().ToString().Equals((string)this.Session["SelectedTurnier"]))
+                .getMannschaften();
+
+            turnierMannschaften.ForEach(mannschaft =>
+            {
+                turnierMannschaften.ForEach(mannschaft2 =>
+                {
+                    if (mannschaft.ID != mannschaft2.ID)
+                    {
+                        ApplicationController.createNewSpielOfTurnier(
+                            "generated.fwd",
+                            mannschaft.ID,
+                            mannschaft2.ID,
+                            DateTime.Now.ToShortDateString(),
+                            Utils.convertToInteger32((string)this.Session["SelectedTurnier"]),
+                            getOrCreateSession());
+                    }
+                });
+            });
+
+            reloadContext();
+        }
+        
         public void loadAllData()
         {
             presenterTable.Rows.Clear();
+            string ID = "";
+            if ((string)this.Session["SelectedTurnier"] != null) { 
+                ID = (string)this.Session["SelectedTurnier"];
+                selectedContext = true;
+            }
 
-            ApplicationController.getTurniere(getOrCreateSession()).ForEach(turnier =>
+            try { 
+                spielTitle.InnerText = ApplicationController.getTurniere(getOrCreateSession())
+                    .Find(turnier => turnier.getId().Equals((string)this.Session["SelectedTurnier"])).getName();
+            }
+            catch (Exception e)
             {
+                spielTitle.InnerText = "Bitte wählen Sie ein Turnier aus";
+            }
 
-                HtmlTableRow trHead = new HtmlTableRow();
-                trHead.Cells.Add(createCell($"{turnier.getName()}", "tablecell cellHead"));
+            HtmlTableRow trHead = new HtmlTableRow();
+            trHead.Cells.Add(createCell($"Spieltag", "tablecell cellHead"));
+            trHead.Cells.Add(createCell($"Mannschaft A", "tablecell cellHead"));
+            trHead.Cells.Add(createCell($"Ergebnis", "tablecell cellHead"));
+            trHead.Cells.Add(createCell($"Mannschaft B", "tablecell cellHead"));
+            presenterTable.Rows.Add(trHead);
 
-                turnier.getMannschaften().ForEach(mannschaft =>
+            if (selectedContext)
+                ApplicationController.getSpiele(getOrCreateSession())
+                    .FindAll(search => search.getTurnierId().ToString().Equals(ID))
+                    .ForEach(spiel =>
                 {
-                    trHead.Cells.Add(createCell($"{mannschaft.Name}", "tablecell cellHead"));
-                });
-                presenterTable.Rows.Add(trHead);
+                    Mannschaft TeamA = getMannschaftByKey(spiel.getMannschaft(Spiel.TeamUnit.TEAM_A));
+                    Mannschaft TeamB = getMannschaftByKey(spiel.getMannschaft(Spiel.TeamUnit.TEAM_B));
 
-                turnier.getMannschaften().ForEach(mannschaft =>
-                {
                     HtmlTableRow tr = new HtmlTableRow();
-                    tr.Cells.Add(createCell($"{mannschaft.Name}", "tablecell cellHead"));
-                    turnier.getMannschaften().ForEach(inlineMannschaft => {
-                        tr.Cells.Add(createCell($"0:0 <br> debug:{mannschaft.Name}-{inlineMannschaft.Name}", "tablecell cellReadOnly"));
-                    });
+                    tr.Cells.Add(createCell($"{spiel.getSpieltag()}", "tablecell cellReadOnly"));
+                    tr.Cells.Add(createCell($"{TeamA.Name}", "tablecell cellReadOnly"));
+                    tr.Cells.Add(
+                        createCell(
+                            $"{spiel.getResult(Spiel.TeamUnit.TEAM_A)}:{spiel.getResult(Spiel.TeamUnit.TEAM_B)}",
+                            "tablecell cellReadOnly"));
+                    tr.Cells.Add(createCell($"{TeamB.Name}", "tablecell cellReadOnly"));
                     presenterTable.Rows.Add(tr);
                 });
+        }
 
-                HtmlTableRow trEmpty = new HtmlTableRow();
-                trEmpty.Cells.Add(createCell($"", "tablecell"));
-                presenterTable.Rows.Add(trEmpty);
-            });
+        public void selectTurnier(Object sender, System.EventArgs e)
+        {
+            KeyValueList kv = new KeyValueList();
+            kv.extractDataFromCombinedString(
+                turniereDropdown.SelectedItem.Value.ToString());
+            this.selectedTurnierId = kv.getValueFromKeyValueList("turnier");
+            this.Session["SelectedTurnier"] = kv.getValueFromKeyValueList("turnier");
+            this.selectedContext = true;
+            reloadContext();
         }
 
         public string getOrCreateSession()

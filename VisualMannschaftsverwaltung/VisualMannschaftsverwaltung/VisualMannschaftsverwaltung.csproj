@@ -123,6 +123,7 @@
     <Content Include="Controller\Repository\Migration\V1_Base.sql" />
     <Content Include="Controller\Repository\Migration\V3_SessionAndTurnier.sql" />
     <Content Include="Controller\Repository\Migration\V2_FakeData.sql" />
+    <Content Include="Controller\Repository\Migration\V4_Spiel.sql" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -212,6 +213,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Model\Spiel.cs" />
     <Compile Include="Model\Bundesliga.cs" />
     <Compile Include="Model\FussballSpieler.cs" />
     <Compile Include="Model\HandballSpieler.cs" />

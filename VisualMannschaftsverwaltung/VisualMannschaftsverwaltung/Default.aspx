@@ -25,7 +25,14 @@
             </div>
         </a>
 
-        <a runat="server" href="~/View/Contact">
+        <a runat="server" href="~/View/Spiele">
+            <div class="member clear">
+                <div class="rolename">QUICK LINK</div>
+                Spiele
+            </div>
+        </a>
+
+        <a runat="server" href="~/Contact">
             <div class="member clear">
                 <div class="rolename">QUICK LINK</div>
                 Anwendungsinformationen

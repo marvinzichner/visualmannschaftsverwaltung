@@ -264,17 +264,19 @@ namespace VisualMannschaftsverwaltung.View
                         cellContent = "";
                         //tc.Attributes.CssStyle.Add("width","0%");
 
-                        Button edit = new Button();
-                        edit.ID = "E" + person.ID.ToString();
-                        edit.Click += new EventHandler(this.editSelectedPerson);
-                        edit.Text = "Bearbeiten";
-                        tc.Controls.Add(edit);
+                        if(authenticatedRole == AuthenticatedRole.ADMIN) { 
+                            Button edit = new Button();
+                            edit.ID = "E" + person.ID.ToString();
+                            edit.Click += new EventHandler(this.editSelectedPerson);
+                            edit.Text = "Bearbeiten";
+                            tc.Controls.Add(edit);
 
-                        Button delete = new Button();
-                        delete.ID = "D" + person.ID.ToString();
-                        delete.Click += new EventHandler(this.removeSelectedPerson);
-                        delete.Text = "Löschen";
-                        tc.Controls.Add(delete);
+                            Button delete = new Button();
+                            delete.ID = "D" + person.ID.ToString();
+                            delete.Click += new EventHandler(this.removeSelectedPerson);
+                            delete.Text = "Löschen";
+                            tc.Controls.Add(delete);
+                        }
 
                         cnt += 1;
                     }

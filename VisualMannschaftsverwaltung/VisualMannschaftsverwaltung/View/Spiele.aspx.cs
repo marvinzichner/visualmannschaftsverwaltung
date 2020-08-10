@@ -15,6 +15,7 @@ namespace VisualMannschaftsverwaltung.View
         private bool selectedContext;
         private string selectedTurnierId;
         private List<Mannschaft> mannschaftenList;
+        private AuthenticatedRole authenticatedRole;
         #endregion
 
         #region Accessoren / Modifier
@@ -22,23 +23,37 @@ namespace VisualMannschaftsverwaltung.View
         public bool SelectedContext { get => selectedContext; set => selectedContext = value; }
         public string SelectedTurnierId { get => selectedTurnierId; set => selectedTurnierId = value; }
         public List<Mannschaft> MannschaftenList { get => mannschaftenList; set => mannschaftenList = value; }
+        public AuthenticatedRole AuthenticatedRole { get => authenticatedRole; set => authenticatedRole = value; }
         #endregion
 
         #region Konstruktor
         protected void Page_Init(object sender, EventArgs e)
         {
             ApplicationController = Global.ApplicationController;
+            if (this.Session["Role"] != null)
+                authenticatedRole = (AuthenticatedRole)this.Session["Role"];
 
             reloadContext();
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            previewHider.Visible = false;
+            this.disableAdminFeatures();
         }
         #endregion
 
         #region Woker
+        private void disableAdminFeatures()
+        {
+            if (authenticatedRole == AuthenticatedRole.USER)
+            {
+                addNewTurnier.Visible = false;
+                generateTurniere.Visible = false;
+                randomResults.Visible = false;
+            }
+        }
+
         private HtmlTableCell createCell(string text, string classes)
         {
             HtmlTableCell tc = new HtmlTableCell();
@@ -69,6 +84,9 @@ namespace VisualMannschaftsverwaltung.View
         public void loadDropdownContext()
         {
             turniereDropdown.Items.Clear();
+            dropdownTeamA.Items.Clear();
+            dropdownTeamb.Items.Clear();
+
             ApplicationController.getTurniere(getOrCreateSession()).ForEach(turnier => {
                 ListItem listItem = new ListItem();
                 listItem.Text = turnier.getName();
@@ -76,6 +94,40 @@ namespace VisualMannschaftsverwaltung.View
 
                 turniereDropdown.Items.Add(listItem);
             });
+
+            if (this.Session["SelectedTurnier"] != null)
+                ApplicationController.getTurniere(getOrCreateSession())
+                    .Find(t => t.getId().ToString().Equals((string)this.Session["SelectedTurnier"]))
+                    .getMannschaften()
+                    .ForEach(mannschaft =>
+                        {
+                            ListItem listItem = new ListItem();
+                            listItem.Text = mannschaft.Name;
+                            listItem.Value = $"method=createNewTurnier#mannschaft={mannschaft.ID}";
+
+                            dropdownTeamA.Items.Add(listItem);
+                            dropdownTeamb.Items.Add(listItem);
+                        });
+        }
+
+        public void createNewTurnier(Object sender, EventArgs e)
+        {
+            KeyValueList kv1 = new KeyValueList();
+            KeyValueList kv2 = new KeyValueList();
+
+            kv1.extractDataFromCombinedString(dropdownTeamA.SelectedItem.Value);
+            kv2.extractDataFromCombinedString(dropdownTeamb.SelectedItem.Value);
+
+            ApplicationController.createNewSpielOfTurnier(
+                "human.created",
+                Convert.ToInt32(kv1.getValueFromKeyValueList("mannschaft")),
+                Convert.ToInt32(kv2.getValueFromKeyValueList("mannschaft")),
+                DateTime.Now.ToShortDateString(), 
+                Convert.ToInt32((string)this.Session["SelectedTurnier"]), 
+                getOrCreateSession());
+
+            createNewGame.Visible = false;
+            reloadContext();
         }
 
         public void generateRandomResults(Object sender, EventArgs e)
@@ -86,7 +138,6 @@ namespace VisualMannschaftsverwaltung.View
             reloadContext();
         }
 
-        // SELECT *, SUM(RESULT_A) as CALCULATED_A FROM `mvw_spiel` where TURNIER_FK=7 group by `MANNSCHAFT_A_FK` order by CALCULATED_A desc
         public void generateKnockoutSpiele(Object sender, EventArgs e)
         {
             string id = this.selectedTurnierId;
@@ -123,6 +174,7 @@ namespace VisualMannschaftsverwaltung.View
             {
                 ID = (string)this.Session["SelectedTurnier"];
                 selectedContext = true;
+                previewHider.Visible = true;
             }
 
             KeyValueList kv = new KeyValueList();
@@ -167,6 +219,10 @@ namespace VisualMannschaftsverwaltung.View
             });
         }
 
+        public void showCreationMode(Object sender, EventArgs e)
+        {
+            createNewGame.Visible = true;
+        }
 
         public void loadAllData()
         {

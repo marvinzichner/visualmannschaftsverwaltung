@@ -22,7 +22,7 @@ namespace VisualMannschaftsverwaltung
                 MainContent.Visible = true;
 
                 session = $"{(string)this.Session["Username"]} ({(string)this.Session["User"]})";
-                displayName.InnerText = (string)this.Session["Username"];
+                displayName.InnerText = $"{(string)this.Session["Username"]} ({((AuthenticatedRole)this.Session["Role"]).ToString()})";
             }
             else
             {
@@ -38,20 +38,26 @@ namespace VisualMannschaftsverwaltung
         {
             string session = "undefined";
 
-            if(username.Text != "" && password.Text != "") { 
-                session = $"{username.Text}{password.Text}";
-                byte[] encodedPassword = new UTF8Encoding().GetBytes(session);
-                byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(encodedPassword);
-                string encoded = BitConverter.ToString(hash)
-                    .Replace("-", string.Empty)
-                    .ToLower();
+            if(username.Text != "" && password.Text != "") {
+                DataRepository repo = new DataRepository();
+                if (repo.checkCredentials(username.Text, password.Text)) {
+                    string[] shortUsername = username.Text.Split('.');
 
-                this.Session["User"] = encoded;
-                this.Session["Username"] = username.Text;
+                    session = $"{shortUsername[0]}";
+                    byte[] encodedPassword = new UTF8Encoding().GetBytes(session);
+                    byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(encodedPassword);
+                    string encoded = BitConverter.ToString(hash)
+                        .Replace("-", string.Empty)
+                        .ToLower();
 
-                authRequired.Controls.Clear();
-                authRequired.InnerHtml = $"Laden Sie die Seite neu, um die Anmeldung abzuschließen.";
-                Page.Response.Redirect("/", true);
+                    this.Session["User"] = encoded;
+                    this.Session["Username"] = username.Text;
+                    this.Session["Role"] = repo.getRoleFromUsername(username.Text);
+
+                    authRequired.Controls.Clear();
+                    authRequired.InnerHtml = $"Laden Sie die Seite neu, um die Anmeldung abzuschließen.";
+                    Page.Response.Redirect("/", true);
+                }
             }
         }
 
@@ -59,6 +65,7 @@ namespace VisualMannschaftsverwaltung
         {
             this.Session["User"] = null;
             this.Session["Username"] = null;
+            this.Session["Role"] = null;
             auth.Controls.Clear();
             auth.InnerHtml = $"Laden Sie die Seite neu, um die Abmeldung abzuschließen.";
             Page.Response.Redirect("/", true);

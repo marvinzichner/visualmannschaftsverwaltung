@@ -5,19 +5,33 @@
     Lade alle Spiele aus dem Turnier (<span id="storedNumber" runat="server" AutoPostBack="true"></span>)
     <asp:DropDownList ID="turniereDropdown" runat="server"></asp:DropDownList>
     <asp:Button ID="turnierLoadButton" runat="server" OnClick="selectTurnier" Text="Anwenden"/><br /><br />
-    <asp:Button ID="addNewTurnier" runat="server" OnClick="generateKnockoutSpiele" AutoPostBack="true" Text="Neues Spiel erstellen"/>
-    <asp:Button ID="generateTurniere" runat="server" OnClick="generateKnockoutSpiele" AutoPostBack="true" Text="Knockout: Alle erforderlichen Spiele generieren"/>
-    <asp:Button ID="randomResults" runat="server" OnClick="generateRandomResults" AutoPostBack="true" Text="Zufällige Ergebnisse generieren"/>
-    <br />
-    <br />
-    <h3>Tabelle</h3>
-    <table class="table" runat="server" id="presenterRank">
-    </table>
-    <br /><br />
-    <h3>Ergebnisse der Spiele</h3>
-    <table class="table" runat="server" id="presenterTable">
+
+    <div id="createNewGame" runat="server" visible="false">
+        <h3>Neues Spiel erstellen</h3>
+        
+        Mannschaft 
+        <asp:DropDownList ID="dropdownTeamA" runat="server"></asp:DropDownList> 
+        gegen 
+        <asp:DropDownList ID="dropdownTeamb" runat="server"></asp:DropDownList>
+        
+        <asp:Button ID="creationButton" runat="server" OnClick="createNewTurnier" Text="Erstellen"/>
+    </div>
+
+    <div id="previewHider" runat="server">
+        <asp:Button ID="addNewTurnier" runat="server" OnClick="showCreationMode" AutoPostBack="true" Text="Neues Spiel erstellen"/>
+        <asp:Button ID="generateTurniere" runat="server" OnClick="generateKnockoutSpiele" AutoPostBack="true" Text="Knockout: Alle erforderlichen Spiele generieren"/>
+        <asp:Button ID="randomResults" runat="server" OnClick="generateRandomResults" AutoPostBack="true" Text="Zufällige Ergebnisse generieren"/>
+        <br />
+        <br />
+        <h3>Tabelle</h3>
+        <table class="table" runat="server" id="presenterRank">
+        </table>
+        <br /><br />
+        <h3>Ergebnisse der Spiele</h3>
+        <table class="table" runat="server" id="presenterTable">
        
-    </table>
+        </table>
+    </div>
 
     <!--
     <h3>Aktives Spiel</h3>

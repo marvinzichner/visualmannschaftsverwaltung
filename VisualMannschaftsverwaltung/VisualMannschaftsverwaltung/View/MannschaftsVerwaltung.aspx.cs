@@ -11,10 +11,12 @@ namespace VisualMannschaftsverwaltung.View
     {
         #region Eigenschaften
         private ApplicationController applicationController;
+        private AuthenticatedRole authenticatedRole;
         #endregion
 
         #region Accessoren / Modifier
         public ApplicationController ApplicationController { get => applicationController; set => applicationController = value; }
+        public AuthenticatedRole AuthenticatedRole { get => authenticatedRole; set => authenticatedRole = value; }
         #endregion
 
         #region Konstruktor
@@ -24,13 +26,30 @@ namespace VisualMannschaftsverwaltung.View
         protected void Page_Init(object sender, EventArgs e)
         {
             ApplicationController = Global.ApplicationController;
+            if(this.Session["Role"] != null)
+                authenticatedRole = (AuthenticatedRole)this.Session["Role"];
+
             this.checkAlerts();
             this.prepareData();
             this.loadMembers();
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            this.disableAdminFeatures();
+        }
+
+        private void disableAdminFeatures()
+        {
+            if (authenticatedRole == AuthenticatedRole.USER)
+            {
+                teamsDelete.Visible = false;
+                createNewTeam.Visible = false;
+                teamsEdit.Visible = false;
+                personList.Visible = false;
+                personListButton.Visible = false;
+                personListDelete.Visible = false;
+                personListDeleteButton.Visible = false;
+            }
         }
 
         protected void checkAlerts()

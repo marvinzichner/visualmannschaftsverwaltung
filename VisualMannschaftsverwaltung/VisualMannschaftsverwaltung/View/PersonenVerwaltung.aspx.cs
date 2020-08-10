@@ -15,6 +15,7 @@ namespace VisualMannschaftsverwaltung.View
     {
         #region Eigenschaften
         private ApplicationController applicationController;
+        private AuthenticatedRole authenticatedRole;
         private string _targetPersonType;
         private int _selectedPerson;
         #endregion
@@ -23,15 +24,15 @@ namespace VisualMannschaftsverwaltung.View
         public ApplicationController ApplicationController { get => applicationController; set => applicationController = value; }
         public string TargetPersonType { get => _targetPersonType; set => _targetPersonType = value; }
         public int SelectedPerson { get => _selectedPerson; set => _selectedPerson = value; }
+        public AuthenticatedRole AuthenticatedRole { get => authenticatedRole; set => authenticatedRole = value; }
         #endregion
 
         #region Konstruktor
-        #endregion
-
-        #region Worker
         protected void Page_Init(object sender, EventArgs e)
         {
             ApplicationController = Global.ApplicationController;
+            if (this.Session["Role"] != null)
+                authenticatedRole = (AuthenticatedRole)this.Session["Role"];
         }
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -42,6 +43,17 @@ namespace VisualMannschaftsverwaltung.View
 
             this.checkAlerts();
             this.loadPersonen();
+            this.disableAdminFeatures();
+        }
+        #endregion
+
+        #region Worker
+        private void disableAdminFeatures()
+        {
+            if (authenticatedRole == AuthenticatedRole.USER)
+            {
+                adminSection.Visible = false;
+            }
         }
 
         protected void checkAlerts()

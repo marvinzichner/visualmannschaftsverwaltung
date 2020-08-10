@@ -18,7 +18,7 @@
     <asp:Button ID="teamsDelete" runat="server" OnClick="removeTeam" Text="Löschen" />
     <asp:Button ID="downloadButton" runat="server" OnClick="generateXML" Text="XML Export" />
     
-    <div style="float: right; margin-top: 15px;">
+    <div style="float: right; margin-top: 15px;" id="createNewTeam" runat="server">
         Neue Mannschaft anlegen:
         <asp:TextBox ID="newTeamnameBox" runat="server"></asp:TextBox>
         <asp:DropDownList ID="newTeamtype" runat="server">

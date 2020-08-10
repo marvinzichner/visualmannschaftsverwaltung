@@ -49,6 +49,51 @@ namespace VisualMannschaftsverwaltung.View {
         protected global::System.Web.UI.WebControls.Button turnierLoadButton;
         
         /// <summary>
+        /// createNewGame control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl createNewGame;
+        
+        /// <summary>
+        /// dropdownTeamA control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dropdownTeamA;
+        
+        /// <summary>
+        /// dropdownTeamb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dropdownTeamb;
+        
+        /// <summary>
+        /// creationButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button creationButton;
+        
+        /// <summary>
+        /// previewHider control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl previewHider;
+        
+        /// <summary>
         /// addNewTurnier control.
         /// </summary>
         /// <remarks>

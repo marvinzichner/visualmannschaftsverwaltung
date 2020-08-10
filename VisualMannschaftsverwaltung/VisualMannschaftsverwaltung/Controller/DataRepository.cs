@@ -300,6 +300,51 @@ namespace VisualMannschaftsverwaltung
             executeSql(details);
         }
 
+        public bool checkCredentials(string username, string password)
+        {
+            bool result = false;
+
+            if (createConnection())
+            {
+                string sql = $"select * from MVW_AUTH where usernamePlain='{username}' and passwordPlain='{password}'";
+                MySqlCommand command = new MySqlCommand(sql, MySqlConnection);
+                MySqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    result = true;
+                }
+            }
+            closeConnection();
+
+            return result;
+        }
+
+        public AuthenticatedRole getRoleFromUsername(string username)
+        {
+            AuthenticatedRole role = AuthenticatedRole.USER;
+
+            if (createConnection())
+            {
+                string sql = $"select * from MVW_AUTH where usernamePlain='{username}'";
+                MySqlCommand command = new MySqlCommand(sql, MySqlConnection);
+                MySqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    string roleString = reader["role"].ToString();
+
+                    if (roleString.Equals("ADMIN"))
+                    {
+                        role = AuthenticatedRole.ADMIN;
+                    }
+                }
+            }
+            closeConnection();
+
+            return role;
+        }
+
         public string getLatestDatabaseVersion()
         {
             string DB_VERSION = "Derzeit nicht bekannt";

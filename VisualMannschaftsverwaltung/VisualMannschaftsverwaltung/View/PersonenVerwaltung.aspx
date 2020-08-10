@@ -14,54 +14,58 @@
 
     <div runat="server" ID="errorMessages" class="errorText"></div>
 
-    <h4>1. Wählen Sie den zu erstellenden Personentyp aus:</h4>
-    <asp:DropDownList ID="PersonSelectionTypeDD" runat="server">
-        <asp:ListItem Value="FussballSpieler">Fussballspieler</asp:ListItem>
-        <asp:ListItem Value="HandballSpieler">Handballspieler</asp:ListItem>
-        <asp:ListItem Value="TennisSpieler">Tennisspieler</asp:ListItem>
-        <asp:ListItem Value="Physiotherapeut">Physiotherapeut</asp:ListItem>
-        <asp:ListItem Value="Trainer">Trainer</asp:ListItem>
-    </asp:DropDownList>
 
-    <!--
-    <asp:RadioButtonList ID="PersonSelectionType2" runat="server">
-        <asp:ListItem Value="FussballSpieler">Fussballspieler</asp:ListItem>
-        <asp:ListItem Value="HandballSpieler">Handballspieler</asp:ListItem>
-        <asp:ListItem Value="TennisSpieler">Tennisspieler</asp:ListItem>
-        <asp:ListItem Value="Physiotherapeut">Physiotherapeut</asp:ListItem>
-        <asp:ListItem Value="Trainer">Trainer</asp:ListItem>
-    </asp:RadioButtonList>
-    -->
+    <div id="adminSection" runat="server">
+        <h4>1. Wählen Sie den zu erstellenden Personentyp aus:</h4>
+        <asp:DropDownList ID="PersonSelectionTypeDD" runat="server">
+            <asp:ListItem Value="FussballSpieler">Fussballspieler</asp:ListItem>
+            <asp:ListItem Value="HandballSpieler">Handballspieler</asp:ListItem>
+            <asp:ListItem Value="TennisSpieler">Tennisspieler</asp:ListItem>
+            <asp:ListItem Value="Physiotherapeut">Physiotherapeut</asp:ListItem>
+            <asp:ListItem Value="Trainer">Trainer</asp:ListItem>
+        </asp:DropDownList>
 
-    &emsp;
-    <asp:Button ID="buttonConfirmSelection" runat="server" Text="Auswahl bestätigen" OnClick="confirmPersonSelection" />
-    <br />
+        <!--
+        <asp:RadioButtonList ID="PersonSelectionType2" runat="server">
+            <asp:ListItem Value="FussballSpieler">Fussballspieler</asp:ListItem>
+            <asp:ListItem Value="HandballSpieler">Handballspieler</asp:ListItem>
+            <asp:ListItem Value="TennisSpieler">Tennisspieler</asp:ListItem>
+            <asp:ListItem Value="Physiotherapeut">Physiotherapeut</asp:ListItem>
+            <asp:ListItem Value="Trainer">Trainer</asp:ListItem>
+        </asp:RadioButtonList>
+        -->
 
-    <h4>2. Geben Sie Detailinformationen zu dieser Person an:</h4>
-    <i>HILFE: </i><b>Birthdate</b> dd.mm.yyyy &emsp; <b>IsLeftFeet</b> True/False &emsp; <b>IsLeftHand</b> True/False  &emsp; <b>HasLicense</b> True/False<br />
-    <br />
+        &emsp;
+        <asp:Button ID="buttonConfirmSelection" runat="server" Text="Auswahl bestätigen" OnClick="confirmPersonSelection" />
+        <br />
 
-    <div class="clear">
-        <div class="listSpacer">
-            <div class="listLabelFlow">Vorname</div>
-            <asp:TextBox AutoCompleteType="Disabled" class="listField" ID="fieldVorname" CssClass="listField" runat="server"></asp:TextBox>
+        <h4>2. Geben Sie Detailinformationen zu dieser Person an:</h4>
+        <i>HILFE: </i><b>Birthdate</b> dd.mm.yyyy &emsp; <b>IsLeftFeet</b> True/False &emsp; <b>IsLeftHand</b> True/False  &emsp; <b>HasLicense</b> True/False<br />
+        <br />
+
+        <div class="clear">
+            <div class="listSpacer">
+                <div class="listLabelFlow">Vorname</div>
+                <asp:TextBox AutoCompleteType="Disabled" class="listField" ID="fieldVorname" CssClass="listField" runat="server"></asp:TextBox>
+            </div>
+            <div class="listSpacer">
+                <div class="listLabelFlow">Nachname</div>
+                <asp:TextBox AutoCompleteType="Disabled" class="listField" ID="fieldNachname" CssClass="listField" runat="server"></asp:TextBox>
+            </div>
+            <div class="listSpacer">
+                <div class="listLabelFlow">Geburtsdatum</div>
+                <asp:TextBox AutoCompleteType="Disabled" class="listField" TextMode="DateTime" ID="fieldBirthdate" CssClass="listField" runat="server"></asp:TextBox>
+            </div>
+
+            <div class="listSpacer listSpacerDynamic" runat="server" id="dynamicFlow"></div>
         </div>
-        <div class="listSpacer">
-            <div class="listLabelFlow">Nachname</div>
-            <asp:TextBox AutoCompleteType="Disabled" class="listField" ID="fieldNachname" CssClass="listField" runat="server"></asp:TextBox>
-        </div>
-        <div class="listSpacer">
-            <div class="listLabelFlow">Geburtsdatum</div>
-            <asp:TextBox AutoCompleteType="Disabled" class="listField" TextMode="DateTime" ID="fieldBirthdate" CssClass="listField" runat="server"></asp:TextBox>
-        </div>
 
-        <div class="listSpacer listSpacerDynamic" runat="server" id="dynamicFlow"></div>
+        <asp:Button ID="btnCreatePerson" runat="server" OnClick="createNewPerson" Text="Person erstellen" />
+        <br />
+
+        <hr />
+
     </div>
-
-    <asp:Button ID="btnCreatePerson" runat="server" OnClick="createNewPerson" Text="Person erstellen" />
-    <br />
-
-    <hr />
 
     <h4>Anzeige der vorhandenen Personen</h4>
     Sortieren nach:

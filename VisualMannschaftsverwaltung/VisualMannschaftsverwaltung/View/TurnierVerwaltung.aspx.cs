@@ -12,6 +12,7 @@ namespace VisualMannschaftsverwaltung.View
     {
         #region Eigenschaften
         private ApplicationController applicationController;
+        private AuthenticatedRole authenticatedRole;
         private string turnier;
         private string mannschaft;
         #endregion
@@ -20,6 +21,7 @@ namespace VisualMannschaftsverwaltung.View
         public ApplicationController ApplicationController { get => applicationController; set => applicationController = value; }
         public string Turnier { get => turnier; set => turnier = value; }
         public string Mannschaft { get => mannschaft; set => mannschaft = value; }
+        public AuthenticatedRole AuthenticatedRole { get => authenticatedRole; set => authenticatedRole = value; }
         #endregion
 
         #region Konstruktor
@@ -28,6 +30,8 @@ namespace VisualMannschaftsverwaltung.View
         protected void Page_Init(object sender, EventArgs e)
         {
             ApplicationController = Global.ApplicationController;
+            if (this.Session["Role"] != null)
+                authenticatedRole = (AuthenticatedRole)this.Session["Role"];
 
             sectionCreateTurnier.Visible = false;
             sectionMapping.Visible = false;
@@ -39,9 +43,22 @@ namespace VisualMannschaftsverwaltung.View
         {
             sectionCreateTurnier.Visible = false;
             sectionMapping.Visible = false;
+
+            this.disableAdminFeatures();
         }
 
         #region Worker
+        private void disableAdminFeatures()
+        {
+            if (authenticatedRole == AuthenticatedRole.USER)
+            {
+                buttonConfirmSelection.Visible = false;
+                buttonAddMapping.Visible = false;
+                createNewTurnierButton.Visible = false;
+                createNewMapping.Visible = false;
+            }
+        }
+
         private HtmlTableCell createCell(string text, string classes)
         {
             HtmlTableCell tc = new HtmlTableCell();
@@ -102,10 +119,18 @@ namespace VisualMannschaftsverwaltung.View
                 tr.Cells.Add(createCell($"{turnier.getId()}", "tablecell cellBody"));
                 tr.Cells.Add(createCell($"{turnier.getName()}", "tablecell cellBody"));
                 tr.Cells.Add(createCell($"{turnier.getType()}", "tablecell cellBody"));
-                tr.Cells.Add(createCellButton(
-                    $"Turnier und Mannschaften löschen",
-                    "tablecell cellBody",
-                    $"method=deleteTurnier#turnier={turnier.getId()}"));
+
+                if(authenticatedRole == AuthenticatedRole.ADMIN)
+                    tr.Cells.Add(createCellButton(
+                        $"Turnier und Mannschaften löschen",
+                        "tablecell cellBody",
+                        $"method=deleteTurnier#turnier={turnier.getId()}"));
+
+                if (authenticatedRole == AuthenticatedRole.USER)
+                    tr.Cells.Add(createCell(
+                        $"",
+                        "tablecell cellBody"));
+
                 storedTurniere.Rows.Add(tr);
 
                 int len = turnier.getMannschaften().Count;
@@ -125,10 +150,18 @@ namespace VisualMannschaftsverwaltung.View
                     trEx.Cells.Add(createCell($"", "tablecell cellReadOnly cellBody"));
                     trEx.Cells.Add(createCell($"&rarr; {mannschaft.Name}", "tablecell cellReadOnly cellBody"));
                     trEx.Cells.Add(createCell($"{mannschaft.SportArt}", $"tablecell cellReadOnly {checkupSameTypeClass} cellBody"));
-                    trEx.Cells.Add(createCellButton(
-                        $"Mannschaft entfernen",
-                        "tablecell cellInteraction cellBody",
-                        $"method=deleteMannschaft#mannschaft={mannschaft.ID}#turnier={turnier.getId()}"));
+
+                    if (authenticatedRole == AuthenticatedRole.ADMIN)
+                        trEx.Cells.Add(createCellButton(
+                            $"Mannschaft entfernen",
+                            "tablecell cellInteraction cellBody",
+                            $"method=deleteMannschaft#mannschaft={mannschaft.ID}#turnier={turnier.getId()}"));
+
+                    if (authenticatedRole == AuthenticatedRole.USER)
+                        tr.Cells.Add(createCell(
+                            $"",
+                            "tablecell cellBody"));
+
                     storedTurniere.Rows.Add(trEx);
 
                     count++;

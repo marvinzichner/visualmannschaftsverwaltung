@@ -82,9 +82,17 @@
                 <b>Benutzername</b> mustermann<br />
                 <b>Kennwort</b> 1234<br />
                 <b>Rolle</b> Benutzer<br />
-                <hr />
+                <br />
                 <b>Benutzername</b> mustermann.admin<br />
                 <b>Kennwort</b> password<br />
+                <b>Rolle</b> Administrator<br />
+                <hr />
+                <b>Benutzername</b> fcbla<br />
+                <b>Kennwort</b> simplepass<br />
+                <b>Rolle</b> Benutzer<br />
+                <br />
+                <b>Benutzername</b> fcbla.admin<br />
+                <b>Kennwort</b> sonnenblume<br />
                 <b>Rolle</b> Administrator<br />
             </div>
 

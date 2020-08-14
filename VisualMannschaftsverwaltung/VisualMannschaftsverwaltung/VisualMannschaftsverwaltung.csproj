@@ -214,6 +214,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Model\AuthenticatedUser.cs" />
     <Compile Include="Model\Spiel.cs" />
     <Compile Include="Model\Bundesliga.cs" />
     <Compile Include="Model\FussballSpieler.cs" />

@@ -12,3 +12,6 @@ create table MVW_AUTH (
 
 insert into MVW_AUTH (usernamePlain, passwordPlain, role) values ('mustermann.admin', 'password', 'ADMIN');
 insert into MVW_AUTH (usernamePlain, passwordPlain, role) values ('mustermann', '1234', 'USER');
+
+insert into MVW_AUTH (usernamePlain, passwordPlain, role) values ('fcbla.admin', 'sonnenblume', 'ADMIN');
+insert into MVW_AUTH (usernamePlain, passwordPlain, role) values ('fcbla', 'simplepass', 'USER');

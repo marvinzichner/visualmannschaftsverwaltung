@@ -11,11 +11,10 @@ using System.Web.UI.HtmlControls;
 
 namespace VisualMannschaftsverwaltung.View
 {
-    public partial class PersonenVerwaltung : System.Web.UI.Page
+    public partial class PersonenVerwaltung : CustomPage
     {
         #region Eigenschaften
         private ApplicationController applicationController;
-        private AuthenticatedRole authenticatedRole;
         private string _targetPersonType;
         private int _selectedPerson;
         #endregion
@@ -24,15 +23,12 @@ namespace VisualMannschaftsverwaltung.View
         public ApplicationController ApplicationController { get => applicationController; set => applicationController = value; }
         public string TargetPersonType { get => _targetPersonType; set => _targetPersonType = value; }
         public int SelectedPerson { get => _selectedPerson; set => _selectedPerson = value; }
-        public AuthenticatedRole AuthenticatedRole { get => authenticatedRole; set => authenticatedRole = value; }
         #endregion
 
         #region Konstruktor
         protected void Page_Init(object sender, EventArgs e)
         {
             ApplicationController = Global.ApplicationController;
-            if (this.Session["Role"] != null)
-                authenticatedRole = (AuthenticatedRole)this.Session["Role"];
         }
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -50,7 +46,7 @@ namespace VisualMannschaftsverwaltung.View
         #region Worker
         private void disableAdminFeatures()
         {
-            if (authenticatedRole == AuthenticatedRole.USER)
+            if (GetUserFromSession().isUser())
             {
                 adminSection.Visible = false;
             }
@@ -110,13 +106,13 @@ namespace VisualMannschaftsverwaltung.View
 
                     ApplicationController.updatePerson(
                             reflectedInstance.buildFromKeyValueAttributeList(attr).id(loader.ID),
-                            getOrCreateSession());
+                            GetUserFromSession().getSessionId());
                 }
                 else
                 {
                     ApplicationController.addPerson(
                             reflectedInstance.buildFromKeyValueAttributeList(attr),
-                            getOrCreateSession());
+                            GetUserFromSession().getSessionId());
                 }
             }
             catch (InputValidationException ie)
@@ -146,7 +142,7 @@ namespace VisualMannschaftsverwaltung.View
             btnCreatePerson.Text = "Person hinzufügen";
 
             ApplicationController.loadPersonenFromRepository(
-                getOrCreateSession());
+                GetUserFromSession().getSessionId());
             this.loadPersonen();
         }
 
@@ -185,7 +181,7 @@ namespace VisualMannschaftsverwaltung.View
             tableKeys.Add("Nachname");
             tableKeys.Add("Geburtsdatum");
             tableKeys.Add("Sportart");
-            ApplicationController.loadPersonenFromRepository(getOrCreateSession());
+            ApplicationController.loadPersonenFromRepository(GetUserFromSession().getSessionId());
             ApplicationController.Personen.ForEach(person =>
             {
                 person.getGenericAttribues().ForEach(attribute =>
@@ -230,7 +226,7 @@ namespace VisualMannschaftsverwaltung.View
                     x => x.Key == "PERSONENVERWALTUNG").Value,
                 ApplicationController.StorageSearchTerm.FindLast(
                     x => x.Key == "PERSONENVERWALTUNG").Value,
-                getOrCreateSession()).ForEach(person =>
+                GetUserFromSession().getSessionId()).ForEach(person =>
             {
                 tr = new HtmlTableRow();
                 tr.Attributes.Add("class", "hoverRow");
@@ -264,7 +260,7 @@ namespace VisualMannschaftsverwaltung.View
                         cellContent = "";
                         //tc.Attributes.CssStyle.Add("width","0%");
 
-                        if(authenticatedRole == AuthenticatedRole.ADMIN) { 
+                        if(GetUserFromSession().isAdmin()) { 
                             Button edit = new Button();
                             edit.ID = "E" + person.ID.ToString();
                             edit.Click += new EventHandler(this.editSelectedPerson);
@@ -329,7 +325,7 @@ namespace VisualMannschaftsverwaltung.View
                     x => x.Key == "PERSONENVERWALTUNG").Value,
                 ApplicationController.StorageSearchTerm.FindLast(
                     x => x.Key == "PERSONENVERWALTUNG").Value,
-                getOrCreateSession());
+                GetUserFromSession().getSessionId());
             p = list.Find(player => player.ID == pid);
        
             ApplicationController.removePerson(p);
@@ -351,7 +347,7 @@ namespace VisualMannschaftsverwaltung.View
                     x => x.Key == "PERSONENVERWALTUNG").Value,
                 ApplicationController.StorageSearchTerm.FindLast(
                     x => x.Key == "PERSONENVERWALTUNG").Value,
-                getOrCreateSession());
+                GetUserFromSession().getSessionId());
             p = list.Find(player => player.ID == pid);
 
             PersonSelectionTypeDD.SelectedValue = p.GetType().ToString();
@@ -455,23 +451,6 @@ namespace VisualMannschaftsverwaltung.View
         protected void generateXML(object sender, EventArgs e)
         {
             ApplicationController.generatePersonenXML();
-        }
-
-        public string getOrCreateSession()
-        {
-            string session = "undefined";
-
-            if (this.Session["User"] != null)
-            {
-                session = (string)this.Session["User"];
-            }
-            else
-            {
-                //session = Guid.NewGuid().ToString();
-                //this.Session["User"] = session;
-            }
-
-            return session;
         }
         #endregion
     }

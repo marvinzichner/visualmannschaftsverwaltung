@@ -15,14 +15,15 @@ namespace VisualMannschaftsverwaltung
         {
             string session = "undefined";
 
-            if (this.Session["User"] != null)
+            if (this.Session["UserAuth"] != null)
             {
                 authRequired.Visible = false;
                 auth.Visible = true;
                 MainContent.Visible = true;
 
-                session = $"{(string)this.Session["Username"]} ({(string)this.Session["User"]})";
-                displayName.InnerText = $"{(string)this.Session["Username"]} ({((AuthenticatedRole)this.Session["Role"]).ToString()})";
+                AuthenticatedUser user = (AuthenticatedUser)this.Session["UserAuth"];
+                session = $"{user.getUsername()} ({user.getSessionId()})";
+                displayName.InnerText = $"{user.getUsername()} ({user.getAuthenticatedRole().ToString()})";
             }
             else
             {
@@ -50,9 +51,12 @@ namespace VisualMannschaftsverwaltung
                         .Replace("-", string.Empty)
                         .ToLower();
 
-                    this.Session["User"] = encoded;
-                    this.Session["Username"] = username.Text;
-                    this.Session["Role"] = repo.getRoleFromUsername(username.Text);
+                    AuthenticatedUser user = new AuthenticatedUser();
+                    user.setSessionId(encoded)
+                        .setUsername(username.Text)
+                        .setAuthenticatedRole(repo.getRoleFromUsername(username.Text));
+
+                    this.Session["UserAuth"] = user;
 
                     authRequired.Controls.Clear();
                     authRequired.InnerHtml = $"Laden Sie die Seite neu, um die Anmeldung abzuschließen.";
@@ -63,9 +67,8 @@ namespace VisualMannschaftsverwaltung
 
         protected void destroySession(object sender, EventArgs e)
         {
-            this.Session["User"] = null;
-            this.Session["Username"] = null;
-            this.Session["Role"] = null;
+            this.Session["UserAuth"] = null;
+
             auth.Controls.Clear();
             auth.InnerHtml = $"Laden Sie die Seite neu, um die Abmeldung abzuschließen.";
             Page.Response.Redirect("/", true);

@@ -8,14 +8,13 @@ using System.Web.UI.WebControls;
 
 namespace VisualMannschaftsverwaltung.View
 {
-    public partial class Spiele : System.Web.UI.Page
+    public partial class Spiele : CustomPage
     {
         #region Eigenschaften
         private ApplicationController applicationController;
         private bool selectedContext;
         private string selectedTurnierId;
         private List<Mannschaft> mannschaftenList;
-        private AuthenticatedRole authenticatedRole;
         #endregion
 
         #region Accessoren / Modifier
@@ -23,15 +22,12 @@ namespace VisualMannschaftsverwaltung.View
         public bool SelectedContext { get => selectedContext; set => selectedContext = value; }
         public string SelectedTurnierId { get => selectedTurnierId; set => selectedTurnierId = value; }
         public List<Mannschaft> MannschaftenList { get => mannschaftenList; set => mannschaftenList = value; }
-        public AuthenticatedRole AuthenticatedRole { get => authenticatedRole; set => authenticatedRole = value; }
         #endregion
 
         #region Konstruktor
         protected void Page_Init(object sender, EventArgs e)
         {
             ApplicationController = Global.ApplicationController;
-            if (this.Session["Role"] != null)
-                authenticatedRole = (AuthenticatedRole)this.Session["Role"];
 
             reloadContext();
         }
@@ -46,7 +42,7 @@ namespace VisualMannschaftsverwaltung.View
         #region Woker
         private void disableAdminFeatures()
         {
-            if (authenticatedRole == AuthenticatedRole.USER)
+            if (GetUserFromSession().isUser())
             {
                 addNewTurnier.Visible = false;
                 generateTurniere.Visible = false;
@@ -73,7 +69,7 @@ namespace VisualMannschaftsverwaltung.View
 
         public void loadMannschaftenContext()
         {
-            this.mannschaftenList = ApplicationController.getMannschaften(getOrCreateSession());
+            this.mannschaftenList = ApplicationController.getMannschaften(GetUserFromSession().getSessionId());
         }
 
         public Mannschaft getMannschaftByKey(int id)
@@ -87,7 +83,7 @@ namespace VisualMannschaftsverwaltung.View
             dropdownTeamA.Items.Clear();
             dropdownTeamb.Items.Clear();
 
-            ApplicationController.getTurniere(getOrCreateSession()).ForEach(turnier => {
+            ApplicationController.getTurniere(GetUserFromSession().getSessionId()).ForEach(turnier => {
                 ListItem listItem = new ListItem();
                 listItem.Text = turnier.getName();
                 listItem.Value = $"method=dataTurnier#turnier={turnier.getId()}";
@@ -96,7 +92,7 @@ namespace VisualMannschaftsverwaltung.View
             });
 
             if (this.Session["SelectedTurnier"] != null)
-                ApplicationController.getTurniere(getOrCreateSession())
+                ApplicationController.getTurniere(GetUserFromSession().getSessionId())
                     .Find(t => t.getId().ToString().Equals((string)this.Session["SelectedTurnier"]))
                     .getMannschaften()
                     .ForEach(mannschaft =>
@@ -123,8 +119,8 @@ namespace VisualMannschaftsverwaltung.View
                 Convert.ToInt32(kv1.getValueFromKeyValueList("mannschaft")),
                 Convert.ToInt32(kv2.getValueFromKeyValueList("mannschaft")),
                 DateTime.Now.ToShortDateString(), 
-                Convert.ToInt32((string)this.Session["SelectedTurnier"]), 
-                getOrCreateSession());
+                Convert.ToInt32((string)this.Session["SelectedTurnier"]),
+                GetUserFromSession().getSessionId());
 
             createNewGame.Visible = false;
             reloadContext();
@@ -134,7 +130,7 @@ namespace VisualMannschaftsverwaltung.View
         {
             ApplicationController.generateRandomResults(
                 (string)this.Session["SelectedTurnier"],
-                getOrCreateSession());
+                GetUserFromSession().getSessionId());
             reloadContext();
         }
 
@@ -142,7 +138,7 @@ namespace VisualMannschaftsverwaltung.View
         {
             string id = this.selectedTurnierId;
             List<Mannschaft> turnierMannschaften =
-                ApplicationController.getTurniere(getOrCreateSession())
+                ApplicationController.getTurniere(GetUserFromSession().getSessionId())
                 .Find(t => t.getId().ToString().Equals((string)this.Session["SelectedTurnier"]))
                 .getMannschaften();
 
@@ -158,7 +154,7 @@ namespace VisualMannschaftsverwaltung.View
                             mannschaft2.ID,
                             DateTime.Now.ToShortDateString(),
                             Utils.convertToInteger32((string)this.Session["SelectedTurnier"]),
-                            getOrCreateSession());
+                            GetUserFromSession().getSessionId());
                     }
                 });
             });
@@ -188,7 +184,7 @@ namespace VisualMannschaftsverwaltung.View
             presenterRank.Rows.Add(trHead);
 
             if (selectedContext)
-                ApplicationController.getSpiele(getOrCreateSession())
+                ApplicationController.getSpiele(GetUserFromSession().getSessionId())
                     .FindAll(search => search.getTurnierId().ToString().Equals(ID))
                     .ForEach(spiel =>
                     {
@@ -234,7 +230,7 @@ namespace VisualMannschaftsverwaltung.View
             }
 
             try { 
-                spielTitle.InnerText = ApplicationController.getTurniere(getOrCreateSession())
+                spielTitle.InnerText = ApplicationController.getTurniere(GetUserFromSession().getSessionId())
                     .Find(turnier => turnier.getId().Equals((string)this.Session["SelectedTurnier"])).getName();
             }
             catch (Exception e)
@@ -250,7 +246,7 @@ namespace VisualMannschaftsverwaltung.View
             presenterTable.Rows.Add(trHead);
 
             if (selectedContext)
-                ApplicationController.getSpiele(getOrCreateSession())
+                ApplicationController.getSpiele(GetUserFromSession().getSessionId())
                     .FindAll(search => search.getTurnierId().ToString().Equals(ID))
                     .ForEach(spiel =>
                 {
@@ -278,16 +274,6 @@ namespace VisualMannschaftsverwaltung.View
             this.Session["SelectedTurnier"] = kv.getValueFromKeyValueList("turnier");
             this.selectedContext = true;
             reloadContext();
-        }
-
-        public string getOrCreateSession()
-        {
-            string session = "undefined";
-            if (this.Session["User"] != null)
-            {
-                session = (string)this.Session["User"];
-            }
-            return session;
         }
         #endregion
     }

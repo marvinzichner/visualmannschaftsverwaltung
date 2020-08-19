@@ -7,16 +7,14 @@ using System.Web.UI.WebControls;
 
 namespace VisualMannschaftsverwaltung.View
 {
-    public partial class MannschaftsVerwaltung : System.Web.UI.Page
+    public partial class MannschaftsVerwaltung : CustomPage
     {
         #region Eigenschaften
         private ApplicationController applicationController;
-        private AuthenticatedRole authenticatedRole;
         #endregion
 
         #region Accessoren / Modifier
         public ApplicationController ApplicationController { get => applicationController; set => applicationController = value; }
-        public AuthenticatedRole AuthenticatedRole { get => authenticatedRole; set => authenticatedRole = value; }
         #endregion
 
         #region Konstruktor
@@ -26,8 +24,6 @@ namespace VisualMannschaftsverwaltung.View
         protected void Page_Init(object sender, EventArgs e)
         {
             ApplicationController = Global.ApplicationController;
-            if(this.Session["Role"] != null)
-                authenticatedRole = (AuthenticatedRole)this.Session["Role"];
 
             this.checkAlerts();
             this.prepareData();
@@ -40,7 +36,7 @@ namespace VisualMannschaftsverwaltung.View
 
         private void disableAdminFeatures()
         {
-            if (authenticatedRole == AuthenticatedRole.USER)
+            if (GetUserFromSession().isUser())
             {
                 teamsDelete.Visible = false;
                 createNewTeam.Visible = false;
@@ -65,7 +61,7 @@ namespace VisualMannschaftsverwaltung.View
             //Dropdown
             teamsList.Items.Clear();
             ApplicationController.getMannschaften(
-                getOrCreateSession()).ForEach(m =>
+               GetUserFromSession().getSessionId()).ForEach(m =>
             {
                 ListItem li = new ListItem();
                 li.Text = $"{m.Name} ({m.SportArt.ToString()})";
@@ -75,7 +71,7 @@ namespace VisualMannschaftsverwaltung.View
         }
         protected void loadMembers(Mannschaft.OrderBy ob = Mannschaft.OrderBy.UNSORTED) {
             //Team Members
-            ApplicationController.loadPersonenFromRepository(getOrCreateSession());
+            ApplicationController.loadPersonenFromRepository(GetUserFromSession().getSessionId());
        
             membersListContainer.Controls.Clear();
             personListDelete.Items.Clear();
@@ -142,7 +138,7 @@ namespace VisualMannschaftsverwaltung.View
             ApplicationController.removeMannschaft(
                  ApplicationController.Mannschaften.Find(
                     m => m.Name == team),
-                 getOrCreateSession());
+                 GetUserFromSession().getSessionId());
             
             ApplicationController.TempMannschaft = new Mannschaft("_GENERATED");
             this.contentContainer.Visible = false;
@@ -169,7 +165,7 @@ namespace VisualMannschaftsverwaltung.View
                     ApplicationController.TempMannschaft.Personen.Add(p);
                     ApplicationController.Mannschaften.Remove(copy);
                     ApplicationController.Mannschaften.Add(ApplicationController.TempMannschaft);
-                    ApplicationController.addPersonToMannschaft(p, copy, getOrCreateSession());
+                    ApplicationController.addPersonToMannschaft(p, copy, GetUserFromSession().getSessionId());
                 }
             });
 
@@ -207,7 +203,7 @@ namespace VisualMannschaftsverwaltung.View
 
                 DataRepository repo = new DataRepository();
                 repo.enableSessionbasedQueries()
-                    .setSession(getOrCreateSession())
+                    .setSession(GetUserFromSession().getSessionId())
                     .updateMannschaftSettings(
                         ApplicationController.TempMannschaft.ID.ToString(), teamname, sa.ToString());
             }
@@ -218,7 +214,7 @@ namespace VisualMannschaftsverwaltung.View
                     .name(teamname)
                     .sportArt(sa);
 
-                ApplicationController.addMannschaftIfNotExists(mannschaft, getOrCreateSession());
+                ApplicationController.addMannschaftIfNotExists(mannschaft, GetUserFromSession().getSessionId());
             }
 
             ApplicationController.EditMode = false;
@@ -239,7 +235,7 @@ namespace VisualMannschaftsverwaltung.View
         {
             string teamNameSel = this.teamsList.SelectedValue;
             ApplicationController.getMannschaften(
-                getOrCreateSession()).ForEach(m =>
+                GetUserFromSession().getSessionId()).ForEach(m =>
             { 
                 if(m.Name == teamNameSel)
                 {
@@ -258,24 +254,6 @@ namespace VisualMannschaftsverwaltung.View
         protected void generateXML(object sender, EventArgs e)
         {
             ApplicationController.generateMannschaftenXML();
-        }
-
-        public string getOrCreateSession()
-        {
-            string session = "undefined";
-
-            if (this.Session["User"] != null)
-            {
-                session = (string)this.Session["User"];
-            }
-            else
-            {
-                //session = Guid.NewGuid().ToString();
-                //this.Session["User"] = session;
-                //Console.WriteLine($"WebContext started with SessionId {session}");
-            }
-
-            return session;
         }
         #endregion
 

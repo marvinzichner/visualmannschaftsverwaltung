@@ -8,11 +8,10 @@ using System.Web.UI.WebControls;
 
 namespace VisualMannschaftsverwaltung.View
 {
-    public partial class TurnierVerwaltung : System.Web.UI.Page
+    public partial class TurnierVerwaltung : CustomPage
     {
         #region Eigenschaften
         private ApplicationController applicationController;
-        private AuthenticatedRole authenticatedRole;
         private string turnier;
         private string mannschaft;
         #endregion
@@ -21,7 +20,6 @@ namespace VisualMannschaftsverwaltung.View
         public ApplicationController ApplicationController { get => applicationController; set => applicationController = value; }
         public string Turnier { get => turnier; set => turnier = value; }
         public string Mannschaft { get => mannschaft; set => mannschaft = value; }
-        public AuthenticatedRole AuthenticatedRole { get => authenticatedRole; set => authenticatedRole = value; }
         #endregion
 
         #region Konstruktor
@@ -30,8 +28,6 @@ namespace VisualMannschaftsverwaltung.View
         protected void Page_Init(object sender, EventArgs e)
         {
             ApplicationController = Global.ApplicationController;
-            if (this.Session["Role"] != null)
-                authenticatedRole = (AuthenticatedRole)this.Session["Role"];
 
             sectionCreateTurnier.Visible = false;
             sectionMapping.Visible = false;
@@ -50,7 +46,7 @@ namespace VisualMannschaftsverwaltung.View
         #region Worker
         private void disableAdminFeatures()
         {
-            if (authenticatedRole == AuthenticatedRole.USER)
+            if (GetUserFromSession().isUser())
             {
                 buttonConfirmSelection.Visible = false;
                 buttonAddMapping.Visible = false;
@@ -113,20 +109,20 @@ namespace VisualMannschaftsverwaltung.View
             trHead.Cells.Add(createCell($"Aktionen", "tablecell cellHead"));
             storedTurniere.Rows.Add(trHead);
 
-            ApplicationController.getTurniere(getOrCreateSession()).ForEach(turnier => {
+            ApplicationController.getTurniere(GetUserFromSession().getSessionId()).ForEach(turnier => {
                 HtmlTableRow tr = new HtmlTableRow();
                 tr.Attributes.Add("class", "cellBodyHover");
                 tr.Cells.Add(createCell($"{turnier.getId()}", "tablecell cellBody"));
                 tr.Cells.Add(createCell($"{turnier.getName()}", "tablecell cellBody"));
                 tr.Cells.Add(createCell($"{turnier.getType()}", "tablecell cellBody"));
 
-                if(authenticatedRole == AuthenticatedRole.ADMIN)
+                if(GetUserFromSession().isAdmin())
                     tr.Cells.Add(createCellButton(
                         $"Turnier und Mannschaften löschen",
                         "tablecell cellBody",
                         $"method=deleteTurnier#turnier={turnier.getId()}"));
 
-                if (authenticatedRole == AuthenticatedRole.USER)
+                if (GetUserFromSession().isUser())
                     tr.Cells.Add(createCell(
                         $"",
                         "tablecell cellBody"));
@@ -151,13 +147,13 @@ namespace VisualMannschaftsverwaltung.View
                     trEx.Cells.Add(createCell($"&rarr; {mannschaft.Name}", "tablecell cellReadOnly cellBody"));
                     trEx.Cells.Add(createCell($"{mannschaft.SportArt}", $"tablecell cellReadOnly {checkupSameTypeClass} cellBody"));
 
-                    if (authenticatedRole == AuthenticatedRole.ADMIN)
+                    if (GetUserFromSession().isAdmin())
                         trEx.Cells.Add(createCellButton(
                             $"Mannschaft entfernen",
                             "tablecell cellInteraction cellBody",
                             $"method=deleteMannschaft#mannschaft={mannschaft.ID}#turnier={turnier.getId()}"));
 
-                    if (authenticatedRole == AuthenticatedRole.USER)
+                    if (GetUserFromSession().isUser())
                         tr.Cells.Add(createCell(
                             $"",
                             "tablecell cellBody"));
@@ -174,7 +170,7 @@ namespace VisualMannschaftsverwaltung.View
             dropdownMannschaften.Items.Clear();
             dropdownTurniere.Items.Clear();
 
-            ApplicationController.getMannschaften(getOrCreateSession()).ForEach(mannschaft =>
+            ApplicationController.getMannschaften(GetUserFromSession().getSessionId()).ForEach(mannschaft =>
             {
                 ListItem item = new ListItem();
                 item.Text = $"{mannschaft.ID.ToString()}: {mannschaft.Name} [{mannschaft.SportArt.ToString()}]";
@@ -183,7 +179,7 @@ namespace VisualMannschaftsverwaltung.View
                 dropdownMannschaften.Items.Add(item);
             });
 
-            ApplicationController.getTurniere(getOrCreateSession()).ForEach(turnier =>
+            ApplicationController.getTurniere(GetUserFromSession().getSessionId()).ForEach(turnier =>
             {
                 ListItem item = new ListItem();
                 item.Text = $"{turnier.getId().ToString()}: {turnier.getName()} [{turnier.getType().ToString()}]";
@@ -219,8 +215,8 @@ namespace VisualMannschaftsverwaltung.View
 
             ApplicationController.createNewTurnier(
                 turnierNameField.Text,
-                sportArt, 
-                getOrCreateSession());
+                sportArt,
+                GetUserFromSession().getSessionId());
 
             this.loadTurniere();
             this.cancelAction(sender, e);
@@ -253,24 +249,6 @@ namespace VisualMannschaftsverwaltung.View
         {
             this.Mannschaft = this.dropdownMannschaften.SelectedValue;
             this.debug.InnerHtml = $"DEBUG: {this.Mannschaft}";
-        }
-
-
-        public string getOrCreateSession()
-        {
-            string session = "undefined";
-
-            if (this.Session["User"] != null)
-            {
-                session = (string)this.Session["User"];
-            }
-            else
-            {
-                //session = Guid.NewGuid().ToString();
-                //this.Session["User"] = session;
-            }
-
-            return session;
         }
         #endregion
     }

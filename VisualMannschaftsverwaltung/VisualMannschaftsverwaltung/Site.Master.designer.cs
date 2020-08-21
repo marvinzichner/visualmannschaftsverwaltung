@@ -13,6 +13,15 @@ namespace VisualMannschaftsverwaltung {
     public partial class SiteMaster {
         
         /// <summary>
+        /// invalid-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl invalid;
+        
+        /// <summary>
         /// auth-Steuerelement
         /// </summary>
         /// <remarks>

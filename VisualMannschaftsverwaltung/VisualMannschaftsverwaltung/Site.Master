@@ -61,12 +61,13 @@
             </div>
         </div>
         <div class="container body-content">
+            <div class="invalid" runat="server" id="invalid" visible="false">DER BENUTZERNAME UND/ODER DAS KENNWORT WAR FALSCH. BITTE VERSUCHEN SIE ES ERNEUT.</div>
             <div id="auth" runat="server" class="activeAuth">
                 Hallo, <span id="displayName" runat="server"></span> &emsp;
                 <asp:Button ID="logout" runat="server" OnClick="destroySession" Text="Abmelden" />
             </div>
             <div id="authRequired" runat="server">
-                <div  class="auth">
+                <div class="auth">
                     <b>Anmeldung erforderlich</b> &emsp;
                     Benutzername: <asp:TextBox ID="username" runat="server"></asp:TextBox> 
                     &emsp;
@@ -74,27 +75,43 @@
 
                     &emsp; 
                     <asp:Button ID="login" runat="server" OnClick="authenticate" Text="Login / Konto erstellen" />
+
+                    <span class="info">Bitte geben Sie ein Benutzernamen und ein Kennwort an!</span>
                 </div>
-                <br />
-                <br />
-                <b>Anmeldedaten</b><br />
-                <hr />
-                <b>Benutzername</b> mustermann<br />
-                <b>Kennwort</b> 1234<br />
-                <b>Rolle</b> Benutzer<br />
-                <br />
-                <b>Benutzername</b> mustermann.admin<br />
-                <b>Kennwort</b> password<br />
-                <b>Rolle</b> Administrator<br />
-                <hr />
-                <b>Benutzername</b> fcbla<br />
-                <b>Kennwort</b> simplepass<br />
-                <b>Rolle</b> Benutzer<br />
-                <br />
-                <b>Benutzername</b> fcbla.admin<br />
-                <b>Kennwort</b> sonnenblume<br />
-                <b>Rolle</b> Administrator<br />
             </div>
+
+            <br />
+            <br />
+            <table style="width: 100%; padding: 10px;">
+                <tr>
+                    <td></td>
+                    <td><b>Dummy 1</b></td>
+                    <td><b>Dummy 2</b></td>
+                    <td><b>Dummy 3</b></td>
+                    <td><b>Dummy 4</b></td>
+                </tr>
+                <tr>
+                    <td><b>Benutzername</b></td>
+                    <td>mustermann</td>
+                    <td>mustermann.admin</td>
+                    <td>fcbla</td>
+                    <td>fcbla.admin</td>
+                </tr>
+                <tr>
+                    <td><b>Kennwort</b></td>
+                    <td>1234</td>
+                    <td>password</td>
+                    <td>simplepass</td>
+                    <td>sonnenblume</td>
+                </tr>
+                <tr>
+                    <td><b>Rolle</b></td>
+                    <td>Benutzer</td>
+                    <td>Administrator</td>
+                    <td>Benutzer</td>
+                    <td>Administrator</td>
+                </tr>
+            </table>
 
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
@@ -110,7 +127,7 @@
         .auth {
             width:100%;
             padding: 20px;
-            background-color: #ffb3b3;
+            background-color: #d9d9d9;
             color: black;
         }
         .activeAuth {
@@ -118,6 +135,17 @@
             border-bottom: 2px solid #b2b2b2;
             padding: 10px;
             margin-bottom: 5px;
+        }
+        .invalid {
+            width:100%;
+            padding: 20px;
+            background-color: #ffb3b3;
+            border-bottom: 1px dotted black;
+            color: red;
+            text-align: center;
+        }
+        .info {
+            color: 
         }
     </style>
 </body>

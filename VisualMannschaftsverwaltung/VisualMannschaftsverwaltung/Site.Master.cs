@@ -62,6 +62,10 @@ namespace VisualMannschaftsverwaltung
                     authRequired.InnerHtml = $"Laden Sie die Seite neu, um die Anmeldung abzuschließen.";
                     Page.Response.Redirect("/", true);
                 }
+                else
+                {
+                    invalid.Visible = true;
+                }
             }
         }
 

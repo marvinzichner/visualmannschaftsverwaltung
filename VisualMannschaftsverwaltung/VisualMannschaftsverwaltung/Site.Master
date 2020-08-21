@@ -74,9 +74,9 @@
                     Kennwort: <asp:TextBox ID="password" runat="server" TextMode="Password"></asp:TextBox>
 
                     &emsp; 
-                    <asp:Button ID="login" runat="server" OnClick="authenticate" Text="Login / Konto erstellen" />
+                    <asp:Button ID="login" runat="server" OnClick="authenticate" Text="Login / Konto erstellen" /><br />
 
-                    <span class="info">Bitte geben Sie ein Benutzernamen und ein Kennwort an!</span>
+                    <span class="info" runat="server" id="enterPassword" visible="false">Bitte geben Sie ein Benutzernamen und ein Kennwort an!</span>
                 </div>
             </div>
 

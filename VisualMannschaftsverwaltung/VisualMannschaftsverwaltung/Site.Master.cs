@@ -66,6 +66,10 @@ namespace VisualMannschaftsverwaltung
                 {
                     invalid.Visible = true;
                 }
+            } 
+            else
+            {
+                enterPassword.Visible = true;
             }
         }
 

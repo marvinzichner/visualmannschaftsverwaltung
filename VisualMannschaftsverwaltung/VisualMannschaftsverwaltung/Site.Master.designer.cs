@@ -85,6 +85,15 @@ namespace VisualMannschaftsverwaltung {
         protected global::System.Web.UI.WebControls.Button login;
         
         /// <summary>
+        /// enterPassword-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl enterPassword;
+        
+        /// <summary>
         /// MainContent-Steuerelement
         /// </summary>
         /// <remarks>

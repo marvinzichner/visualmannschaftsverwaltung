@@ -31,8 +31,6 @@ namespace VisualMannschaftsverwaltung
             ApplicationController = new ApplicationController();
             ApplicationContext.createFilesystemStructure();
             ApplicationController.prepareTuple();
-            ApplicationController.receiveContext(
-                ApplicationContext.createApplicationContext());
             ApplicationController.loadPersonenFromRepository();
             ApplicationController.loadMannschaftenFromRepository("");
             

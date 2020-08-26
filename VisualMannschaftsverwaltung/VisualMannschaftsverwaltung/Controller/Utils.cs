@@ -40,77 +40,6 @@ namespace VisualMannschaftsverwaltung
             return char.ToUpper(c[0]) - 64;
         }
 
-        public static void generatePersonTable(List<Person> persons)
-        {
-            string PATTERN = "|{0,22}|{1,6}|{2,10}|{3,10}|{4,6}|{5,6}";
-            Console.WriteLine(String.Format(PATTERN, "Name", "Nr", "Art", "Rolle", "XP", "Lic."));
-            Console.WriteLine("-------------------------------------------------------------------");
-
-            foreach (Person p in persons)
-            {
-                if (p.isFussballSpieler())
-                {
-                    FussballSpieler fs = p.toFussballSpieler();
-                    Console.WriteLine(
-                        String.Format(
-                            PATTERN,
-                            fs.Name,
-                            fs.SpielerNummer,
-                            fs.getSportArt(),
-                            fs.getSpielerRolle(),
-                            fs.SpielSiege,
-                            ""
-                        )
-                    );
-                }
-                else if (p.isHandballSpieler())
-                {
-                    HandballSpieler fs = p.toHandballSpieler();
-                    Console.WriteLine(
-                        String.Format(
-                            PATTERN,
-                            fs.Name,
-                            fs.SpielerNummer,
-                            fs.getSportArt(),
-                            fs.getSpielerRolle(),
-                            fs.SpielSiege,
-                            ""
-                        )
-                    );
-                }
-                else if (p.isTennisSpieler())
-                {
-                    TennisSpieler fs = p.toTennisSpieler();
-                    Console.WriteLine(
-                        String.Format(
-                            PATTERN,
-                            fs.Name,
-                            fs.SpielerNummer,
-                            fs.getSportArt(),
-                            fs.getSpielerRolle(),
-                            fs.SpielSiege,
-                            ""
-                        )
-                    );
-                }
-                else if (p.isTrainer())
-                {
-                    Trainer fs = p.toTrainer();
-                    Console.WriteLine(
-                        String.Format(
-                            PATTERN,
-                            fs.Name,
-                            "",
-                            fs.getSportArt(),
-                            "TRAINER",
-                            "",
-                            fs.HasLicense
-                        )
-                    );
-                }
-            }
-        }
-
         public static int compareDates(DateTime d1, DateTime d2)
         {
             int result = -1;
@@ -129,12 +58,6 @@ namespace VisualMannschaftsverwaltung
             }
 
             return result;
-        }
-
-        public List<Person> flushPersonList()
-        {
-            this.Personen = new List<Person>();
-            return this.Personen;
         }
 
         public static string basicClassName(object o)
@@ -185,12 +108,6 @@ namespace VisualMannschaftsverwaltung
             }
 
             return result;
-        }
-
-        public List<Person> addPerson(Person p)
-        {
-            this.Personen.Add(p);
-            return this.Personen;
         }
 
         public static string simpleFileDate()

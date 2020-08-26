@@ -116,16 +116,6 @@ namespace VisualMannschaftsverwaltung
             }
         }
 
-        public void receiveContext(List<Mannschaft> mns)
-        {
-            this.Mannschaften = mns;
-        }
-
-        public void receivePersonen(List<Person> mns)
-        {
-            this.Personen = mns;
-        }
-
         public List<Person> getPersonen(Mannschaft.OrderBy ob, Mannschaft.SearchTerm st, string session = "ALL")
         {
             loadPersonenFromRepository(session);

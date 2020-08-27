@@ -33,26 +33,27 @@ namespace VisualMannschaftsverwaltung
         public static void createDatabaseContext()
         {
             DataRepository repo = new DataRepository();
-            int DB_VERSION = repo.getLatestVersion();
-            int currentFile = 0;
+            if(repo.databaseIsConnectedAndReady()) { 
+                int DB_VERSION = repo.getLatestVersion();
+                int currentFile = 0;
 
-            string currentPath = System.AppDomain.CurrentDomain.BaseDirectory.ToString();
-            string migrationPath = $"{currentPath}\\Controller\\Repository\\Migration";
-            string[] scripts = Directory.GetFiles(migrationPath);
-            foreach(string script in scripts)
-            {
-                if (currentFile > DB_VERSION)
+                string currentPath = System.AppDomain.CurrentDomain.BaseDirectory.ToString();
+                string migrationPath = $"{currentPath}\\Controller\\Repository\\Migration";
+                string[] scripts = Directory.GetFiles(migrationPath);
+                foreach(string script in scripts)
                 {
-                    string sql = File.ReadAllText(script, Encoding.UTF8);
-                    repo.executeSql(sql);
+                    if (currentFile > DB_VERSION)
+                    {
+                        string sql = File.ReadAllText(script, Encoding.UTF8);
+                        repo.executeSql(sql);
 
-                    string versionInserter = $"insert into MVW_MIGRATION (VERSION, NAME, CREATED) values ({currentFile}, '{script}', NOW())";
-                    repo.executeSql(versionInserter);
+                        string versionInserter = $"insert into MVW_MIGRATION (VERSION, NAME, CREATED) values ({currentFile}, '{script}', NOW())";
+                        repo.executeSql(versionInserter);
+                    }
+
+                    currentFile++;
                 }
-
-                currentFile++;
             }
-
         }
 
         public static void createFilesystemStructure()

@@ -243,6 +243,15 @@ namespace VisualMannschaftsverwaltung
             return Personen;
         }
 
+        public bool databaseIsConnectedAndReady()
+        {
+            int check = 0;
+            check = executeSql("select 1");
+
+            if (check == 0) return false;
+            return true;
+        }
+
         public void removePerson(Person p)
         {
             string personId = p.ID.ToString();

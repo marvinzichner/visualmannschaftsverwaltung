@@ -39,7 +39,7 @@
             </Scripts>
         </asp:ScriptManager>
 
-        <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar navbar-inverse navbar-fixed-top" id="navigationBar" runat="server">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -60,7 +60,7 @@
                 </div>
             </div>
         </div>
-        <div class="container body-content">
+        <div class="container body-content" id="bodyContainer" runat="server">
             <div class="invalid" runat="server" id="invalid" visible="false">DER BENUTZERNAME UND/ODER DAS KENNWORT WAR FALSCH. BITTE VERSUCHEN SIE ES ERNEUT.</div>
             <div id="auth" runat="server" class="activeAuth">
                 Hallo, <span id="displayName" runat="server"></span> &emsp;
@@ -123,6 +123,15 @@
 
     </form>
 
+    <div class="bigError">
+        <b>Die Anwendung wurde pausiert</b><br />
+        Derzeit ist keine Verbindung zur Datenbank möglich. <br />
+        Ohne aktive Datenbankverbindung könnten Ihre Daten verloren gehen.<br />
+        Bitte laden Sie die Seite in wenigen Augenblicken neu. <br />
+        <br />
+        Prüfen Sie, ob die Datenbank läuft und erreichbar ist. Kontaktieren Sie ggf. den Support.
+    </div>
+
     <style>
         .auth {
             width:100%;
@@ -144,8 +153,11 @@
             color: red;
             text-align: center;
         }
-        .info {
-            color: 
+        .bigError {
+            color: black;
+            background-color: #ffcccc;
+            padding: 20px;
+            margin: 60px;
         }
     </style>
 </body>

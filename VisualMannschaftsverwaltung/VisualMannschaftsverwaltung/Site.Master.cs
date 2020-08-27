@@ -33,6 +33,17 @@ namespace VisualMannschaftsverwaltung
             }
 
             SessionText.InnerText = session;
+            this.checkLifecycle();
+        }
+
+        private void checkLifecycle()
+        {
+            DataRepository repo = new DataRepository();
+            if (!repo.databaseIsConnectedAndReady())
+            {
+                navigationBar.Visible = false;
+                bodyContainer.Visible = false;
+            }
         }
 
         protected void authenticate(object sender, EventArgs e)

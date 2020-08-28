@@ -49,7 +49,7 @@
                     </button>
                     <a class="navbar-brand" runat="server" href="~/"><b>Visual</b>Mannschaftsverwaltung</a>
                 </div>
-                <div class="navbar-collapse collapse">
+                <div class="navbar-collapse collapse" runat="server" id="shortcuts">
                     <ul class="nav navbar-nav">
                         <li><a runat="server" href="~/View/PersonenVerwaltung">Personen</a></li>
                         <li><a runat="server" href="~/View/MannschaftsVerwaltung">Mannschaften</a></li>
@@ -63,7 +63,8 @@
         <div class="container body-content" id="bodyContainer" runat="server">
             <div class="invalid" runat="server" id="invalid" visible="false">DER BENUTZERNAME UND/ODER DAS KENNWORT WAR FALSCH. BITTE VERSUCHEN SIE ES ERNEUT.</div>
             <div id="auth" runat="server" class="activeAuth">
-                Hallo, <span id="displayName" runat="server"></span> &emsp;
+                <span class="pleaseNote" runat="server" id="pleaseNote">Sie arbeiten aktuell nur mit eingeschränkter Leseberechtigung!</span>
+                <span id="displayName" runat="server"></span> &emsp;
                 <asp:Button ID="logout" runat="server" OnClick="destroySession" Text="Abmelden" />
             </div>
             <div id="authRequired" runat="server">
@@ -74,7 +75,7 @@
                     Kennwort: <asp:TextBox ID="password" runat="server" TextMode="Password"></asp:TextBox>
 
                     &emsp; 
-                    <asp:Button ID="login" runat="server" OnClick="authenticate" Text="Login / Konto erstellen" /><br />
+                    <asp:Button ID="login" runat="server" OnClick="authenticate" Text="Login" /><br />
 
                     <span class="info" runat="server" id="enterPassword" visible="false">Bitte geben Sie ein Benutzernamen und ein Kennwort an!</span>
                 </div>
@@ -148,11 +149,17 @@
             background-color: #d9d9d9;
             color: black;
         }
+        .pleaseNote {
+            text-align: left;
+            color: #ff9999;
+            margin-right: 20px;
+        }
         .activeAuth {
             width:100%;
             border-bottom: 2px solid #b2b2b2;
             padding: 10px;
             margin-bottom: 5px;
+            text-align: right;
         }
         .invalid {
             width:100%;

@@ -20,16 +20,20 @@ namespace VisualMannschaftsverwaltung
                 authRequired.Visible = false;
                 auth.Visible = true;
                 MainContent.Visible = true;
+                shortcuts.Visible = true;
+                pleaseNote.Visible = false;
 
                 AuthenticatedUser user = (AuthenticatedUser)this.Session["UserAuth"];
                 session = $"{user.getUsername()} ({user.getSessionId()})";
                 displayName.InnerText = $"{user.getUsername()} ({user.getAuthenticatedRole().ToString()})";
+                if (user.isUser()) pleaseNote.Visible = true;
             }
             else
             {
                 authRequired.Visible = true;
                 auth.Visible = false;
                 MainContent.Visible = false;
+                shortcuts.Visible = false;
             }
 
             SessionText.InnerText = session;

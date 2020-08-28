@@ -22,6 +22,15 @@ namespace VisualMannschaftsverwaltung {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl navigationBar;
         
         /// <summary>
+        /// shortcuts-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl shortcuts;
+        
+        /// <summary>
         /// bodyContainer-Steuerelement
         /// </summary>
         /// <remarks>
@@ -47,6 +56,15 @@ namespace VisualMannschaftsverwaltung {
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl auth;
+        
+        /// <summary>
+        /// pleaseNote-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pleaseNote;
         
         /// <summary>
         /// displayName-Steuerelement

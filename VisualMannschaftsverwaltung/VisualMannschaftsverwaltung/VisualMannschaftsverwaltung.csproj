@@ -218,7 +218,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Model\AuthenticatedUser.cs" />
-    <Compile Include="Model\Database\DBTable.cs" />
+    <Compile Include="Model\Database\DB.cs" />
     <Compile Include="Model\Spiel.cs" />
     <Compile Include="Model\FussballSpieler.cs" />
     <Compile Include="Model\HandballSpieler.cs" />

@@ -110,6 +110,13 @@
                     <td>Benutzer</td>
                     <td>Administrator</td>
                 </tr>
+                <tr>
+                    <td></td>
+                    <td><asp:Button ID="impersonate1" runat="server" Text="impersonate" USER="mustermann" PASS="1234" OnClick="impersonate" /></td>
+                    <td><asp:Button ID="impersonate2" runat="server" Text="impersonate" USER="mustermann.admin" PASS="password" OnClick="impersonate" /></td>
+                    <td><asp:Button ID="impersonate3" runat="server" Text="impersonate" USER="fcbla" PASS="simplepass" OnClick="impersonate" /></td>
+                    <td><asp:Button ID="impersonate4" runat="server" Text="impersonate" USER="fcbla.admin" PASS="sonnenblume" OnClick="impersonate" /></td>
+                </tr>
             </table>
             </div>
 
@@ -123,13 +130,15 @@
 
     </form>
 
-    <div class="bigError">
-        <b>Die Anwendung wurde pausiert</b><br />
+    <div class="bigError" id="connectionTimeout" runat="server">
+        <span class="bigTitle"><b>Die Anwendung wurde pausiert</b></span><br />
         Derzeit ist keine Verbindung zur Datenbank möglich. <br />
         Ohne aktive Datenbankverbindung könnten Ihre Daten verloren gehen.<br />
         Bitte laden Sie die Seite in wenigen Augenblicken neu. <br />
         <br />
-        Prüfen Sie, ob die Datenbank läuft und erreichbar ist. Kontaktieren Sie ggf. den Support.
+        Prüfen Sie, ob die Datenbank läuft und erreichbar ist. Kontaktieren Sie gegebenfalls den Support. <br />
+        <br />
+        <a runat="server" href="~/">Erneut versuchen</a>
     </div>
 
     <style>
@@ -158,6 +167,9 @@
             background-color: #ffcccc;
             padding: 20px;
             margin: 60px;
+        }
+        .bigTitle {
+            font-size: 20pt;
         }
     </style>
 </body>

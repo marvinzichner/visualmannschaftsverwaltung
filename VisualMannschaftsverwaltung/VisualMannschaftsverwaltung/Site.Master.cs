@@ -43,7 +43,25 @@ namespace VisualMannschaftsverwaltung
             {
                 navigationBar.Visible = false;
                 bodyContainer.Visible = false;
+                connectionTimeout.Visible = true;
+            } 
+            else
+            {
+                navigationBar.Visible = true;
+                bodyContainer.Visible = true;
+                connectionTimeout.Visible = false;
             }
+        }
+
+        protected void impersonate(object sender, EventArgs e)
+        {
+            Button b = sender as Button;
+            string user = b.Attributes["USER"].ToString();
+            string pass = b.Attributes["PASS"].ToString();
+
+            username.Text = user;
+            password.Text = pass;
+            authenticate(sender, e);
         }
 
         protected void authenticate(object sender, EventArgs e)

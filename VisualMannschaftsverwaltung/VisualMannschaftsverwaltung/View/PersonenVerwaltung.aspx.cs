@@ -37,7 +37,6 @@ namespace VisualMannschaftsverwaltung.View
             fieldBirthdate.Enabled = false;
             SelectedPerson = -1;
 
-            this.checkAlerts();
             this.loadPersonen();
             this.disableAdminFeatures();
         }
@@ -49,14 +48,6 @@ namespace VisualMannschaftsverwaltung.View
             if (GetUserFromSession().isUser())
             {
                 adminSection.Visible = false;
-            }
-        }
-
-        protected void checkAlerts()
-        {
-            if (!ApplicationController.DatabaseOk)
-            {
-                configMismatch.Visible = true;
             }
         }
 

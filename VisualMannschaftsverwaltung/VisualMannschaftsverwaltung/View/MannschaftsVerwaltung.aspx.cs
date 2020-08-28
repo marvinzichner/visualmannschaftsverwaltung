@@ -25,7 +25,6 @@ namespace VisualMannschaftsverwaltung.View
         {
             ApplicationController = Global.ApplicationController;
 
-            this.checkAlerts();
             this.prepareData();
             this.loadMembers();
         }
@@ -45,14 +44,6 @@ namespace VisualMannschaftsverwaltung.View
                 personListButton.Visible = false;
                 personListDelete.Visible = false;
                 personListDeleteButton.Visible = false;
-            }
-        }
-
-        protected void checkAlerts()
-        {
-            if (!ApplicationController.DatabaseOk)
-            {
-                configMismatch.Visible = true;
             }
         }
 

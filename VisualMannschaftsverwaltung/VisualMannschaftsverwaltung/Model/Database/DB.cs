@@ -7,17 +7,6 @@ namespace VisualMannschaftsverwaltung
 {
     public static class DB
     {
-        public readonly static string MANNSCHAFT = "MVW_MANNSCHAFT";
-        public readonly static string MANNSCHAFT_PERSON = "MVW_MANNSCHAFT_PERSON";
-        public readonly static string MANNSCHAFT_TURNIER = "MVW_MANNSCHAFT_TURNIER";
-        public readonly static string MIGRATION = "MVW_MIGRATION";
-        public readonly static string PHYSIOTHERAPEUT = "MVW_PHYSIOTHERAPEUT";
-        public readonly static string SPIEL = "MVW_SPIEL";
-        public readonly static string SPIELERROLLE = "MVW_SPIELERROLLE";
-        public readonly static string TENNISSPIELER = "MVW_TENNISSPIELER";
-        public readonly static string TRAINER = "MVW_TRAINER";
-        public readonly static string TURNIER = "MVW_TURNIER";
-
         public static class AUTH
         {
             public readonly static string TABLE = "MVW_AUTH";
@@ -54,6 +43,101 @@ namespace VisualMannschaftsverwaltung
             public readonly static string vorname = "VORNAME";
             public readonly static string nachname = "NACHNAME";
             public readonly static string geburtsdatum = "GEBURTSDATUM";
+            public readonly static string session = "SESSION_ID";
+        }
+
+        public static class MANNSCHAFT
+        {
+            public readonly static string TABLE = "MVW_MANNSCHAFT";
+            public readonly static string id = "ID";
+            public readonly static string name = "NAME";
+            public readonly static string type = "TYP";
+            public readonly static string gewonneneSpiele = "GEWONNENE_SPIELE";
+            public readonly static string gesamteSpiele = "GESAMTE_SPIELE";
+            public readonly static string session = "SESSION_ID";
+        }
+
+        public static class MANNSCHAFT_PERSON
+        {
+            public readonly static string TABLE = "MVW_MANNSCHAFT_PERSON";
+            public readonly static string id = "ID";
+            public readonly static string fkPerson = "FK_PERSON";
+            public readonly static string fkMannschaft = "FK_MANNSCHAFT";
+        }
+
+        public static class MANNSCHAFT_TURNIER
+        {
+            public readonly static string TABLE = "MVW_MANNSCHAFT_TURNIER";
+            public readonly static string id = "ID";
+            public readonly static string fkMannschaft = "MANNSCHAFT_ID";
+            public readonly static string fkTurnier = "TURNIER_ID";
+        }
+
+        public static class MIGRATION
+        {
+            public readonly static string TABLE = "MVW_MIGRATION";
+            public readonly static string version = "VERSION";
+            public readonly static string name = "NAME";
+            public readonly static string created = "CREATED";
+        }
+
+        public static class PHYSIOTHERAPEUT
+        {
+            public readonly static string TABLE = "MVW_PHYSIOTHERAPEUT";
+            public readonly static string id = "ID";
+            public readonly static string fkPerson = "PERSON_FK";
+            public readonly static string fkSpielerrolle = "SPIELERROLLE_FK";
+            public readonly static string hasLicense = "HAS_LICENSE";
+        }
+
+        public static class SPIEL
+        {
+            public readonly static string TABLE = "MVW_SPIEL";
+            public readonly static string id = "ID";
+            public readonly static string title = "TITEL";
+            public readonly static string fkMannschaftA = "MANNSCHAFT_A_FK";
+            public readonly static string fkMannschaftB = "MANNSCHAFT_B_FK";
+            public readonly static string resultA = "RESULT_A";
+            public readonly static string resultB = "RESULT_B";
+            public readonly static string spieltag = "SPIELTAG";
+            public readonly static string fkTurnier = "TURNIER_FK";
+            public readonly static string sessionId = "SESSION_ID";
+        }
+
+        public static class SPIELERROLLE
+        {
+            public readonly static string TABLE = "MVW_SPIELERROLLE";
+            public readonly static string id = "ID";
+            public readonly static string name = "NAME";
+        }
+
+        public static class TENNISSPIELER
+        {
+            public readonly static string TABLE = "MVW_TENNISSPIELER";
+            public readonly static string id = "ID";
+            public readonly static string fk_person = "PERSON_FK";
+            public readonly static string fk_spielerrolle = "SPIELERROLLE_FK";
+            public readonly static string gewonnene_spiele = "GEWONNENE_SPIELE";
+            public readonly static string leftArm = "LEFT_ARM";
+        }
+
+        public static class TRAINER
+        {
+            public readonly static string TABLE = "MVW_TRAINER";
+            public readonly static string id = "ID";
+            public readonly static string fk_person = "PERSON_FK";
+            public readonly static string fk_spielerrolle = "SPIELERROLLE_FK";
+            public readonly static string gewonneneSpiele = "GEWONNENE_SPIELE";
+            public readonly static string hasLicense = "HAS_LICENSE";
+        }
+
+        public static class TURNIER
+        {
+            public readonly static string TABLE = "MVW_TURNIER";
+            public readonly static string id = "ID";
+            public readonly static string name = "NAME";
+            public readonly static string type = "TYPE";
+            public readonly static string turnierart = "TURNIERART";
             public readonly static string session = "SESSION_ID";
         }
     }

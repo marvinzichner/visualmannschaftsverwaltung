@@ -115,8 +115,8 @@ namespace VisualMannschaftsverwaltung
             
             if(mid != "")
             {
-                joinCondition = $"left join {DB.MANNSCHAFT_PERSON} as mp on mp.FK_PERSON = p.ID";
-                mannschaftId = $"and mp.FK_MANNSCHAFT = {mid}";
+                joinCondition = $"left join {DB.MANNSCHAFT_PERSON.TABLE} as mp on mp.{DB.MANNSCHAFT_PERSON.fkPerson} = p.ID";
+                mannschaftId = $"and mp.{DB.MANNSCHAFT_PERSON.fkMannschaft} = {mid}";
             }
             if (SessionQuery)
             {
@@ -178,7 +178,10 @@ namespace VisualMannschaftsverwaltung
                 reader.Close();
 
                 //Tennisspieler
-                sql = $"select *, DATE_FORMAT({DB.PERSON.geburtsdatum}, \"%d.%m.%Y\") as BDAY from {DB.PERSON.TABLE} as p left join {DB.TENNISSPIELER} as t on p.{DB.PERSON.id} = t.PERSON_FK {joinCondition} where p.{DB.PERSON.id} = t.PERSON_FK {mannschaftId} {sessionSql};";
+                sql = $"select *, DATE_FORMAT({DB.PERSON.geburtsdatum}, \"%d.%m.%Y\") as BDAY " +
+                    $"from {DB.PERSON.TABLE} as p left join {DB.TENNISSPIELER.TABLE} as t " +
+                    $"on p.{DB.PERSON.id} = t.{DB.TENNISSPIELER.fk_person} {joinCondition} " +
+                    $"where p.{DB.PERSON.id} = t.{DB.TENNISSPIELER.fk_person} {mannschaftId} {sessionSql};";
                 command = new MySqlCommand(sql, MySqlConnection);
                 reader = command.ExecuteReader();
 
@@ -201,7 +204,10 @@ namespace VisualMannschaftsverwaltung
                 reader.Close();
 
                 //Trainer
-                sql = $"select *, DATE_FORMAT(GEBURTSDATUM, \"%d.%m.%Y\") as BDAY from {DB.PERSON.TABLE} as p left join {DB.TRAINER} as t on p.{DB.PERSON.id} = t.PERSON_FK {joinCondition} where p.{DB.PERSON.id} = t.PERSON_FK {mannschaftId} {sessionSql};";
+                sql = $"select *, DATE_FORMAT({DB.PERSON.geburtsdatum}, \"%d.%m.%Y\") as BDAY " +
+                    $"from {DB.PERSON.TABLE} as p left join {DB.TRAINER.TABLE} as t " +
+                    $"on p.{DB.PERSON.id} = t.{DB.TRAINER.fk_person} {joinCondition} " +
+                    $"where p.{DB.PERSON.id} = t.{DB.TRAINER.fk_person} {mannschaftId} {sessionSql};";
                 command = new MySqlCommand(sql, MySqlConnection);
                 reader = command.ExecuteReader();
 
@@ -223,7 +229,7 @@ namespace VisualMannschaftsverwaltung
                 reader.Close();
 
                 //PHYSIOTHERAPEUT
-                sql = $"select *, DATE_FORMAT({DB.PERSON.geburtsdatum}, \"%d.%m.%Y\") as BDAY from {DB.PERSON.TABLE} as p left join {DB.PHYSIOTHERAPEUT} as t on p.{DB.PERSON.id} = t.PERSON_FK {joinCondition} where p.{DB.PERSON.id} = t.PERSON_FK {mannschaftId} {sessionSql};";
+                sql = $"select *, DATE_FORMAT({DB.PERSON.geburtsdatum}, \"%d.%m.%Y\") as BDAY from {DB.PERSON.TABLE} as p left join {DB.PHYSIOTHERAPEUT.TABLE} as t on p.{DB.PERSON.id} = t.PERSON_FK {joinCondition} where p.{DB.PERSON.id} = t.PERSON_FK {mannschaftId} {sessionSql};";
                 command = new MySqlCommand(sql, MySqlConnection);
                 reader = command.ExecuteReader();
 
@@ -275,7 +281,7 @@ namespace VisualMannschaftsverwaltung
 
             string removePersonalizedData = $"delete from MVW_{className} where PERSON_FK = {personId}";
             string removePerson = $"delete from {DB.PERSON.TABLE} where {DB.PERSON.id} = {personId}";
-            string removeMannschaftEntries = $"delete from {DB.MANNSCHAFT_PERSON} where FK_PERSON = {personId}";
+            string removeMannschaftEntries = $"delete from {DB.MANNSCHAFT_PERSON.TABLE} where FK_PERSON = {personId}";
 
             executeSql(removePersonalizedData);
             executeSql(removePerson);
@@ -294,12 +300,12 @@ namespace VisualMannschaftsverwaltung
 
         public void getRankedMannschaftenByTurnier(int turnierId)
         {
-            string sqlPartA = $"SELECT *, SUM(RESULT_A) as CALCULATED_A FROM {DB.SPIEL} where TURNIER_FK={turnierId.ToString()} group by `MANNSCHAFT_A_FK` order by CALCULATED_A desc";
+            string sqlPartA = $"SELECT *, SUM(RESULT_A) as CALCULATED_A FROM {DB.SPIEL.TABLE} where TURNIER_FK={turnierId.ToString()} group by `MANNSCHAFT_A_FK` order by CALCULATED_A desc";
         }
 
         public void createNewSpielOfTurnier(string title, int playerA, int playerB, string spieltag, int turnierFk)
         {
-            string sql = $"insert into {DB.SPIEL} (TITEL, MANNSCHAFT_A_FK, MANNSCHAFT_B_FK, RESULT_A, RESULT_B, SPIELTAG, TURNIER_FK, SESSION_ID) " +
+            string sql = $"insert into {DB.SPIEL.TABLE} (TITEL, MANNSCHAFT_A_FK, MANNSCHAFT_B_FK, RESULT_A, RESULT_B, SPIELTAG, TURNIER_FK, SESSION_ID) " +
                 $"values ('{title}', {playerA.ToString()}, {playerB.ToString()}, 0, 0, '{spieltag}', {turnierFk}, '{Session}')";
 
             executeSql(sql);
@@ -307,7 +313,7 @@ namespace VisualMannschaftsverwaltung
 
         public void updateSpielWithResults(int id, int a, int b)
         {
-            string sql = $"update {DB.SPIEL} set RESULT_A = {a.ToString()}, RESULT_B = {b.ToString()} where ID = {id.ToString()}";
+            string sql = $"update {DB.SPIEL.TABLE} set RESULT_A = {a.ToString()}, RESULT_B = {b.ToString()} where ID = {id.ToString()}";
 
             executeSql(sql);
         }
@@ -374,7 +380,7 @@ namespace VisualMannschaftsverwaltung
 
             if (createConnection())
             {
-                string sql = $"select * from {DB.MIGRATION};";
+                string sql = $"select * from {DB.MIGRATION.TABLE};";
                 MySqlCommand command = new MySqlCommand(sql, MySqlConnection);
                 MySqlDataReader reader = command.ExecuteReader();
 
@@ -395,7 +401,7 @@ namespace VisualMannschaftsverwaltung
             if (createConnection())
             {
                 try { 
-                    string sql = $"select * from {DB.MIGRATION};";
+                    string sql = $"select * from {DB.MIGRATION.TABLE};";
                     MySqlCommand command = new MySqlCommand(sql, MySqlConnection);
                     MySqlDataReader reader = command.ExecuteReader();
 
@@ -429,7 +435,7 @@ namespace VisualMannschaftsverwaltung
             List<Mannschaft> Mannschaften = new List<Mannschaft>();
             if (createConnection())
             {
-                string sql = $"select * from {DB.MANNSCHAFT} {sessionLoader} order by NAME ASC;";
+                string sql = $"select * from {DB.MANNSCHAFT.TABLE} {sessionLoader} order by NAME ASC;";
                 MySqlCommand command = new MySqlCommand(sql, MySqlConnection);
                 MySqlDataReader reader = command.ExecuteReader();
 
@@ -461,27 +467,27 @@ namespace VisualMannschaftsverwaltung
 
         public void addPersonToMannschaft(Person p, Mannschaft m)
         {
-            string sql = $"insert into {DB.MANNSCHAFT_PERSON} (FK_PERSON, FK_MANNSCHAFT) values ({p.ID}, {m.ID})";
+            string sql = $"insert into {DB.MANNSCHAFT_PERSON.TABLE} (FK_PERSON, FK_MANNSCHAFT) values ({p.ID}, {m.ID})";
             executeSql(sql);
         }
 
         public void removePersonFromMannschaft(Person p, Mannschaft m)
         {
-            string sql = $"delete from {DB.MANNSCHAFT_PERSON} where FK_PERSON={p.ID} and FK_MANNSCHAFT={m.ID}";
+            string sql = $"delete from {DB.MANNSCHAFT_PERSON.TABLE} where FK_PERSON={p.ID} and FK_MANNSCHAFT={m.ID}";
             executeSql(sql);
         }
 
         public void createMannschaft(Mannschaft m)
         {
-            string sql = $"insert into {DB.MANNSCHAFT} (NAME, TYP, GEWONNENE_SPIELE, GESAMTE_SPIELE, SESSION_ID) " +
+            string sql = $"insert into {DB.MANNSCHAFT.TABLE} (NAME, TYP, GEWONNENE_SPIELE, GESAMTE_SPIELE, SESSION_ID) " +
                 $"values ('{m.Name}', '{m.SportArt.ToString()}', 0, 0, '{Session}')";
             executeSql(sql);
         }
 
         public void removeMannschaft(Mannschaft m)
         {
-            string sql = $"delete from {DB.MANNSCHAFT} where ID={m.ID}";
-            string removePersonEntries = $"delete from {DB.MANNSCHAFT_PERSON} where FK_MANNSCHAFT = {m.ID}";
+            string sql = $"delete from {DB.MANNSCHAFT.TABLE} where ID={m.ID}";
+            string removePersonEntries = $"delete from {DB.MANNSCHAFT_PERSON.TABLE} where FK_MANNSCHAFT = {m.ID}";
 
             executeSql(sql);
             executeSql(removePersonEntries);
@@ -489,28 +495,28 @@ namespace VisualMannschaftsverwaltung
 
         public void updateMannschaftSettings(string id, string name, string type)
         {
-            string sql = $"update {DB.MANNSCHAFT} set NAME='{name}', TYP='{type}' where ID={id}";
+            string sql = $"update {DB.MANNSCHAFT.TABLE} set NAME='{name}', TYP='{type}' where ID={id}";
             executeSql(sql);
         }
 
         public void addMappingOfTurnierAndMannschaft(string mannschaft, string turnier)
         {
-            string sql = $"insert into {DB.MANNSCHAFT_TURNIER} (MANNSCHAFT_ID, TURNIER_ID) values ('{mannschaft}', '{turnier}')";
+            string sql = $"insert into {DB.MANNSCHAFT_TURNIER.TABLE} (MANNSCHAFT_ID, TURNIER_ID) values ('{mannschaft}', '{turnier}')";
             executeSql(sql);
         }
 
         public void deleteMappingOfTurnierAndMannschaft(string mannschaft, string turnier)
         {
-            string sql = $"delete from {DB.MANNSCHAFT_TURNIER} where MANNSCHAFT_ID={mannschaft} and TURNIER_ID={turnier}";
+            string sql = $"delete from {DB.MANNSCHAFT_TURNIER.TABLE} where MANNSCHAFT_ID={mannschaft} and TURNIER_ID={turnier}";
             executeSql(sql);
         }
 
         public void deleteTurnierAndAllDependentEntities(string turnier)
         {
-            string sql = $"delete from {DB.MANNSCHAFT_TURNIER} where TURNIER_ID={turnier}";
+            string sql = $"delete from {DB.MANNSCHAFT_TURNIER.TABLE} where TURNIER_ID={turnier}";
             executeSql(sql);
 
-            string sqlTurnier = $"delete from {DB.TURNIER} where ID={turnier}";
+            string sqlTurnier = $"delete from {DB.TURNIER.TABLE} where ID={turnier}";
             executeSql(sqlTurnier);
         }
 
@@ -520,7 +526,7 @@ namespace VisualMannschaftsverwaltung
 
             if (createConnection())
             {
-                string sql = $"select * from {DB.SPIEL} where SESSION_ID = '{Session}';";
+                string sql = $"select * from {DB.SPIEL.TABLE} where SESSION_ID = '{Session}';";
                 MySqlCommand command = new MySqlCommand(sql, MySqlConnection);
                 MySqlDataReader reader = command.ExecuteReader();
 
@@ -560,7 +566,7 @@ namespace VisualMannschaftsverwaltung
 
             if (createConnection())
             {
-                string sql = $"select * from {DB.TURNIER} {sessionLoader} order by NAME ASC;";
+                string sql = $"select * from {DB.TURNIER.TABLE} {sessionLoader} order by NAME ASC;";
                 MySqlCommand command = new MySqlCommand(sql, MySqlConnection);
                 MySqlDataReader reader = command.ExecuteReader();
 
@@ -583,7 +589,7 @@ namespace VisualMannschaftsverwaltung
             Turniere.ForEach(turnier =>
             {
                 if (createConnection()) { 
-                    string query = $"select * from {DB.MANNSCHAFT_TURNIER} where TURNIER_ID='{turnier.getId()}'";
+                    string query = $"select * from {DB.MANNSCHAFT_TURNIER.TABLE} where TURNIER_ID='{turnier.getId()}'";
                     MySqlCommand command2 = new MySqlCommand(query, MySqlConnection);
                     MySqlDataReader reader2 = command2.ExecuteReader();
 
@@ -602,7 +608,7 @@ namespace VisualMannschaftsverwaltung
         
         public void addTurnier(string name, SportArt sportArt)
         {
-            string sql = $"insert into {DB.TURNIER} (NAME, TYPE, SESSION_ID) " +
+            string sql = $"insert into {DB.TURNIER.TABLE} (NAME, TYPE, SESSION_ID) " +
                 $"values ('{name}', '{sportArt.ToString()}', '{this.Session}')";
             executeSql(sql);
         }

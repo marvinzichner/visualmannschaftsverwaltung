@@ -56,9 +56,9 @@ namespace VisualMannschaftsverwaltung.View
             List<InputValidationException> violationList = new List<InputValidationException>();
             this.errorMessages.InnerHtml = "";
             string selectedType = ApplicationController.getFirstTupleMatch("typematcher");
-            string fieldVorname = this.fieldVorname.Text;
-            string fieldNachname = this.fieldNachname.Text;
-            string fieldBirthdate = this.fieldBirthdate.Text;
+            string fieldVorname = ApplicationContext.disarmHijacking(this.fieldVorname.Text);
+            string fieldNachname = ApplicationContext.disarmHijacking(this.fieldNachname.Text);
+            string fieldBirthdate = ApplicationContext.disarmHijacking(this.fieldBirthdate.Text);
 
             try
             {
@@ -203,9 +203,6 @@ namespace VisualMannschaftsverwaltung.View
 
                 tc.InnerHtml = attribute;
                 tc.Attributes.Add("class", "tableHeader");
-                //tc.Attributes.CssStyle.Add("width", percent + "%");
-                //tc.Attributes.CssStyle.Add("float", "left");
-                //tc.Attributes.CssStyle.Add("border-bottom", "3px solid #e6e6e6");
                 tr.Cells.Add(tc);
             });
             usertable.Rows.Add(tr);

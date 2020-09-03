@@ -57,6 +57,7 @@ namespace VisualMannschaftsverwaltung
         #region Worker
         public Turnier setType(string s)
         {
+            s = ApplicationContext.disarmHijacking(s);
             SportArt sa = SportArt.KEINE;
             sa = (SportArt)Enum.Parse(typeof(SportArt), s);
 

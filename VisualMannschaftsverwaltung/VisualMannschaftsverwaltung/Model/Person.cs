@@ -169,6 +169,7 @@ namespace VisualMannschaftsverwaltung
 
         public virtual Person nachname(string s)
         {
+            s = ApplicationContext.disarmHijacking(s);
             this.Nachname = s;
             return this;
         }
@@ -181,6 +182,7 @@ namespace VisualMannschaftsverwaltung
 
         public virtual Person birthdate(string s)
         {
+            s = ApplicationContext.disarmHijacking(s);
             this.Birthdate = s;
             return this;
         }

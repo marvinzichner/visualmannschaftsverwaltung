@@ -70,6 +70,19 @@ namespace VisualMannschaftsverwaltung
         {
             return $"{System.AppDomain.CurrentDomain.BaseDirectory.ToString()}\\";
         }
+
+        public static string disarmHijacking(string s)
+        {
+            s = s.Replace('"', ' ')
+                .Replace('\'', ' ')
+                .Replace('`', ' ')
+                .Replace(';', ' ')
+                .Replace(',', ' ')
+                .Replace('%', ' ')
+                .Replace('$', ' ');
+
+            return s;
+        }
         #endregion
     }
 }

@@ -108,6 +108,8 @@ namespace VisualMannschaftsverwaltung
 
         public List<Person> loadPersonen(string mid = "")
         {
+            mid = ApplicationContext.disarmHijacking(mid);
+
             List<Person> Personen = new List<Person>();
             string joinCondition = "";
             string mannschaftId = "";
@@ -221,7 +223,7 @@ namespace VisualMannschaftsverwaltung
                          .birthdate(reader[DB.PERSON.geburtsdatum].ToString())
                          .sportArt(SportArt.KEINE)
                             .toTrainer()
-                            .hasLicense(Utils.convertFromBasic(reader["HAS_LICENSE"].ToString()));
+                            .hasLicense(Utils.convertFromBasic(reader[DB.TRAINER.hasLicense].ToString()));
 
                     Personen.Add(trainer);
                 }
@@ -229,7 +231,10 @@ namespace VisualMannschaftsverwaltung
                 reader.Close();
 
                 //PHYSIOTHERAPEUT
-                sql = $"select *, DATE_FORMAT({DB.PERSON.geburtsdatum}, \"%d.%m.%Y\") as BDAY from {DB.PERSON.TABLE} as p left join {DB.PHYSIOTHERAPEUT.TABLE} as t on p.{DB.PERSON.id} = t.PERSON_FK {joinCondition} where p.{DB.PERSON.id} = t.PERSON_FK {mannschaftId} {sessionSql};";
+                sql = $"select *, DATE_FORMAT({DB.PERSON.geburtsdatum}, \"%d.%m.%Y\") as BDAY " +
+                    $"from {DB.PERSON.TABLE} as p left join {DB.PHYSIOTHERAPEUT.TABLE} as t " +
+                    $"on p.{DB.PERSON.id} = t.{DB.PHYSIOTHERAPEUT.fkPerson} {joinCondition} " +
+                    $"where p.{DB.PERSON.id} = t.{DB.PHYSIOTHERAPEUT.fkPerson} {mannschaftId} {sessionSql};";
                 command = new MySqlCommand(sql, MySqlConnection);
                 reader = command.ExecuteReader();
 
@@ -243,7 +248,7 @@ namespace VisualMannschaftsverwaltung
                          .birthdate(reader[DB.PERSON.geburtsdatum].ToString())
                          .sportArt(SportArt.KEINE)
                             .toPhysiotherapeut()
-                            .hasLicense(Utils.convertFromBasic(reader["HAS_LICENSE"].ToString()));
+                            .hasLicense(Utils.convertFromBasic(reader[DB.PHYSIOTHERAPEUT.hasLicense].ToString()));
 
                     Personen.Add(physiotherapeut);
                 }
@@ -290,6 +295,8 @@ namespace VisualMannschaftsverwaltung
 
         public void addPerson(Person p, string session)
         {
+            session = ApplicationContext.disarmHijacking(session);
+
             string addPerson = $"insert into {DB.PERSON.TABLE} ({DB.PERSON.vorname}, {DB.PERSON.nachname}, {DB.PERSON.geburtsdatum}, {DB.PERSON.session}) " +
                 $"values ('{p.Name}', '{p.Nachname}', STR_TO_DATE('{p.Birthdate}', '%d.%m.%Y'), '{session}')";
             string details = p.getSpecifiedSqlStatement();
@@ -300,12 +307,18 @@ namespace VisualMannschaftsverwaltung
 
         public void getRankedMannschaftenByTurnier(int turnierId)
         {
-            string sqlPartA = $"SELECT *, SUM(RESULT_A) as CALCULATED_A FROM {DB.SPIEL.TABLE} where TURNIER_FK={turnierId.ToString()} group by `MANNSCHAFT_A_FK` order by CALCULATED_A desc";
+            string sqlPartA = $"SELECT *, SUM(RESULT_A) as CALCULATED_A FROM {DB.SPIEL.TABLE} " +
+                $"where {DB.SPIEL.fkTurnier}={turnierId.ToString()} " +
+                $"group by `{DB.SPIEL.fkMannschaftA}` order by CALCULATED_A desc";
         }
 
         public void createNewSpielOfTurnier(string title, int playerA, int playerB, string spieltag, int turnierFk)
         {
-            string sql = $"insert into {DB.SPIEL.TABLE} (TITEL, MANNSCHAFT_A_FK, MANNSCHAFT_B_FK, RESULT_A, RESULT_B, SPIELTAG, TURNIER_FK, SESSION_ID) " +
+            title = ApplicationContext.disarmHijacking(title);
+            spieltag = ApplicationContext.disarmHijacking(spieltag);
+
+            string sql = $"insert into {DB.SPIEL.TABLE} " +
+                $"({DB.SPIEL.title}, {DB.SPIEL.fkMannschaftA}, {DB.SPIEL.fkMannschaftB}, {DB.SPIEL.resultA}, {DB.SPIEL.resultB}, {DB.SPIEL.spieltag}, {DB.SPIEL.fkTurnier}, {DB.SPIEL.sessionId}) " +
                 $"values ('{title}', {playerA.ToString()}, {playerB.ToString()}, 0, 0, '{spieltag}', {turnierFk}, '{Session}')";
 
             executeSql(sql);
@@ -313,13 +326,17 @@ namespace VisualMannschaftsverwaltung
 
         public void updateSpielWithResults(int id, int a, int b)
         {
-            string sql = $"update {DB.SPIEL.TABLE} set RESULT_A = {a.ToString()}, RESULT_B = {b.ToString()} where ID = {id.ToString()}";
+            string sql = $"update {DB.SPIEL.TABLE} " +
+                $"set {DB.SPIEL.resultA}={a.ToString()}, {DB.SPIEL.resultB}={b.ToString()} " +
+                $"where ID = {id.ToString()}";
 
             executeSql(sql);
         }
 
         public void updatePerson(Person p, string session)
         {
+            session = ApplicationContext.disarmHijacking(session);
+
             string addPerson = $"update {DB.PERSON.TABLE} set " +
                 $"{DB.PERSON.vorname}='{p.Name}', {DB.PERSON.nachname}='{p.Nachname}', {DB.PERSON.geburtsdatum}=STR_TO_DATE('{p.Birthdate}', '%d.%m.%Y') " +
                 $"where {DB.PERSON.id} = {p.ID}";
@@ -331,11 +348,14 @@ namespace VisualMannschaftsverwaltung
 
         public bool checkCredentials(string username, string password)
         {
-            bool result = false;
+            username = ApplicationContext.disarmHijacking(username);
+            password = ApplicationContext.disarmHijacking(password);
 
+            bool result = false;
             if (createConnection())
             {
-                string sql = $"select * from {DB.AUTH.TABLE} where {DB.AUTH.username}='{username}' and {DB.AUTH.password}='{password}'";
+                string sql = $"select * from {DB.AUTH.TABLE} " +
+                    $"where {DB.AUTH.username}='{username}' and {DB.AUTH.password}='{password}'";
                 MySqlCommand command = new MySqlCommand(sql, MySqlConnection);
                 MySqlDataReader reader = command.ExecuteReader();
 
@@ -351,6 +371,7 @@ namespace VisualMannschaftsverwaltung
 
         public AuthenticatedRole getRoleFromUsername(string username)
         {
+            username = ApplicationContext.disarmHijacking(username);
             AuthenticatedRole role = AuthenticatedRole.USER;
 
             if (createConnection())
@@ -435,7 +456,7 @@ namespace VisualMannschaftsverwaltung
             List<Mannschaft> Mannschaften = new List<Mannschaft>();
             if (createConnection())
             {
-                string sql = $"select * from {DB.MANNSCHAFT.TABLE} {sessionLoader} order by NAME ASC;";
+                string sql = $"select * from {DB.MANNSCHAFT.TABLE} {sessionLoader} order by {DB.MANNSCHAFT.name} ASC;";
                 MySqlCommand command = new MySqlCommand(sql, MySqlConnection);
                 MySqlDataReader reader = command.ExecuteReader();
 
@@ -467,27 +488,31 @@ namespace VisualMannschaftsverwaltung
 
         public void addPersonToMannschaft(Person p, Mannschaft m)
         {
-            string sql = $"insert into {DB.MANNSCHAFT_PERSON.TABLE} (FK_PERSON, FK_MANNSCHAFT) values ({p.ID}, {m.ID})";
+            string sql = $"insert into {DB.MANNSCHAFT_PERSON.TABLE} " +
+                $"({DB.MANNSCHAFT_PERSON.fkPerson}, {DB.MANNSCHAFT_PERSON.fkMannschaft}) " +
+                $"values ({p.ID}, {m.ID})";
             executeSql(sql);
         }
 
         public void removePersonFromMannschaft(Person p, Mannschaft m)
         {
-            string sql = $"delete from {DB.MANNSCHAFT_PERSON.TABLE} where FK_PERSON={p.ID} and FK_MANNSCHAFT={m.ID}";
+            string sql = $"delete from {DB.MANNSCHAFT_PERSON.TABLE} " +
+                $"where {DB.MANNSCHAFT_PERSON.fkPerson}={p.ID} and {DB.MANNSCHAFT_PERSON.fkMannschaft}={m.ID}";
             executeSql(sql);
         }
 
         public void createMannschaft(Mannschaft m)
         {
-            string sql = $"insert into {DB.MANNSCHAFT.TABLE} (NAME, TYP, GEWONNENE_SPIELE, GESAMTE_SPIELE, SESSION_ID) " +
+            string sql = $"insert into {DB.MANNSCHAFT.TABLE} " +
+                $"({DB.MANNSCHAFT.name}, {DB.MANNSCHAFT.type}, {DB.MANNSCHAFT.gewonneneSpiele}, {DB.MANNSCHAFT.gesamteSpiele}, {DB.MANNSCHAFT.session}) " +
                 $"values ('{m.Name}', '{m.SportArt.ToString()}', 0, 0, '{Session}')";
             executeSql(sql);
         }
 
         public void removeMannschaft(Mannschaft m)
         {
-            string sql = $"delete from {DB.MANNSCHAFT.TABLE} where ID={m.ID}";
-            string removePersonEntries = $"delete from {DB.MANNSCHAFT_PERSON.TABLE} where FK_MANNSCHAFT = {m.ID}";
+            string sql = $"delete from {DB.MANNSCHAFT.TABLE} where {DB.MANNSCHAFT.id}={m.ID}";
+            string removePersonEntries = $"delete from {DB.MANNSCHAFT_PERSON.TABLE} where {DB.MANNSCHAFT_PERSON.fkMannschaft} = {m.ID}";
 
             executeSql(sql);
             executeSql(removePersonEntries);
@@ -495,28 +520,47 @@ namespace VisualMannschaftsverwaltung
 
         public void updateMannschaftSettings(string id, string name, string type)
         {
-            string sql = $"update {DB.MANNSCHAFT.TABLE} set NAME='{name}', TYP='{type}' where ID={id}";
+            id = ApplicationContext.disarmHijacking(id);
+            name = ApplicationContext.disarmHijacking(name);
+            type = ApplicationContext.disarmHijacking(type);
+
+            string sql = $"update {DB.MANNSCHAFT.TABLE} " +
+                $"set {DB.MANNSCHAFT.name}='{name}', {DB.MANNSCHAFT.type}='{type}' " +
+                $"where {DB.MANNSCHAFT.id}={id}";
             executeSql(sql);
         }
 
         public void addMappingOfTurnierAndMannschaft(string mannschaft, string turnier)
         {
-            string sql = $"insert into {DB.MANNSCHAFT_TURNIER.TABLE} (MANNSCHAFT_ID, TURNIER_ID) values ('{mannschaft}', '{turnier}')";
+            mannschaft = ApplicationContext.disarmHijacking(mannschaft);
+            turnier = ApplicationContext.disarmHijacking(turnier);
+
+            string sql = $"insert into {DB.MANNSCHAFT_TURNIER.TABLE} " +
+                $"({DB.MANNSCHAFT_TURNIER.fkMannschaft}, {DB.MANNSCHAFT_TURNIER.fkTurnier}) " +
+                $"values ('{mannschaft}', '{turnier}')";
             executeSql(sql);
         }
 
         public void deleteMappingOfTurnierAndMannschaft(string mannschaft, string turnier)
         {
-            string sql = $"delete from {DB.MANNSCHAFT_TURNIER.TABLE} where MANNSCHAFT_ID={mannschaft} and TURNIER_ID={turnier}";
+            mannschaft = ApplicationContext.disarmHijacking(mannschaft);
+            turnier = ApplicationContext.disarmHijacking(turnier);
+
+            string sql = $"delete from {DB.MANNSCHAFT_TURNIER.TABLE} " +
+                $"where {DB.MANNSCHAFT_TURNIER.fkMannschaft}={mannschaft} and {DB.MANNSCHAFT_TURNIER.fkTurnier}={turnier}";
             executeSql(sql);
         }
 
         public void deleteTurnierAndAllDependentEntities(string turnier)
         {
-            string sql = $"delete from {DB.MANNSCHAFT_TURNIER.TABLE} where TURNIER_ID={turnier}";
+            turnier = ApplicationContext.disarmHijacking(turnier);
+
+            string sql = $"delete from {DB.MANNSCHAFT_TURNIER.TABLE} " +
+                $"where {DB.MANNSCHAFT_TURNIER.fkTurnier}={turnier}";
             executeSql(sql);
 
-            string sqlTurnier = $"delete from {DB.TURNIER.TABLE} where ID={turnier}";
+            string sqlTurnier = $"delete from {DB.TURNIER.TABLE} " +
+                $"where {DB.TURNIER.id}={turnier}";
             executeSql(sqlTurnier);
         }
 
@@ -526,29 +570,35 @@ namespace VisualMannschaftsverwaltung
 
             if (createConnection())
             {
-                string sql = $"select * from {DB.SPIEL.TABLE} where SESSION_ID = '{Session}';";
+                string sql = $"select * from {DB.SPIEL.TABLE} where {DB.SPIEL.sessionId} = '{Session}';";
                 MySqlCommand command = new MySqlCommand(sql, MySqlConnection);
                 MySqlDataReader reader = command.ExecuteReader();
 
                 while (reader.Read())
                 {
                     Spiel spiel = new Spiel();
-                    spiel.setId(Utils.convertToInteger32(reader["ID"].ToString()))
-                        .setTitle(reader["TITEL"].ToString())
+                    spiel.setId(Utils.convertToInteger32(reader[DB.SPIEL.id].ToString()))
+                        .setTitle(reader[DB.SPIEL.title].ToString())
                         .setMannschaft(
                             Spiel.TeamUnit.TEAM_A, 
-                            Utils.convertToInteger32(reader["MANNSCHAFT_A_FK"].ToString()))
+                            Utils.convertToInteger32(
+                                reader[DB.SPIEL.fkMannschaftA].ToString()))
                         .setMannschaft(
                             Spiel.TeamUnit.TEAM_B,
-                            Utils.convertToInteger32(reader["MANNSCHAFT_B_FK"].ToString()))
+                            Utils.convertToInteger32(
+                                reader[DB.SPIEL.fkMannschaftB].ToString()))
                         .setResult(
                             Spiel.TeamUnit.TEAM_A,
-                            Utils.convertToInteger32(reader["RESULT_A"].ToString()))
+                            Utils.convertToInteger32(
+                                reader[DB.SPIEL.resultA].ToString()))
                         .setResult(
                             Spiel.TeamUnit.TEAM_B,
-                            Utils.convertToInteger32(reader["RESULT_B"].ToString()))
-                        .setSpieltag(reader["SPIELTAG"].ToString())
-                        .setTurnierId(Utils.convertToInteger32(reader["TURNIER_FK"].ToString()));
+                            Utils.convertToInteger32(
+                                reader[DB.SPIEL.resultB].ToString()))
+                        .setSpieltag(
+                            reader[DB.SPIEL.spieltag].ToString())
+                        .setTurnierId(
+                            Utils.convertToInteger32(reader[DB.SPIEL.fkTurnier].ToString()));
 
                     Spiele.Add(spiel);
                 }
@@ -566,7 +616,7 @@ namespace VisualMannschaftsverwaltung
 
             if (createConnection())
             {
-                string sql = $"select * from {DB.TURNIER.TABLE} {sessionLoader} order by NAME ASC;";
+                string sql = $"select * from {DB.TURNIER.TABLE} {sessionLoader} order by {DB.TURNIER.name} ASC;";
                 MySqlCommand command = new MySqlCommand(sql, MySqlConnection);
                 MySqlDataReader reader = command.ExecuteReader();
 
@@ -574,9 +624,9 @@ namespace VisualMannschaftsverwaltung
                 {
                     Turnier turnier = new Turnier();
                     turnier
-                        .setId(reader["ID"].ToString())
-                        .setType(reader["TYPE"].ToString())
-                        .setName(reader["NAME"].ToString());
+                        .setId(reader[DB.TURNIER.id].ToString())
+                        .setType(reader[DB.TURNIER.type].ToString())
+                        .setName(reader[DB.TURNIER.name].ToString());
                     Turniere.Add(turnier);
                 }
 
@@ -589,14 +639,17 @@ namespace VisualMannschaftsverwaltung
             Turniere.ForEach(turnier =>
             {
                 if (createConnection()) { 
-                    string query = $"select * from {DB.MANNSCHAFT_TURNIER.TABLE} where TURNIER_ID='{turnier.getId()}'";
+                    string query = $"select * from {DB.MANNSCHAFT_TURNIER.TABLE} " +
+                        $"where {DB.MANNSCHAFT_TURNIER.fkTurnier}='{turnier.getId()}'";
                     MySqlCommand command2 = new MySqlCommand(query, MySqlConnection);
                     MySqlDataReader reader2 = command2.ExecuteReader();
 
                     while (reader2.Read())
                     {
                         Mannschaft m = new Mannschaft();
-                        m = possibleMannschaften.Find(x => x.ID == Convert.ToInt32(reader2["MANNSCHAFT_ID"]));
+                        m = possibleMannschaften.Find(
+                            x => x.ID == Convert.ToInt32(
+                                reader2[DB.MANNSCHAFT_TURNIER.fkMannschaft]));
                         turnier.addMannschaft(m);
                     }
                     closeConnection();
@@ -608,7 +661,10 @@ namespace VisualMannschaftsverwaltung
         
         public void addTurnier(string name, SportArt sportArt)
         {
-            string sql = $"insert into {DB.TURNIER.TABLE} (NAME, TYPE, SESSION_ID) " +
+            name = ApplicationContext.disarmHijacking(name);
+
+            string sql = $"insert into {DB.TURNIER.TABLE} " +
+                $"({DB.TURNIER.name}, {DB.TURNIER.type}, {DB.TURNIER.session}) " +
                 $"values ('{name}', '{sportArt.ToString()}', '{this.Session}')";
             executeSql(sql);
         }

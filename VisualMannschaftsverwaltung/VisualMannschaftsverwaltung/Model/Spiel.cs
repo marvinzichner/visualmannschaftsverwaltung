@@ -49,8 +49,8 @@ namespace VisualMannschaftsverwaltung
         }
 
         public Spiel setId(int i) { this._id = i; return this; }
-        public Spiel setTitle(string s) { this._title = s; return this; }
-        public Spiel setSpieltag(string s) { this._spieltag = s; return this; }
+        public Spiel setTitle(string s) { s = ApplicationContext.disarmHijacking(s); this._title = s; return this; }
+        public Spiel setSpieltag(string s) { s = ApplicationContext.disarmHijacking(s); this._spieltag = s; return this; }
         public Spiel setTurnierId(int i) { this._turnier_fk = i; return this; }
         public Spiel setMannschaft(TeamUnit t, int i) {
             if (t.Equals(TeamUnit.TEAM_A))

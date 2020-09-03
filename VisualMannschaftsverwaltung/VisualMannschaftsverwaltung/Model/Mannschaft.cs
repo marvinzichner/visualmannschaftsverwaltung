@@ -146,6 +146,7 @@ namespace VisualMannschaftsverwaltung
 
         public Mannschaft name(string s)
         {
+            s = ApplicationContext.disarmHijacking(s);
             Name = s;
             return this;
         }

@@ -108,6 +108,8 @@ namespace VisualMannschaftsverwaltung
 
         public List<Person> loadPersonen(string mid = "")
         {
+            if (!databaseIsConnectedAndReady()) return new List<Person>();
+
             mid = ApplicationContext.disarmHijacking(mid);
 
             List<Person> Personen = new List<Person>();
@@ -281,6 +283,8 @@ namespace VisualMannschaftsverwaltung
 
         public void removePerson(Person p)
         {
+            if (!databaseIsConnectedAndReady()) return;
+
             string personId = p.ID.ToString();
             string className = Utils.basicClassName(p).ToUpper();
 
@@ -295,6 +299,8 @@ namespace VisualMannschaftsverwaltung
 
         public void addPerson(Person p, string session)
         {
+            if (!databaseIsConnectedAndReady()) return;
+
             session = ApplicationContext.disarmHijacking(session);
 
             string addPerson = $"insert into {DB.PERSON.TABLE} ({DB.PERSON.vorname}, {DB.PERSON.nachname}, {DB.PERSON.geburtsdatum}, {DB.PERSON.session}) " +
@@ -307,6 +313,8 @@ namespace VisualMannschaftsverwaltung
 
         public void getRankedMannschaftenByTurnier(int turnierId)
         {
+            if (!databaseIsConnectedAndReady()) return;
+
             string sqlPartA = $"SELECT *, SUM(RESULT_A) as CALCULATED_A FROM {DB.SPIEL.TABLE} " +
                 $"where {DB.SPIEL.fkTurnier}={turnierId.ToString()} " +
                 $"group by `{DB.SPIEL.fkMannschaftA}` order by CALCULATED_A desc";
@@ -314,6 +322,7 @@ namespace VisualMannschaftsverwaltung
 
         public void createNewSpielOfTurnier(string title, int playerA, int playerB, string spieltag, int turnierFk)
         {
+            if (!databaseIsConnectedAndReady()) return;
             title = ApplicationContext.disarmHijacking(title);
             spieltag = ApplicationContext.disarmHijacking(spieltag);
 
@@ -326,6 +335,8 @@ namespace VisualMannschaftsverwaltung
 
         public void updateSpielWithResults(int id, int a, int b)
         {
+            if (!databaseIsConnectedAndReady()) return;
+
             string sql = $"update {DB.SPIEL.TABLE} " +
                 $"set {DB.SPIEL.resultA}={a.ToString()}, {DB.SPIEL.resultB}={b.ToString()} " +
                 $"where ID = {id.ToString()}";
@@ -335,6 +346,7 @@ namespace VisualMannschaftsverwaltung
 
         public void updatePerson(Person p, string session)
         {
+            if (!databaseIsConnectedAndReady()) return;
             session = ApplicationContext.disarmHijacking(session);
 
             string addPerson = $"update {DB.PERSON.TABLE} set " +
@@ -348,6 +360,7 @@ namespace VisualMannschaftsverwaltung
 
         public bool checkCredentials(string username, string password)
         {
+            if (!databaseIsConnectedAndReady()) return false;
             username = ApplicationContext.disarmHijacking(username);
             password = ApplicationContext.disarmHijacking(password);
 
@@ -397,6 +410,7 @@ namespace VisualMannschaftsverwaltung
 
         public string getLatestDatabaseVersion()
         {
+            if (!databaseIsConnectedAndReady()) return "";
             string DB_VERSION = "Derzeit nicht bekannt";
 
             if (createConnection())
@@ -417,6 +431,7 @@ namespace VisualMannschaftsverwaltung
 
         public int getLatestVersion()
         {
+            if (!databaseIsConnectedAndReady()) return 0;
             int DB_VERSION = -1;
             
             if (createConnection())
@@ -447,6 +462,7 @@ namespace VisualMannschaftsverwaltung
 
         public List<Mannschaft> getMannschaften()
         {
+            if (!databaseIsConnectedAndReady()) return new List<Mannschaft>();
             string sessionLoader = "";
             if (SessionQuery)
             {
@@ -488,6 +504,7 @@ namespace VisualMannschaftsverwaltung
 
         public void addPersonToMannschaft(Person p, Mannschaft m)
         {
+            if (!databaseIsConnectedAndReady()) return;
             string sql = $"insert into {DB.MANNSCHAFT_PERSON.TABLE} " +
                 $"({DB.MANNSCHAFT_PERSON.fkPerson}, {DB.MANNSCHAFT_PERSON.fkMannschaft}) " +
                 $"values ({p.ID}, {m.ID})";
@@ -496,6 +513,7 @@ namespace VisualMannschaftsverwaltung
 
         public void removePersonFromMannschaft(Person p, Mannschaft m)
         {
+            if (!databaseIsConnectedAndReady()) return;
             string sql = $"delete from {DB.MANNSCHAFT_PERSON.TABLE} " +
                 $"where {DB.MANNSCHAFT_PERSON.fkPerson}={p.ID} and {DB.MANNSCHAFT_PERSON.fkMannschaft}={m.ID}";
             executeSql(sql);
@@ -503,6 +521,7 @@ namespace VisualMannschaftsverwaltung
 
         public void createMannschaft(Mannschaft m)
         {
+            if (!databaseIsConnectedAndReady()) return;
             string sql = $"insert into {DB.MANNSCHAFT.TABLE} " +
                 $"({DB.MANNSCHAFT.name}, {DB.MANNSCHAFT.type}, {DB.MANNSCHAFT.gewonneneSpiele}, {DB.MANNSCHAFT.gesamteSpiele}, {DB.MANNSCHAFT.session}) " +
                 $"values ('{m.Name}', '{m.SportArt.ToString()}', 0, 0, '{Session}')";
@@ -511,6 +530,7 @@ namespace VisualMannschaftsverwaltung
 
         public void removeMannschaft(Mannschaft m)
         {
+            if (!databaseIsConnectedAndReady()) return;
             string sql = $"delete from {DB.MANNSCHAFT.TABLE} where {DB.MANNSCHAFT.id}={m.ID}";
             string removePersonEntries = $"delete from {DB.MANNSCHAFT_PERSON.TABLE} where {DB.MANNSCHAFT_PERSON.fkMannschaft} = {m.ID}";
 
@@ -520,6 +540,7 @@ namespace VisualMannschaftsverwaltung
 
         public void updateMannschaftSettings(string id, string name, string type)
         {
+            if (!databaseIsConnectedAndReady()) return;
             id = ApplicationContext.disarmHijacking(id);
             name = ApplicationContext.disarmHijacking(name);
             type = ApplicationContext.disarmHijacking(type);
@@ -532,6 +553,7 @@ namespace VisualMannschaftsverwaltung
 
         public void addMappingOfTurnierAndMannschaft(string mannschaft, string turnier)
         {
+            if (!databaseIsConnectedAndReady()) return;
             mannschaft = ApplicationContext.disarmHijacking(mannschaft);
             turnier = ApplicationContext.disarmHijacking(turnier);
 
@@ -543,6 +565,7 @@ namespace VisualMannschaftsverwaltung
 
         public void deleteMappingOfTurnierAndMannschaft(string mannschaft, string turnier)
         {
+            if (!databaseIsConnectedAndReady()) return;
             mannschaft = ApplicationContext.disarmHijacking(mannschaft);
             turnier = ApplicationContext.disarmHijacking(turnier);
 
@@ -553,6 +576,7 @@ namespace VisualMannschaftsverwaltung
 
         public void deleteTurnierAndAllDependentEntities(string turnier)
         {
+            if (!databaseIsConnectedAndReady()) return;
             turnier = ApplicationContext.disarmHijacking(turnier);
 
             string sql = $"delete from {DB.MANNSCHAFT_TURNIER.TABLE} " +
@@ -566,6 +590,7 @@ namespace VisualMannschaftsverwaltung
 
         public List<Spiel> getSpiele()
         {
+            if (!databaseIsConnectedAndReady()) return new List<Spiel>();
             List<Spiel> Spiele = new List<Spiel>();
 
             if (createConnection())
@@ -609,6 +634,7 @@ namespace VisualMannschaftsverwaltung
 
         public List<Turnier> getTurniere()
         {
+            if (!databaseIsConnectedAndReady()) return new List<Turnier>();
             List<Turnier> Turniere = new List<Turnier>();
             string sessionLoader = "";
 
@@ -661,6 +687,7 @@ namespace VisualMannschaftsverwaltung
         
         public void addTurnier(string name, SportArt sportArt)
         {
+            if (!databaseIsConnectedAndReady()) return;
             name = ApplicationContext.disarmHijacking(name);
 
             string sql = $"insert into {DB.TURNIER.TABLE} " +

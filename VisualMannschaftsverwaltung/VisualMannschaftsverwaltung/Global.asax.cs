@@ -26,14 +26,16 @@ namespace VisualMannschaftsverwaltung
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            ApplicationContext.createDatabaseContext();
-
+            if(ApplicationContext.databaseIsReady())
+                ApplicationContext.createDatabaseContext();
             ApplicationController = new ApplicationController();
             ApplicationContext.createFilesystemStructure();
             ApplicationController.prepareTuple();
-            ApplicationController.loadPersonenFromRepository();
-            ApplicationController.loadMannschaftenFromRepository("");
-            
+            if (ApplicationContext.databaseIsReady())
+            { 
+                ApplicationController.loadPersonenFromRepository();
+                ApplicationController.loadMannschaftenFromRepository("");
+            }
         }
     }
 }

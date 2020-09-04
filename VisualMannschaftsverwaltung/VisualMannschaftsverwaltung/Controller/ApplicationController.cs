@@ -180,7 +180,7 @@ namespace VisualMannschaftsverwaltung
             repo.setSession(session)
                 .enableSessionbasedQueries();
          
-            this.DatabaseOk = repo.checkConnection();
+            //this.DatabaseOk = repo.checkConnection();
             this.Personen = repo.loadPersonen();
         }
 
@@ -189,7 +189,7 @@ namespace VisualMannschaftsverwaltung
             DataRepository repo = new DataRepository();
             repo.enableSessionbasedQueries()
                 .setSession(session);
-            this.DatabaseOk = repo.checkConnection();
+            //this.DatabaseOk = repo.checkConnection();
             this.Mannschaften = repo.getMannschaften();
         }
 

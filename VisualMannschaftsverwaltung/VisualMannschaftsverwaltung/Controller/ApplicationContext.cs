@@ -30,6 +30,11 @@ namespace VisualMannschaftsverwaltung
         #endregion
 
         #region Worker
+        public static bool databaseIsReady()
+        {
+            DataRepository repo = new DataRepository();
+            return repo.databaseIsConnectedAndReady();
+        }
         public static void createDatabaseContext()
         {
             DataRepository repo = new DataRepository();

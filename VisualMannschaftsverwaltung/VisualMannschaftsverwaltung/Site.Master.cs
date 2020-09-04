@@ -93,7 +93,7 @@ namespace VisualMannschaftsverwaltung
 
                     authRequired.Controls.Clear();
                     authRequired.InnerHtml = $"Laden Sie die Seite neu, um die Anmeldung abzuschließen.";
-                    Page.Response.Redirect("/", true);
+                    Page.Response.Redirect(HttpContext.Current.Request.Url.ToString(), true);
                 }
                 else
                 {

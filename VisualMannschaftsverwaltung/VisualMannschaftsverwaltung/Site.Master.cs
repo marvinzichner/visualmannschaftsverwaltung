@@ -72,7 +72,7 @@ namespace VisualMannschaftsverwaltung
         {
             string session = "undefined";
 
-            if(username.Text != "" && password.Text != "") {
+            if(!username.Text.Equals("") && !password.Text.Equals("")) {
                 DataRepository repo = new DataRepository();
                 if (repo.checkCredentials(username.Text, password.Text)) {
                     string[] shortUsername = username.Text.Split('.');

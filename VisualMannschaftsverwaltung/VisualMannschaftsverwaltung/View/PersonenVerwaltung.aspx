@@ -60,7 +60,7 @@
             <div class="listSpacer listSpacerDynamic" runat="server" id="dynamicFlow"></div>
         </div>
 
-        <asp:Button ID="btnCreatePerson" runat="server" OnClick="createNewPerson" Text="Person erstellen" />
+        <asp:Button ID="btnCreatePerson" Enabled="false" runat="server" OnClick="createNewPerson" Text="Person erstellen" />
         <br />
 
         <hr />

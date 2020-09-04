@@ -194,12 +194,12 @@
     </Compile>
     <Compile Include="Controller\ApplicationContext.cs" />
     <Compile Include="Controller\ApplicationController.cs" />
-    <Compile Include="Controller\AuthenticatedRole.cs" />
-    <Compile Include="Controller\CustomPage.cs">
+    <Compile Include="Model\AuthenticatedRole.cs" />
+    <Compile Include="Model\CustomPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controller\Export.cs" />
-    <Compile Include="Controller\KeyValueList.cs" />
+    <Compile Include="Model\KeyValueList.cs" />
     <Compile Include="Controller\Logger.cs" />
     <Compile Include="Controller\Property.cs" />
     <Compile Include="Controller\Repository\RepositorySettings.cs" />

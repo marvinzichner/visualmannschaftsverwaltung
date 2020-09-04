@@ -382,6 +382,7 @@ namespace VisualMannschaftsverwaltung.View
                 fieldVorname.Enabled = true;
                 fieldNachname.Enabled = true;
                 fieldBirthdate.Enabled = true;
+                btnCreatePerson.Enabled = true;
             } 
             catch (Exception)
             {

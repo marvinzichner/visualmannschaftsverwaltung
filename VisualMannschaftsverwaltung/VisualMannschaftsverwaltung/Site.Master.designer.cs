@@ -82,7 +82,7 @@ namespace VisualMannschaftsverwaltung {
         /// Automatisch generiertes Feld
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button logout;
+        protected global::System.Web.UI.WebControls.LinkButton logout;
         
         /// <summary>
         /// authRequired-Steuerelement

@@ -16,6 +16,7 @@
     <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
     <form runat="server">
@@ -65,14 +66,14 @@
             <div id="auth" runat="server" class="activeAuth">
                 <span class="pleaseNote" runat="server" id="pleaseNote">Sie arbeiten aktuell nur mit eingeschränkter Leseberechtigung!</span>
                 <span id="displayName" runat="server"></span> &emsp;
-                <asp:Button ID="logout" runat="server" OnClick="destroySession" Text="Abmelden" />
+                <asp:LinkButton ID="logout" style="float:right;" runat="server" OnClick="destroySession" Text='<i class="material-icons md-18">exit_to_app</i>' />
             </div>
             <div id="authRequired" runat="server">
                 <div class="auth">
                     <b>Anmeldung erforderlich</b> &emsp;
-                    Benutzername: <asp:TextBox ID="username" runat="server"></asp:TextBox> 
+                    Benutzername <asp:TextBox ID="username" runat="server"></asp:TextBox> 
                     &emsp;
-                    Kennwort: <asp:TextBox ID="password" runat="server" TextMode="Password"></asp:TextBox>
+                    Kennwort <asp:TextBox ID="password" runat="server" TextMode="Password"></asp:TextBox>
 
                     &emsp; 
                     <asp:Button ID="login" runat="server" OnClick="authenticate" Text="Login" /><br />
@@ -84,10 +85,10 @@
             <table style="width: 100%; padding: 10px;">
                 <tr>
                     <td></td>
-                    <td><b>Dummy 1</b></td>
-                    <td><b>Dummy 2</b></td>
-                    <td><b>Dummy 3</b></td>
-                    <td><b>Dummy 4</b></td>
+                    <td><i class="material-icons md-18">person_pin</i></td>
+                    <td><i class="material-icons md-18">person_pin</i></td>
+                    <td><i class="material-icons md-18">person_pin</i></td>
+                    <td><i class="material-icons md-18">person_pin</i></td>
                 </tr>
                 <tr>
                     <td><b>Benutzername</b></td>

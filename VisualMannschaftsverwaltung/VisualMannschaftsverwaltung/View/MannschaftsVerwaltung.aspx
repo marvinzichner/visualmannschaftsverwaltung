@@ -12,21 +12,29 @@
         }
     </style>
 
-    <asp:DropDownList ID="teamsList" runat="server" CssClass="masterselect" AutoPostBack="True" OnTextChanged="teamSelected">
-    </asp:DropDownList>
-    <asp:Button ID="teamsListSelect" runat="server" OnClick="teamSelected" Text="Öffnen" />
-    <asp:Button ID="teamsDelete" runat="server" OnClick="removeTeam" Text="Löschen" />
-    <asp:Button ID="downloadButton" runat="server" OnClick="generateXML" Text="XML Export" />
-    
-    <div style="float: right; margin-top: 15px;" id="createNewTeam" runat="server">
-        Neue Mannschaft anlegen:
+    <div class="big-missing" id="selectTeamAlternative" runat="server" visible="false">Hier sieht es momentan ziemlich leer aus. <br /> Legen Sie eine Mannschaft an.</div>
+    <div id="selectTeam" runat="server">
+        <asp:DropDownList ID="teamsList" runat="server" CssClass="masterselect" AutoPostBack="True" OnTextChanged="teamSelected">
+        </asp:DropDownList>
+        <asp:LinkButton ID="teamsListSelect" runat="server" OnClick="teamSelected" Text='<i class="btn material-icons" style="font-size: 20pt;">keyboard_return</i>' />
+        <asp:LinkButton ID="showCreationPanelButton" runat="server" OnClick="showCreationPanel" Text='<i class="btn material-icons" style="font-size: 20pt;">add_circle</i>' />
+        &emsp;&emsp;
+        <asp:LinkButton ID="teamsDelete" runat="server" OnClick="removeTeam" Text='<i class="btn material-icons" style="font-size: 20pt;">remove_circle</i>' />
+        <asp:Button ID="downloadButton" runat="server" OnClick="generateXML" Text="XML Export" />
+    </div>
+
+    <div id="creationPanel" runat="server" visible="false">
+        <br />
+        <h3>Eine neue Mannschaft erstellen</h3>
+        <br />
+        Mannschaftsnamen und Typ angeben:
         <asp:TextBox ID="newTeamnameBox" runat="server"></asp:TextBox>
         <asp:DropDownList ID="newTeamtype" runat="server">
             <asp:ListItem Value="FUSSBALL" Text="Fußball"></asp:ListItem>
             <asp:ListItem Value="HANDBALL" Text="Handball"></asp:ListItem>
             <asp:ListItem Value="TENNIS" Text="Tennis"></asp:ListItem>
         </asp:DropDownList>
-        <asp:Button ID="newTeamBtn" runat="server" OnClick="createTeam" Text="Anlegen" />
+        <asp:Button ID="newTeamBtn" runat="server" OnClick="createTeam" Text="Mannschaft erstellen" />
     </div>
 
     <hr />
@@ -63,6 +71,12 @@
     </div>
 
     <style>
+        .btn {
+            padding: 2px;
+            background-color: #f2f2f2;
+            border: 1px solid #e6e6e6;
+        }
+
         .masterselect {
             margin: 15px;
             padding: 5px;
@@ -100,6 +114,11 @@
             clear: both;
             content: "";
             display: table;
+        }
+        .big-missing {
+            text-align: center;
+            font-size: 20pt;
+            margin: 25px;
         }
     </style>
 </asp:Content>

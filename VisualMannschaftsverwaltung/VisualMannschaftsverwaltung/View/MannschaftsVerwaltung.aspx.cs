@@ -38,12 +38,12 @@ namespace VisualMannschaftsverwaltung.View
             if (GetUserFromSession().isUser())
             {
                 teamsDelete.Visible = false;
-                createNewTeam.Visible = false;
                 teamsEdit.Visible = false;
                 personList.Visible = false;
                 personListButton.Visible = false;
                 personListDelete.Visible = false;
                 personListDeleteButton.Visible = false;
+                showCreationPanelButton.Visible = false;
             }
         }
 
@@ -59,6 +59,20 @@ namespace VisualMannschaftsverwaltung.View
                 li.Value = m.Name;
                 teamsList.Items.Add(li);
             });
+
+            if (ApplicationController.getMannschaften(
+                GetUserFromSession().getSessionId()).Count == 0)
+            {
+                selectTeamAlternative.Visible = true;
+                selectTeam.Visible = false;
+                creationPanel.Visible = true;
+            }
+            else
+            {
+                creationPanel.Visible = false;
+                selectTeamAlternative.Visible = false;
+                selectTeam.Visible = true;
+            }
         }
         protected void loadMembers(Mannschaft.OrderBy ob = Mannschaft.OrderBy.UNSORTED) {
             //Team Members
@@ -211,6 +225,7 @@ namespace VisualMannschaftsverwaltung.View
             ApplicationController.EditMode = false;
             newTeamBtn.Text = "Anlegen";
             //ApplicationController.TempMannschaft = mannschaft;
+            //contentContainer.Visible = true;
             this.prepareData();
             this.loadMembers();
         }
@@ -220,6 +235,12 @@ namespace VisualMannschaftsverwaltung.View
             string type = o.GetType().ToString();
             string[] segment = type.Split('.');
             return segment[segment.Length - 1];
+        }
+
+        protected void showCreationPanel(object sender, EventArgs e)
+        {
+            creationPanel.Visible = true;
+            contentContainer.Visible = false;
         }
 
         protected void teamSelected(object sender, EventArgs e)
@@ -240,6 +261,7 @@ namespace VisualMannschaftsverwaltung.View
 
             this.loadMembers();
             contentContainer.Visible = true;
+            creationPanel.Visible = false;
         }
 
         protected void generateXML(object sender, EventArgs e)

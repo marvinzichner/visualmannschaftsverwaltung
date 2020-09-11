@@ -183,6 +183,7 @@ namespace VisualMannschaftsverwaltung
         public virtual Person birthdate(string s)
         {
             s = ApplicationContext.disarmHijacking(s);
+            s = s.Substring(0, 10);
             this.Birthdate = s;
             return this;
         }

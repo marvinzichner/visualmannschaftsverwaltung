@@ -16,11 +16,11 @@
     <div id="selectTeam" runat="server">
         <asp:DropDownList ID="teamsList" runat="server" CssClass="masterselect" AutoPostBack="True" OnTextChanged="teamSelected">
         </asp:DropDownList>
-        <asp:LinkButton ID="teamsListSelect" runat="server" OnClick="teamSelected" Text='<i class="btn material-icons" style="font-size: 20pt;">keyboard_return</i>' />
-        <asp:LinkButton ID="showCreationPanelButton" runat="server" OnClick="showCreationPanel" Text='<i class="btn material-icons" style="font-size: 20pt;">add_circle</i>' />
+        <asp:LinkButton ID="teamsListSelect" runat="server" OnClick="teamSelected" Text='<div class="btn"><i class="material-icons">keyboard_return</i> Öffnen</div>' />
+        <asp:LinkButton ID="showCreationPanelButton" runat="server" OnClick="showCreationPanel" Text='<div class="btn"><i class="material-icons">add_circle</i> Neue Mannschaft</div>' />
         &emsp;&emsp;
-        <asp:LinkButton ID="teamsDelete" runat="server" OnClick="removeTeam" Text='<i class="btn material-icons" style="font-size: 20pt;">remove_circle</i>' />
-        <asp:Button ID="downloadButton" runat="server" OnClick="generateXML" Text="XML Export" />
+        <asp:LinkButton ID="teamsDelete" runat="server" OnClick="removeTeam" Text='<div class="btn"><i class="material-icons">remove_circle</i> Löschen</div>' />
+        <asp:LinkButton ID="downloadButton" runat="server" OnClick="generateXML" Text='<div class="btn"><i class="material-icons">cloud_download</i> XML</div>' />
     </div>
 
     <div id="creationPanel" runat="server" visible="false">
@@ -73,8 +73,17 @@
     <style>
         .btn {
             padding: 2px;
+            line-height: 34px;
             background-color: #f2f2f2;
             border: 1px solid #e6e6e6;
+            font-size: 10pt;
+            padding-right: 5px;
+        }
+        .btn i {
+            float: left;
+            padding: 2px;
+            margin-right: 5px;
+            font-size: 24pt;
         }
 
         .masterselect {

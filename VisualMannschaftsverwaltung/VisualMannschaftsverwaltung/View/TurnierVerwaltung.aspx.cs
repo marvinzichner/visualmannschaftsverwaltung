@@ -131,37 +131,39 @@ namespace VisualMannschaftsverwaltung.View
 
                 int len = turnier.getMannschaften().Count;
                 int count = 1;
-                turnier.getMannschaften().ForEach(mannschaft =>
-                {
-                    string cellClass = "cellBodyHover cellEnd";
-                    HtmlTableRow trEx = new HtmlTableRow();
 
-                    string checkupSameTypeClass = "";
-                    if (!turnier.getType().Equals(mannschaft.SportArt))
-                        checkupSameTypeClass = "notMatching";
+                if(len > 0)
+                    turnier.getMannschaften().ForEach(mannschaft =>
+                    {
+                        string cellClass = "cellBodyHover cellEnd";
+                        HtmlTableRow trEx = new HtmlTableRow();
 
-                    if (len != count)
-                        cellClass = "cellBodyHover";
-                    trEx.Attributes.Add("class", cellClass);
-                    trEx.Cells.Add(createCell($"", "tablecell cellReadOnly cellBody"));
-                    trEx.Cells.Add(createCell($"&rarr; {mannschaft.Name}", "tablecell cellReadOnly cellBody"));
-                    trEx.Cells.Add(createCell($"{mannschaft.SportArt}", $"tablecell cellReadOnly {checkupSameTypeClass} cellBody"));
+                        string checkupSameTypeClass = "";
+                        if (!turnier.getType().Equals(mannschaft.SportArt))
+                            checkupSameTypeClass = "notMatching";
 
-                    if (GetUserFromSession().isAdmin())
-                        trEx.Cells.Add(createCellButton(
-                            $"Mannschaft entfernen",
-                            "tablecell cellInteraction cellBody",
-                            $"method=deleteMannschaft#mannschaft={mannschaft.ID}#turnier={turnier.getId()}"));
+                        if (len != count)
+                            cellClass = "cellBodyHover";
+                        trEx.Attributes.Add("class", cellClass);
+                        trEx.Cells.Add(createCell($"", "tablecell cellReadOnly cellBody"));
+                        trEx.Cells.Add(createCell($"&rarr; {mannschaft.Name}", "tablecell cellReadOnly cellBody"));
+                        trEx.Cells.Add(createCell($"{mannschaft.SportArt}", $"tablecell cellReadOnly {checkupSameTypeClass} cellBody"));
 
-                    if (GetUserFromSession().isUser())
-                        tr.Cells.Add(createCell(
-                            $"",
-                            "tablecell cellBody"));
+                        if (GetUserFromSession().isAdmin())
+                            trEx.Cells.Add(createCellButton(
+                                $"Mannschaft entfernen",
+                                "tablecell cellInteraction cellBody",
+                                $"method=deleteMannschaft#mannschaft={mannschaft.ID}#turnier={turnier.getId()}"));
 
-                    storedTurniere.Rows.Add(trEx);
+                        if (GetUserFromSession().isUser())
+                            tr.Cells.Add(createCell(
+                                $"",
+                                "tablecell cellBody"));
 
-                    count++;
-                });
+                        storedTurniere.Rows.Add(trEx);
+
+                        count++;
+                    });
             });
         }
 

@@ -158,6 +158,7 @@ namespace VisualMannschaftsverwaltung.View
             newTeamtype.SelectedValue = ApplicationController.TempMannschaft.SportArt.ToString();
             ApplicationController.EditMode = true;
             newTeamBtn.Text = "Änderung anwenden";
+            creationPanel.Visible = true;
         }
 
         protected void addPersonToMannschaft(object sender, EventArgs e)

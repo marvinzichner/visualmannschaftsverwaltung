@@ -139,6 +139,7 @@ namespace VisualMannschaftsverwaltung
 
                 while (reader.Read())
                 {
+                    try { 
                     FussballSpieler fussballSpieler = new FussballSpieler();
                     fussballSpieler
                          .id(Convert.ToInt32(reader[DB.PERSON.id].ToString()))
@@ -151,6 +152,7 @@ namespace VisualMannschaftsverwaltung
                             .isLeftFeet(Utils.convertFromBasic(reader[DB.FUSSBALLSPIELER.left_foot].ToString()));  
 
                     Personen.Add(fussballSpieler);
+                    } finally { }
                 }
                 
                 reader.Close();
@@ -165,6 +167,7 @@ namespace VisualMannschaftsverwaltung
 
                 while (reader.Read())
                 {
+                    try { 
                     HandballSpieler handballSpieler = new HandballSpieler();
                     handballSpieler
                          .id(Convert.ToInt32(reader[DB.PERSON.id].ToString()))
@@ -177,6 +180,7 @@ namespace VisualMannschaftsverwaltung
                             .isLeftHand(Utils.convertFromBasic(reader.GetValue(9).ToString()));
 
                     Personen.Add(handballSpieler);
+                    } finally { }
                 }
 
                 reader.Close();
@@ -191,6 +195,7 @@ namespace VisualMannschaftsverwaltung
 
                 while (reader.Read())
                 {
+                    try { 
                     TennisSpieler tennisSpieler = new TennisSpieler();
                     tennisSpieler
                          .id(Convert.ToInt32(reader[DB.PERSON.id].ToString()))
@@ -203,6 +208,7 @@ namespace VisualMannschaftsverwaltung
                             .isLeftHand(Utils.convertFromBasic(reader.GetValue(9).ToString()));
 
                     Personen.Add(tennisSpieler);
+                    } finally { }
                 }
 
                 reader.Close();
@@ -217,6 +223,7 @@ namespace VisualMannschaftsverwaltung
 
                 while (reader.Read())
                 {
+                    try { 
                     Trainer trainer = new Trainer();
                     trainer
                         .id(Convert.ToInt32(reader[DB.PERSON.id].ToString()))
@@ -228,6 +235,7 @@ namespace VisualMannschaftsverwaltung
                             .hasLicense(Utils.convertFromBasic(reader[DB.TRAINER.hasLicense].ToString()));
 
                     Personen.Add(trainer);
+                    } finally { }
                 }
 
                 reader.Close();
@@ -242,6 +250,7 @@ namespace VisualMannschaftsverwaltung
 
                 while (reader.Read())
                 {
+                    try { 
                     Physiotherapeut physiotherapeut = new Physiotherapeut();
                     physiotherapeut
                          .id(Convert.ToInt32(reader[DB.PERSON.id].ToString()))
@@ -253,6 +262,7 @@ namespace VisualMannschaftsverwaltung
                             .hasLicense(Utils.convertFromBasic(reader[DB.PHYSIOTHERAPEUT.hasLicense].ToString()));
 
                     Personen.Add(physiotherapeut);
+                    } finally { }
                 }
 
                 reader.Close();
@@ -533,9 +543,11 @@ namespace VisualMannschaftsverwaltung
             if (!databaseIsConnectedAndReady()) return;
             string sql = $"delete from {DB.MANNSCHAFT.TABLE} where {DB.MANNSCHAFT.id}={m.ID}";
             string removePersonEntries = $"delete from {DB.MANNSCHAFT_PERSON.TABLE} where {DB.MANNSCHAFT_PERSON.fkMannschaft} = {m.ID}";
+            string dependentTurnierFk = $"delete from {DB.MANNSCHAFT_TURNIER.TABLE} where {DB.MANNSCHAFT_TURNIER.fkMannschaft} = {m.ID}";
 
             executeSql(sql);
             executeSql(removePersonEntries);
+            executeSql(dependentTurnierFk);
         }
 
         public void updateMannschaftSettings(string id, string name, string type)

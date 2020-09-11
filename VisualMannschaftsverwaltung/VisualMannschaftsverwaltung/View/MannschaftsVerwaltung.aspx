@@ -12,7 +12,7 @@
         }
     </style>
 
-    <div class="big-missing" id="selectTeamAlternative" runat="server" visible="false">Hier sieht es momentan ziemlich leer aus. <br /> Legen Sie eine Mannschaft an.</div>
+    <div class="big-missing" id="selectTeamAlternative" runat="server" visible="false">Hier sieht es momentan noch ziemlich leer aus.</div>
     <div id="selectTeam" runat="server">
         <asp:DropDownList ID="teamsList" runat="server" CssClass="masterselect" AutoPostBack="True" OnTextChanged="teamSelected">
         </asp:DropDownList>

@@ -298,6 +298,14 @@ namespace VisualMannschaftsverwaltung
             string personId = p.ID.ToString();
             string className = Utils.basicClassName(p).ToUpper();
 
+            /* TODO: KW UPLOAD
+            SqlBuilder builder = new SqlBuilder();
+            executeSql(builder
+                .delete()
+                .table(DB.PERSON.TABLE)
+                    .where(DB.PERSON.id, personId)
+                        .build()); */
+
             string removePersonalizedData = $"delete from MVW_{className} where PERSON_FK = {personId}";
             string removePerson = $"delete from {DB.PERSON.TABLE} where {DB.PERSON.id} = {personId}";
             string removeMannschaftEntries = $"delete from {DB.MANNSCHAFT_PERSON.TABLE} where FK_PERSON = {personId}";

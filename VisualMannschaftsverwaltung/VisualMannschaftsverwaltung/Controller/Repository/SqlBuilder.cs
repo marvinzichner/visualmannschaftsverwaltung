@@ -20,7 +20,8 @@ namespace VisualMannschaftsverwaltung
         #region Konstruktoren
         public SqlBuilder()
         {
-            origin = new List<string>();
+            this.origin = new List<string>();
+            this.conditions = new List<string>();
         }
         #endregion
 
@@ -65,9 +66,22 @@ namespace VisualMannschaftsverwaltung
         {
             string sql = "";
 
-            if (action == "select") { 
-                sql = $"{sql} select *";
-                //TODO: add logic 
+            if (action == "delete") {
+                int count = 0;
+
+                sql = $"{sql} delete from {origin[0]} where ";
+                conditions.ForEach(condition =>
+                {
+                   if (count < conditions.Count)
+                    {
+                        sql = $"{sql}{condition} and ";
+                    }
+                    else
+                    {
+                        sql = $"{sql}{condition}";
+                    }
+                });
+                sql = $"{sql};";
             }
 
             return sql;

@@ -65,7 +65,8 @@ namespace VisualMannschaftsverwaltung.View
             {
                 selectTeamAlternative.Visible = true;
                 selectTeam.Visible = false;
-                creationPanel.Visible = true;
+                if(GetUserFromSession().isAdmin())
+                    creationPanel.Visible = true;
             }
             else
             {

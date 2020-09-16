@@ -273,8 +273,18 @@ namespace VisualMannschaftsverwaltung
         public void createNewSpielOfTurnier(string title, int playerA, int playerB, string spieltag, int turnierFk, string session)
         {
             DataRepository repo = new DataRepository();
-            repo.setSession(session)
-                .createNewSpielOfTurnier(title, playerA, playerB, spieltag, turnierFk);
+            DataRepository repo2 = new DataRepository();
+
+            List<Spiel> spiele = repo.setSession(session)
+                .getSpiele()
+                .FindAll(
+                    s => s.getTurnierId() == turnierFk && 
+                    s.getMannschaft(Spiel.TeamUnit.TEAM_A) == playerA &&
+                    s.getMannschaft(Spiel.TeamUnit.TEAM_B) == playerB);
+
+            if(spiele.Count == 0)
+                repo2.setSession(session)
+                    .createNewSpielOfTurnier(title, playerA, playerB, spieltag, turnierFk);
         }
 
         public void generatePersonenXML()

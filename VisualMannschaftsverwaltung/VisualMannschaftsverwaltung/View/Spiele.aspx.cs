@@ -118,7 +118,7 @@ namespace VisualMannschaftsverwaltung.View
                 "human.created",
                 Convert.ToInt32(kv1.getValueFromKeyValueList("mannschaft")),
                 Convert.ToInt32(kv2.getValueFromKeyValueList("mannschaft")),
-                DateTime.Now.ToShortDateString(), 
+                ApplicationContext.disarmHijacking(spieltag.Text), 
                 Convert.ToInt32((string)this.Session["SelectedTurnier"]),
                 GetUserFromSession().getSessionId());
 
@@ -136,6 +136,7 @@ namespace VisualMannschaftsverwaltung.View
 
         public void generateKnockoutSpiele(Object sender, EventArgs e)
         {
+            int day = 1;
             string id = this.selectedTurnierId;
             List<Mannschaft> turnierMannschaften =
                 ApplicationController.getTurniere(GetUserFromSession().getSessionId())
@@ -152,9 +153,10 @@ namespace VisualMannschaftsverwaltung.View
                             "generated.fwd",
                             mannschaft.ID,
                             mannschaft2.ID,
-                            DateTime.Now.ToShortDateString(),
+                            day.ToString(),
                             Utils.convertToInteger32((string)this.Session["SelectedTurnier"]),
                             GetUserFromSession().getSessionId());
+                        day++;
                     }
                 });
             });

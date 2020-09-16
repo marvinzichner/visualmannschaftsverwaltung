@@ -12,7 +12,9 @@
         Mannschaft 
         <asp:DropDownList ID="dropdownTeamA" runat="server"></asp:DropDownList> 
         gegen 
-        <asp:DropDownList ID="dropdownTeamb" runat="server"></asp:DropDownList>
+        <asp:DropDownList ID="dropdownTeamb" runat="server"></asp:DropDownList><br />
+        Spieltag 
+        <asp:TextBox ID="spieltag" runat="server"></asp:TextBox>
         
         <asp:Button ID="creationButton" runat="server" OnClick="createNewTurnier" Text="Erstellen"/>
     </div>

@@ -275,14 +275,17 @@ namespace VisualMannschaftsverwaltung
 
         public bool databaseIsConnectedAndReady()
         {
-            MySqlConnection.ConnectionString = RepositorySettings.getConnectionString(); 
+            if (MySqlConnection.ConnectionString == "")
+                MySqlConnection.ConnectionString = RepositorySettings.getConnectionString(); 
             try
             {
                 MySqlConnection.Open();
+                MySqlConnection.Close();
                 return true;
             }
             catch (Exception e)
             {
+                MySqlConnection.Close();
                 return false;
             }
             finally
@@ -340,7 +343,7 @@ namespace VisualMannschaftsverwaltung
 
         public void createNewSpielOfTurnier(string title, int playerA, int playerB, string spieltag, int turnierFk)
         {
-            if (!databaseIsConnectedAndReady()) return;
+            // if (!databaseIsConnectedAndReady()) return;
             title = ApplicationContext.disarmHijacking(title);
             spieltag = ApplicationContext.disarmHijacking(spieltag);
 
@@ -647,8 +650,10 @@ namespace VisualMannschaftsverwaltung
 
                     Spiele.Add(spiel);
                 }
-            }
 
+                reader.Close();
+            }
+         
             return Spiele;
         }
 

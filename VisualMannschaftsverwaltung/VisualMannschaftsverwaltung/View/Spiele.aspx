@@ -2,7 +2,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <h3 id="spielTitle" runat="server">Bitte wählen Sie ein Turnier aus</h3>
-    Lade alle Spiele aus dem Turnier (<span id="storedNumber" runat="server" AutoPostBack="true"></span>)
+    Lade alle Spiele aus dem Turnier:
     <asp:DropDownList ID="turniereDropdown" runat="server"></asp:DropDownList>
     <asp:Button ID="turnierLoadButton" runat="server" OnClick="selectTurnier" Text="Anwenden"/><br /><br />
 
@@ -13,6 +13,7 @@
         <asp:DropDownList ID="dropdownTeamA" runat="server"></asp:DropDownList> 
         gegen 
         <asp:DropDownList ID="dropdownTeamb" runat="server"></asp:DropDownList><br />
+        <br />
         Spieltag 
         <asp:TextBox ID="spieltag" runat="server"></asp:TextBox>
         
@@ -30,6 +31,7 @@
         </table>
         <br /><br />
         <h3>Ergebnisse der Spiele</h3>
+        <asp:Button ID="editButton" runat="server" AutoPostBack="True" OnClick="editList" Text="Einträge bearbeiten"/><br /><br />
         <table class="table" runat="server" id="presenterTable">
        
         </table>

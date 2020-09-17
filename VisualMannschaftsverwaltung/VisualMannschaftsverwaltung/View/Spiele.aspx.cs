@@ -36,6 +36,8 @@ namespace VisualMannschaftsverwaltung.View
         {
             previewHider.Visible = false;
             this.disableAdminFeatures();
+
+            reloadContext();
         }
         #endregion
 
@@ -59,12 +61,36 @@ namespace VisualMannschaftsverwaltung.View
             return tc;
         }
 
+        private HtmlTableCell createCellTextboxes(int spielfk, int a, int b, string classes)
+        {
+            HtmlTableCell tc = new HtmlTableCell();
+            TextBox tb1 = new TextBox();
+            TextBox tb2 = new TextBox();
+
+            tb1.ID = $"TBX-{spielfk.ToString()}-A";
+            tb2.ID = $"TBX-{spielfk.ToString()}-B";
+            tb1.Attributes.Add("internal-name", $"TBX-{spielfk.ToString()}-A");
+            tb1.Attributes.Add("internal-id", $"{spielfk.ToString()}");
+            tb2.Attributes.Add("internal-name", $"TBX-{spielfk.ToString()}-B");
+            tb2.Attributes.Add("internal-id", $"{spielfk.ToString()}");
+            tb1.Text = a.ToString();
+            tb2.Text = b.ToString();
+
+            tc.Controls.Add(tb1);
+            tc.Controls.Add(tb2);
+            tc.Attributes.Add("class", classes);
+            return tc;
+        }
+
         public void reloadContext()
         {
             loadDropdownContext();
             loadMannschaftenContext();
             loadAllData();
             loadAllRanks();
+
+            if (this.Session["isEditMode"] == "true")
+                editButton.Text = "Änderungen speichern";
         }
 
         public void loadMannschaftenContext()
@@ -241,6 +267,7 @@ namespace VisualMannschaftsverwaltung.View
             }
 
             HtmlTableRow trHead = new HtmlTableRow();
+            trHead.Cells.Add(createCell($"Globale Id", "tablecell cellHead"));
             trHead.Cells.Add(createCell($"Spieltag", "tablecell cellHead"));
             trHead.Cells.Add(createCell($"Mannschaft A", "tablecell cellHead"));
             trHead.Cells.Add(createCell($"Ergebnis", "tablecell cellHead"));
@@ -256,12 +283,24 @@ namespace VisualMannschaftsverwaltung.View
                     Mannschaft TeamB = getMannschaftByKey(spiel.getMannschaft(Spiel.TeamUnit.TEAM_B));
 
                     HtmlTableRow tr = new HtmlTableRow();
+                    tr.Cells.Add(createCell($"{spiel.getId()}", "tablecell cellReadOnly"));
                     tr.Cells.Add(createCell($"{spiel.getSpieltag()}", "tablecell cellReadOnly"));
                     tr.Cells.Add(createCell($"{TeamA.Name}", "tablecell cellReadOnly"));
-                    tr.Cells.Add(
-                        createCell(
-                            $"{spiel.getResult(Spiel.TeamUnit.TEAM_A)}:{spiel.getResult(Spiel.TeamUnit.TEAM_B)}",
-                            "tablecell cellReadOnly"));
+
+                    if (this.Session["isEditMode"] == null 
+                        || this.Session["isEditMode"] == "false")
+                        tr.Cells.Add(
+                            createCell(
+                                $"{spiel.getResult(Spiel.TeamUnit.TEAM_A)}:{spiel.getResult(Spiel.TeamUnit.TEAM_B)}",
+                                "tablecell cellReadOnly"));
+                    if (this.Session["isEditMode"] == "true")
+                        tr.Cells.Add(
+                            createCellTextboxes(
+                                spiel.getId(),
+                                spiel.getResult(Spiel.TeamUnit.TEAM_A),
+                                spiel.getResult(Spiel.TeamUnit.TEAM_B),
+                                "tablecell cellReadOnly"));
+
                     tr.Cells.Add(createCell($"{TeamB.Name}", "tablecell cellReadOnly"));
                     presenterTable.Rows.Add(tr);
                 });
@@ -275,6 +314,12 @@ namespace VisualMannschaftsverwaltung.View
             this.selectedTurnierId = kv.getValueFromKeyValueList("turnier");
             this.Session["SelectedTurnier"] = kv.getValueFromKeyValueList("turnier");
             this.selectedContext = true;
+            reloadContext();
+        }
+
+        public void editList(Object sender, System.EventArgs e)
+        {
+            this.Session["isEditMode"] = "true";
             reloadContext();
         }
         #endregion

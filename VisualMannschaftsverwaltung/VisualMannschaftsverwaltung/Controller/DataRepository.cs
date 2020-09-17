@@ -720,6 +720,12 @@ namespace VisualMannschaftsverwaltung
                 $"values ('{name}', '{sportArt.ToString()}', '{this.Session}')";
             executeSql(sql);
         }
+
+        public void removeSpiel(int id)
+        {
+            string sql = $"delete from {DB.SPIEL.TABLE} where {DB.SPIEL.id} = {id}";
+            executeSql(sql);
+        }
         #endregion
     }
 }

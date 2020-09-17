@@ -273,16 +273,40 @@ namespace VisualMannschaftsverwaltung
         public void createNewSpielOfTurnier(string title, int playerA, int playerB, string spieltag, int turnierFk, string session)
         {
             DataRepository repo = new DataRepository();
-            DataRepository repo2 = new DataRepository();
 
-            List<Spiel> spiele = repo.setSession(session)
-                .getSpiele()
+            List<Spiel> sessionGames = repo.setSession(session).getSpiele();
+            List<Spiel> spiele = new List<Spiel>();
+
+            // Check if clone of A <=> B
+            spiele.AddRange(spiele
                 .FindAll(
                     s => s.getTurnierId() == turnierFk && 
                     s.getMannschaft(Spiel.TeamUnit.TEAM_A) == playerA &&
-                    s.getMannschaft(Spiel.TeamUnit.TEAM_B) == playerB);
+                    s.getMannschaft(Spiel.TeamUnit.TEAM_B) == playerB));
 
-            if(spiele.Count == 0)
+            // Check if clone of A <=> B, reversed
+            spiele.AddRange(spiele
+                .FindAll(
+                    s => s.getTurnierId() == turnierFk &&
+                    s.getMannschaft(Spiel.TeamUnit.TEAM_B) == playerA &&
+                    s.getMannschaft(Spiel.TeamUnit.TEAM_A) == playerB));
+
+            // Check if clone of A <=> A
+            spiele.AddRange(spiele
+                .FindAll(
+                    s => s.getTurnierId() == turnierFk &&
+                    s.getMannschaft(Spiel.TeamUnit.TEAM_A) == playerA &&
+                    s.getMannschaft(Spiel.TeamUnit.TEAM_B) == playerA));
+
+            // Check if clone of B <=> B
+            spiele.AddRange(spiele
+                .FindAll(
+                    s => s.getTurnierId() == turnierFk &&
+                    s.getMannschaft(Spiel.TeamUnit.TEAM_A) == playerB &&
+                    s.getMannschaft(Spiel.TeamUnit.TEAM_B) == playerB));
+
+            DataRepository repo2 = new DataRepository();
+            if (spiele.Count == 0)
                 repo2.setSession(session)
                     .createNewSpielOfTurnier(title, playerA, playerB, spieltag, turnierFk);
         }
@@ -317,6 +341,12 @@ namespace VisualMannschaftsverwaltung
             repo
                 .setSession(session)
                 .addTurnier(name, sportArt);
+        }
+
+        public void removeSpiel(int id)
+        {
+            DataRepository repo = new DataRepository();
+            repo.removeSpiel(id);
         }
         #endregion
     }

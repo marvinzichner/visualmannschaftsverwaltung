@@ -246,8 +246,8 @@ namespace VisualMannschaftsverwaltung
             {
                 Random rnd = new Random();
 
-                int playerA = rnd.Next(0, 13);
-                int playerB = rnd.Next(0, 13);
+                int playerA = rnd.Next(0, 3);
+                int playerB = rnd.Next(0, 3);
                 repo.updateSpielWithResults(spiel.getId(), playerA, playerB);
             });
         }

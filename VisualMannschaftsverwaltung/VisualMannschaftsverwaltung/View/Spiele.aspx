@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Spiele.aspx.cs" Inherits="VisualMannschaftsverwaltung.View.Spiele" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
+    <div id="RuntimeExceptionWrapper" runat="server"></div>
     <h3 id="spielTitle" runat="server">Bitte wählen Sie ein Turnier aus</h3>
     Lade alle Spiele aus dem Turnier:
     <asp:DropDownList ID="turniereDropdown" runat="server"></asp:DropDownList>
@@ -38,62 +39,6 @@
        
         </table>
     </div>
-
-    <!--
-    <h3>Aktives Spiel</h3>
-   
-    <div class="text-center">
-        <span class="big">Mannschaft1</span> &emsp; VS &emsp; <span class="big">Mannschaft2</span>
-        <br /><br />
-        <asp:TextBox ID="TextBox1" runat="server" CssClass="pointsizer"></asp:TextBox>
-        <asp:Button ID="Button1" runat="server" Text="Ergebnis eintragen" />
-        <asp:TextBox ID="TextBox2" runat="server" CssClass="pointsizer"></asp:TextBox>
-    </div>
-    <br />
-    <h4>Geplante Spiele</h4>
-        <div class="text-centerized">
-            <asp:Button ID="Button2" runat="server" Text="Neues Spiel erstellen" /><br />
-        </div>
-        <br />
-        <div class="planned">FC HHEK &emsp; VS &emsp; FC IA118</div>
-        <div class="planned">MANNSCHAFT &emsp; VS &emsp; MANNSCHAFT</div>
-    <hr />
-
-    <h3>Vergangene Spiele</h3>
-    <br />
-    <h4>Fussball</h4>
-    <table class="tablemaster">
-        <tr class="tr-section">
-            <td class="td-name">1. FC Köln</td>
-            <td class="td-score">1</td>
-            <td class="td-score">4</td>
-            <td class="td-name td-right">FC Bayern München</td>
-        </tr>
-        <tr class="tr-section">
-            <td class="td-name">Borussia Dortmund</td>
-            <td class="td-score">1</td>
-            <td class="td-score">1</td>
-            <td class="td-name td-right">FC Schalke 04</td>
-        </tr>
-        <tr class="tr-section">
-            <td class="td-name">TSG 1899 Hoffenheim</td>
-            <td class="td-score">2</td>
-            <td class="td-score">3</td>
-            <td class="td-name td-right">Eintracht Frankfurt</td>
-        </tr>
-    </table>
-
-    <br />
-    <h4>Handball</h4>
-    <table class="tablemaster">
-        <tr class="tr-section">
-            <td class="td-name">1. FC Köln</td>
-            <td class="td-score">1</td>
-            <td class="td-score">4</td>
-            <td class="td-name td-right">FC Bayern München</td>
-        </tr>
-    </table>
-    -->
 
     <style>
         .rotate {

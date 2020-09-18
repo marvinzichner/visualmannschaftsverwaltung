@@ -37,7 +37,7 @@ namespace VisualMannschaftsverwaltung.View
             previewHider.Visible = false;
             this.disableAdminFeatures();
 
-            reloadContext();
+            //reloadContext();
         }
         #endregion
 
@@ -49,6 +49,7 @@ namespace VisualMannschaftsverwaltung.View
                 addNewTurnier.Visible = false;
                 generateTurniere.Visible = false;
                 randomResults.Visible = false;
+                editButton.Visible = false;
             }
         }
 
@@ -331,24 +332,28 @@ namespace VisualMannschaftsverwaltung.View
 
             spiele.ForEach(spiel =>
             {
-                int A = 0;
-                int B = 0;
+                Try t = new Try();
+                int A, B = 0;
 
-                try { 
+                t.of(() => {
                     A = Convert.ToInt32(Request[$"ctl00$MainContent$TBX-{spiel.getId()}-A"]);
                     B = Convert.ToInt32(Request[$"ctl00$MainContent$TBX-{spiel.getId()}-B"]);
 
                     spiel.setResult(Spiel.TeamUnit.TEAM_A, A);
                     spiel.setResult(Spiel.TeamUnit.TEAM_B, B);
-                }
-                catch (Exception e)
-                {
+
+                }).or(() => {
                     string deleteA = Request[$"ctl00$MainContent$TBX-{spiel.getId()}-A"];
                     string deleteB = Request[$"ctl00$MainContent$TBX-{spiel.getId()}-B"];
 
                     if (deleteA == "x" || deleteA == "X" || deleteB == "x" || deleteB == "X")
                         spiel.markDeleteFlag();
-                }
+
+                }).afterFail(() =>
+                {
+                    RuntimeExceptionWrapper.InnerHtml = 
+                        $"<b>{t.getException().Message}</b>";
+                });
             });
 
             ApplicationController.updateSpieleResult(spiele);

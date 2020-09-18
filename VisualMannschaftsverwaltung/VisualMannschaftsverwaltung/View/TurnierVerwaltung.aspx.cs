@@ -31,6 +31,7 @@ namespace VisualMannschaftsverwaltung.View
 
             sectionCreateTurnier.Visible = false;
             sectionMapping.Visible = false;
+
             loadTurniere();
             loadDropdownSelections();
         }
@@ -40,6 +41,8 @@ namespace VisualMannschaftsverwaltung.View
             sectionCreateTurnier.Visible = false;
             sectionMapping.Visible = false;
 
+            loadTurniere();
+            loadDropdownSelections();
             this.disableAdminFeatures();
         }
 
@@ -83,7 +86,7 @@ namespace VisualMannschaftsverwaltung.View
             loadTurniere();
         }
 
-        private HtmlTableCell createCellButton(string text, string classes, string data, bool enableDropdown = false)
+        private HtmlTableCell createCellButton(string text, string classes, string data, bool enableDropdown = false, SportArt sa = SportArt.KEINE, int fkTurnier = -1)
         {
             HtmlTableCell tc = new HtmlTableCell();
             Button button = new Button();
@@ -97,26 +100,50 @@ namespace VisualMannschaftsverwaltung.View
             if (enableDropdown)
             {
                 DropDownList list = new DropDownList();
+                Turnier turnier = new Turnier();
+                int relativeCount = 0;
+
                 list.Attributes.Add("data", data);
                 list.ID = data;
+                turnier = ApplicationController
+                    .getTurniere(GetUserFromSession()
+                    .getSessionId())
+                    .Find(t => t.getId() == fkTurnier);
+
                 ApplicationController
                     .getMannschaften(GetUserFromSession().getSessionId())
+                    .FindAll(m => m.SportArt == sa)
                     .ForEach(mannschaft =>
                 {
                     ListItem item = new ListItem();
-                    item.Text = $"{mannschaft.Name} [{mannschaft.SportArt.ToString()}]";
+                    item.Text = $"({mannschaft.ID.ToString()}) {mannschaft.Name}";
                     item.Attributes.Add("data", mannschaft.ID.ToString());
 
-                    list.Items.Add(item);
+                    if (turnier.getMannschaften().Find(m => m.ID == mannschaft.ID) == null)
+                    {
+                        list.Items.Add(item);
+                        relativeCount++;
+                    }
                 });
 
                 Button dropdownButton = new Button();
                 dropdownButton.Attributes.Add("data", data);
                 dropdownButton.Text = "Hinzufügen";
                 dropdownButton.Click += new EventHandler(this.addMannschaft);
+                dropdownButton.Attributes.Add("style", "margin-right: 20px;");
 
-                tc.Controls.Add(list);
-                tc.Controls.Add(dropdownButton);
+                if(relativeCount > 0) { 
+                    tc.Controls.Add(list);
+                    tc.Controls.Add(dropdownButton);
+                }
+                else
+                {
+                    Label l = new Label();
+                    l.Text = "Keine Mannschaft gefunden";
+                    l.Attributes.Add("style", "margin-right: 20px;");
+
+                    tc.Controls.Add(l);
+                }
             }
 
             tc.Controls.Add(button);
@@ -147,7 +174,9 @@ namespace VisualMannschaftsverwaltung.View
                         $"Turnier und Mannschaften löschen",
                         "tablecell cellBody",
                         $"method=deleteTurnier#turnier={turnier.getId()}",
-                        true));
+                        true,
+                        turnier.getType(),
+                        turnier.getId()));
                 }
 
                 if (GetUserFromSession().isUser())
@@ -173,8 +202,8 @@ namespace VisualMannschaftsverwaltung.View
                         if (len != count)
                             cellClass = "cellBodyHover";
                         trEx.Attributes.Add("class", cellClass);
-                        trEx.Cells.Add(createCell($"", "tablecell cellReadOnly cellBody"));
-                        trEx.Cells.Add(createCell($"&rarr; {mannschaft.Name}", "tablecell cellReadOnly cellBody"));
+                        trEx.Cells.Add(createCell($"&emsp; {mannschaft.ID.ToString()}", "tablecell cellReadOnly cellBody"));
+                        trEx.Cells.Add(createCell($"{mannschaft.Name}", "tablecell cellReadOnly cellBody"));
                         trEx.Cells.Add(createCell($"{mannschaft.SportArt}", $"tablecell cellReadOnly {checkupSameTypeClass} cellBody"));
 
                         if (GetUserFromSession().isAdmin())
@@ -277,10 +306,22 @@ namespace VisualMannschaftsverwaltung.View
 
         public void addMannschaft(Object sender, EventArgs e)
         {
+            KeyValueList kv = new KeyValueList();
             Button obj = (Button)sender;
-            string btnData = obj.Attributes["data"].ToString();
-            string value = Request[$"ctl00$MainContent${btnData}"];
 
+            string btnData = obj.Attributes["data"].ToString();
+            kv.extractDataFromCombinedString(btnData);
+
+            string value = Request[$"ctl00$MainContent${btnData}"];
+            string[] fragments = value.Split(')');
+            string mannschaftId = fragments[0].Substring(1);
+            string turnierId = kv.getValueFromKeyValueList("turnier");
+
+            ApplicationController
+                .addMappingOfTurnierAndMannschaft(mannschaftId, turnierId);
+
+            loadTurniere();
+            loadDropdownSelections();
         }
         #endregion
     }

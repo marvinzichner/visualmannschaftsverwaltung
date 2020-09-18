@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfMannschaft xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Mannschaft>
+    <Name>1. FC Köln</Name>
+    <Personen />
+    <SortRule>UNSORTED</SortRule>
+    <FilterRule>ALL</FilterRule>
+    <SportArt>FUSSBALL</SportArt>
+    <OrderTimes>0</OrderTimes>
+    <EnableGrouping>false</EnableGrouping>
+    <ID>1</ID>
+    <GewonneneSpiele>1</GewonneneSpiele>
+    <GesamteSpiele>2</GesamteSpiele>
+  </Mannschaft>
+  <Mannschaft>
+    <Name>2. FC Köln</Name>
+    <Personen />
+    <SortRule>UNSORTED</SortRule>
+    <FilterRule>ALL</FilterRule>
+    <SportArt>FUSSBALL</SportArt>
+    <OrderTimes>0</OrderTimes>
+    <EnableGrouping>false</EnableGrouping>
+    <ID>2</ID>
+    <GewonneneSpiele>0</GewonneneSpiele>
+    <GesamteSpiele>0</GesamteSpiele>
+  </Mannschaft>
+  <Mannschaft>
+    <Name>FC Bayern München</Name>
+    <Personen />
+    <SortRule>UNSORTED</SortRule>
+    <FilterRule>ALL</FilterRule>
+    <SportArt>FUSSBALL</SportArt>
+    <OrderTimes>0</OrderTimes>
+    <EnableGrouping>false</EnableGrouping>
+    <ID>3</ID>
+    <GewonneneSpiele>0</GewonneneSpiele>
+    <GesamteSpiele>2</GesamteSpiele>
+  </Mannschaft>
+  <Mannschaft>
+    <Name>fcbla</Name>
+    <Personen>
+      <Person xsi:type="FussballSpieler">
+        <Name>John</Name>
+        <SportArt>FUSSBALL</SportArt>
+        <GenericAttributes>
+          <string>IsLeftFeet</string>
+          <string>SpielSiege</string>
+        </GenericAttributes>
+        <Nachname>Test</Nachname>
+        <Birthdate>09.08.1999</Birthdate>
+        <ID>19</ID>
+        <SpielerNummer>-9999</SpielerNummer>
+        <SpielerRolle>KEINE</SpielerRolle>
+        <SpielSiege>0</SpielSiege>
+        <IsLeftFeet>false</IsLeftFeet>
+      </Person>
+      <Person xsi:type="FussballSpieler">
+        <Name>John</Name>
+        <SportArt>FUSSBALL</SportArt>
+        <GenericAttributes>
+          <string>IsLeftFeet</string>
+          <string>SpielSiege</string>
+        </GenericAttributes>
+        <Nachname>Test</Nachname>
+        <Birthdate>09.08.1999</Birthdate>
+        <ID>19</ID>
+        <SpielerNummer>-9999</SpielerNummer>
+        <SpielerRolle>KEINE</SpielerRolle>
+        <SpielSiege>0</SpielSiege>
+        <IsLeftFeet>false</IsLeftFeet>
+      </Person>
+      <Person xsi:type="FussballSpieler">
+        <Name>John</Name>
+        <SportArt>FUSSBALL</SportArt>
+        <GenericAttributes>
+          <string>IsLeftFeet</string>
+          <string>SpielSiege</string>
+        </GenericAttributes>
+        <Nachname>Test</Nachname>
+        <Birthdate>09.08.1999</Birthdate>
+        <ID>19</ID>
+        <SpielerNummer>-9999</SpielerNummer>
+        <SpielerRolle>KEINE</SpielerRolle>
+        <SpielSiege>12</SpielSiege>
+        <IsLeftFeet>false</IsLeftFeet>
+      </Person>
+      <Person xsi:type="FussballSpieler">
+        <Name>John</Name>
+        <SportArt>FUSSBALL</SportArt>
+        <GenericAttributes>
+          <string>IsLeftFeet</string>
+          <string>SpielSiege</string>
+        </GenericAttributes>
+        <Nachname>Test</Nachname>
+        <Birthdate>09.08.1999</Birthdate>
+        <ID>19</ID>
+        <SpielerNummer>-9999</SpielerNummer>
+        <SpielerRolle>KEINE</SpielerRolle>
+        <SpielSiege>12</SpielSiege>
+        <IsLeftFeet>false</IsLeftFeet>
+      </Person>
+    </Personen>
+    <SortRule>UNSORTED</SortRule>
+    <FilterRule>ALL</FilterRule>
+    <SportArt>FUSSBALL</SportArt>
+    <OrderTimes>0</OrderTimes>
+    <EnableGrouping>false</EnableGrouping>
+    <ID>15</ID>
+    <GewonneneSpiele>0</GewonneneSpiele>
+    <GesamteSpiele>0</GesamteSpiele>
+  </Mannschaft>
+  <Mannschaft>
+    <Name>Friesdorf</Name>
+    <Personen />
+    <SortRule>UNSORTED</SortRule>
+    <FilterRule>ALL</FilterRule>
+    <SportArt>HANDBALL</SportArt>
+    <OrderTimes>0</OrderTimes>
+    <EnableGrouping>false</EnableGrouping>
+    <ID>7</ID>
+    <GewonneneSpiele>0</GewonneneSpiele>
+    <GesamteSpiele>1</GesamteSpiele>
+  </Mannschaft>
+  <Mannschaft>
+    <Name>Funkensterne</Name>
+    <Personen />
+    <SortRule>UNSORTED</SortRule>
+    <FilterRule>ALL</FilterRule>
+    <SportArt>TENNIS</SportArt>
+    <OrderTimes>0</OrderTimes>
+    <EnableGrouping>false</EnableGrouping>
+    <ID>10</ID>
+    <GewonneneSpiele>2</GewonneneSpiele>
+    <GesamteSpiele>2</GesamteSpiele>
+  </Mannschaft>
+  <Mannschaft>
+    <Name>Füchse</Name>
+    <Personen />
+    <SortRule>UNSORTED</SortRule>
+    <FilterRule>ALL</FilterRule>
+    <SportArt>HANDBALL</SportArt>
+    <OrderTimes>0</OrderTimes>
+    <EnableGrouping>false</EnableGrouping>
+    <ID>6</ID>
+    <GewonneneSpiele>0</GewonneneSpiele>
+    <GesamteSpiele>1</GesamteSpiele>
+  </Mannschaft>
+  <Mannschaft>
+    <Name>Leverkusen</Name>
+    <Personen />
+    <SortRule>UNSORTED</SortRule>
+    <FilterRule>ALL</FilterRule>
+    <SportArt>FUSSBALL</SportArt>
+    <OrderTimes>0</OrderTimes>
+    <EnableGrouping>false</EnableGrouping>
+    <ID>4</ID>
+    <GewonneneSpiele>0</GewonneneSpiele>
+    <GesamteSpiele>1</GesamteSpiele>
+  </Mannschaft>
+  <Mannschaft>
+    <Name>Test</Name>
+    <Personen />
+    <SortRule>UNSORTED</SortRule>
+    <FilterRule>ALL</FilterRule>
+    <SportArt>FUSSBALL</SportArt>
+    <OrderTimes>0</OrderTimes>
+    <EnableGrouping>false</EnableGrouping>
+    <ID>17</ID>
+    <GewonneneSpiele>0</GewonneneSpiele>
+    <GesamteSpiele>0</GesamteSpiele>
+  </Mannschaft>
+  <Mannschaft>
+    <Name>THW Kiel</Name>
+    <Personen />
+    <SortRule>UNSORTED</SortRule>
+    <FilterRule>ALL</FilterRule>
+    <SportArt>HANDBALL</SportArt>
+    <OrderTimes>0</OrderTimes>
+    <EnableGrouping>false</EnableGrouping>
+    <ID>5</ID>
+    <GewonneneSpiele>1</GewonneneSpiele>
+    <GesamteSpiele>1</GesamteSpiele>
+  </Mannschaft>
+  <Mannschaft>
+    <Name>TV Blau-Weiß Eitorf</Name>
+    <Personen />
+    <SortRule>UNSORTED</SortRule>
+    <FilterRule>ALL</FilterRule>
+    <SportArt>TENNIS</SportArt>
+    <OrderTimes>0</OrderTimes>
+    <EnableGrouping>false</EnableGrouping>
+    <ID>8</ID>
+    <GewonneneSpiele>1</GewonneneSpiele>
+    <GesamteSpiele>2</GesamteSpiele>
+  </Mannschaft>
+  <Mannschaft>
+    <Name>TV Grün-Gelb Dottendorf</Name>
+    <Personen />
+    <SortRule>UNSORTED</SortRule>
+    <FilterRule>ALL</FilterRule>
+    <SportArt>TENNIS</SportArt>
+    <OrderTimes>0</OrderTimes>
+    <EnableGrouping>false</EnableGrouping>
+    <ID>9</ID>
+    <GewonneneSpiele>0</GewonneneSpiele>
+    <GesamteSpiele>2</GesamteSpiele>
+  </Mannschaft>
+</ArrayOfMannschaft>

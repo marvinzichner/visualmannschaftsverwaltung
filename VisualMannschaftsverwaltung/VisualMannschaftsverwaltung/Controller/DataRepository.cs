@@ -555,10 +555,13 @@ namespace VisualMannschaftsverwaltung
             string sql = $"delete from {DB.MANNSCHAFT.TABLE} where {DB.MANNSCHAFT.id}={m.ID}";
             string removePersonEntries = $"delete from {DB.MANNSCHAFT_PERSON.TABLE} where {DB.MANNSCHAFT_PERSON.fkMannschaft} = {m.ID}";
             string dependentTurnierFk = $"delete from {DB.MANNSCHAFT_TURNIER.TABLE} where {DB.MANNSCHAFT_TURNIER.fkMannschaft} = {m.ID}";
+            string dependentSpielFk = $"delete from {DB.SPIEL.TABLE} " +
+                $"where {DB.SPIEL.fkMannschaftA}={m.ID.ToString()} or {DB.SPIEL.fkMannschaftB}={m.ID.ToString()}";
 
             executeSql(sql);
             executeSql(removePersonEntries);
             executeSql(dependentTurnierFk);
+            executeSql(dependentSpielFk);
         }
 
         public void updateMannschaftSettings(string id, string name, string type)
@@ -594,7 +597,12 @@ namespace VisualMannschaftsverwaltung
 
             string sql = $"delete from {DB.MANNSCHAFT_TURNIER.TABLE} " +
                 $"where {DB.MANNSCHAFT_TURNIER.fkMannschaft}={mannschaft} and {DB.MANNSCHAFT_TURNIER.fkTurnier}={turnier}";
+
+            string deleteSpiele = $"delete from {DB.SPIEL.TABLE} " +
+                $"where {DB.SPIEL.fkMannschaftA}={mannschaft} or {DB.SPIEL.fkMannschaftB}={mannschaft}";
+
             executeSql(sql);
+            executeSql(deleteSpiele);
         }
 
         public void deleteTurnierAndAllDependentEntities(string turnier)

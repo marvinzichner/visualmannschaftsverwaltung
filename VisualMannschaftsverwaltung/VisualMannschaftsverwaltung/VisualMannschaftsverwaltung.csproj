@@ -195,6 +195,7 @@
     <Compile Include="Controller\ApplicationContext.cs" />
     <Compile Include="Controller\ApplicationController.cs" />
     <Compile Include="Controller\Repository\SqlBuilder.cs" />
+    <Compile Include="Exception\Try.cs" />
     <Compile Include="Model\AuthenticatedRole.cs" />
     <Compile Include="Model\CustomPage.cs">
       <SubType>ASPXCodeBehind</SubType>

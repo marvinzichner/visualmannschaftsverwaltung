@@ -89,6 +89,7 @@ namespace VisualMannschaftsverwaltung.View
             loadAllData();
             loadAllRanks();
 
+            editButton.Text = "Einträge bearbeiten";
             if (this.Session["isEditMode"] == "true")
                 editButton.Text = "Änderungen speichern";
         }
@@ -282,27 +283,31 @@ namespace VisualMannschaftsverwaltung.View
                     Mannschaft TeamA = getMannschaftByKey(spiel.getMannschaft(Spiel.TeamUnit.TEAM_A));
                     Mannschaft TeamB = getMannschaftByKey(spiel.getMannschaft(Spiel.TeamUnit.TEAM_B));
 
-                    HtmlTableRow tr = new HtmlTableRow();
-                    tr.Cells.Add(createCell($"{spiel.getId()}", "tablecell cellReadOnly"));
-                    tr.Cells.Add(createCell($"{spiel.getSpieltag()}", "tablecell cellReadOnly"));
-                    tr.Cells.Add(createCell($"{TeamA.Name}", "tablecell cellReadOnly"));
+                    if (TeamA != null && TeamB != null)
+                    {
+                        HtmlTableRow tr = new HtmlTableRow();
+                        tr.Cells.Add(createCell($"{spiel.getId()}", "tablecell cellReadOnly"));
+                        tr.Cells.Add(createCell($"{spiel.getSpieltag()}", "tablecell cellReadOnly"));
+                        tr.Cells.Add(createCell($"{TeamA.Name}", "tablecell cellReadOnly"));
 
-                    if (this.Session["isEditMode"] == null 
-                        || this.Session["isEditMode"] == "false")
-                        tr.Cells.Add(
-                            createCell(
-                                $"{spiel.getResult(Spiel.TeamUnit.TEAM_A)}:{spiel.getResult(Spiel.TeamUnit.TEAM_B)}",
-                                "tablecell cellReadOnly"));
-                    if (this.Session["isEditMode"] == "true")
-                        tr.Cells.Add(
-                            createCellTextboxes(
-                                spiel.getId(),
-                                spiel.getResult(Spiel.TeamUnit.TEAM_A),
-                                spiel.getResult(Spiel.TeamUnit.TEAM_B),
-                                "tablecell cellReadOnly"));
+                        if (this.Session["isEditMode"] == null 
+                            || this.Session["isEditMode"] == "false")
+                            tr.Cells.Add(
+                                createCell(
+                                    $"{spiel.getResult(Spiel.TeamUnit.TEAM_A)}:{spiel.getResult(Spiel.TeamUnit.TEAM_B)}",
+                                    "tablecell cellReadOnly"));
+                        if (this.Session["isEditMode"] == "true")
+                            tr.Cells.Add(
+                                createCellTextboxes(
+                                    spiel.getId(),
+                                    spiel.getResult(Spiel.TeamUnit.TEAM_A),
+                                    spiel.getResult(Spiel.TeamUnit.TEAM_B),
+                                    "tablecell cellReadOnly"));
 
-                    tr.Cells.Add(createCell($"{TeamB.Name}", "tablecell cellReadOnly"));
-                    presenterTable.Rows.Add(tr);
+                        tr.Cells.Add(createCell($"{TeamB.Name}", "tablecell cellReadOnly"));
+                        presenterTable.Rows.Add(tr);
+                    }
+
                 });
         }
 
@@ -317,9 +322,50 @@ namespace VisualMannschaftsverwaltung.View
             reloadContext();
         }
 
+        public void storeChanges()
+        {
+            List<Spiel> spiele = 
+                ApplicationController.getSpiele(GetUserFromSession().getSessionId())
+                .FindAll(s => s.getTurnierId() ==
+                    Convert.ToInt32(this.Session["SelectedTurnier"]));
+
+            spiele.ForEach(spiel =>
+            {
+                int A = 0;
+                int B = 0;
+
+                try { 
+                    A = Convert.ToInt32(Request[$"ctl00$MainContent$TBX-{spiel.getId()}-A"]);
+                    B = Convert.ToInt32(Request[$"ctl00$MainContent$TBX-{spiel.getId()}-B"]);
+
+                    spiel.setResult(Spiel.TeamUnit.TEAM_A, A);
+                    spiel.setResult(Spiel.TeamUnit.TEAM_B, B);
+                }
+                catch (Exception e)
+                {
+                    string deleteA = Request[$"ctl00$MainContent$TBX-{spiel.getId()}-A"];
+                    string deleteB = Request[$"ctl00$MainContent$TBX-{spiel.getId()}-B"];
+
+                    if (deleteA == "x" || deleteA == "X" || deleteB == "x" || deleteB == "X")
+                        spiel.markDeleteFlag();
+                }
+            });
+
+            ApplicationController.updateSpieleResult(spiele);
+            this.Session["isEditMode"] = "false";
+            reloadContext();
+        }
+
         public void editList(Object sender, System.EventArgs e)
         {
-            this.Session["isEditMode"] = "true";
+            if (this.Session["isEditMode"] == null || this.Session["isEditMode"] == "false")
+            { 
+                this.Session["isEditMode"] = "true";
+            }
+            else
+            {
+                storeChanges();
+            }
             reloadContext();
         }
         #endregion

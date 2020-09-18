@@ -31,7 +31,9 @@
         </table>
         <br /><br />
         <h3>Ergebnisse der Spiele</h3>
-        <asp:Button ID="editButton" runat="server" AutoPostBack="True" OnClick="editList" Text="Einträge bearbeiten"/><br /><br />
+        <asp:Button ID="editButton" runat="server" AutoPostBack="True" OnClick="editList" Text="Einträge bearbeiten"/>
+        &emsp; <span style="color: cornflowerblue"><b>Information zum Löschen</b></span>
+        Schreiben Sie während der Bearbeitung der Spiele ein "x" auf eine beliebeige Teilnehmerseite.<br /><br />
         <table class="table" runat="server" id="presenterTable">
        
         </table>

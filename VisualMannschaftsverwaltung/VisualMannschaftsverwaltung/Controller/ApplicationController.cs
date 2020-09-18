@@ -348,6 +348,12 @@ namespace VisualMannschaftsverwaltung
             DataRepository repo = new DataRepository();
             repo.removeSpiel(id);
         }
+
+        public void updateSpieleResult(List<Spiel> spiele)
+        {
+            DataRepository repo = new DataRepository();
+            repo.updateSpieleResult(spiele);
+        }
         #endregion
     }
 }

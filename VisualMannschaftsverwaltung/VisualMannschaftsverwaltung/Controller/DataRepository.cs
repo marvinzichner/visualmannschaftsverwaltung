@@ -726,6 +726,30 @@ namespace VisualMannschaftsverwaltung
             string sql = $"delete from {DB.SPIEL.TABLE} where {DB.SPIEL.id} = {id}";
             executeSql(sql);
         }
+        public void updateSpieleResult(List<Spiel> spiele)
+        {
+            string builder = $"";
+
+            spiele.ForEach(spiel =>
+            {
+                builder = $"{builder} " +
+                $"update {DB.SPIEL.TABLE} " +
+                $"set {DB.SPIEL.resultA}={spiel.getResult(Spiel.TeamUnit.TEAM_A)}, " +
+                $"{DB.SPIEL.resultB}={spiel.getResult(Spiel.TeamUnit.TEAM_B)} " +
+                $"where {DB.SPIEL.id}={spiel.getId().ToString()};";
+            });
+
+            spiele
+                .FindAll(s => s.isFlaggedToDelete())
+                .ForEach(spiel =>
+            {
+                builder = $"{builder} " +
+                $"delete from {DB.SPIEL.TABLE} " +
+                $"where {DB.SPIEL.id}={spiel.getId().ToString()};";
+            });
+
+            executeSql(builder);
+        }
         #endregion
     }
 }

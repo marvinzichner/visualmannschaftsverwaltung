@@ -19,6 +19,7 @@ namespace VisualMannschaftsverwaltung
         int _result_b;
         string _spieltag;
         int _turnier_fk;
+        bool _deleteFlag;
         public enum TeamUnit
         {
             TEAM_A = 0,
@@ -47,6 +48,7 @@ namespace VisualMannschaftsverwaltung
                 return this._result_b;
             return -1;
         }
+        public bool isFlaggedToDelete() { return this._deleteFlag; }
 
         public Spiel setId(int i) { this._id = i; return this; }
         public Spiel setTitle(string s) { s = ApplicationContext.disarmHijacking(s); this._title = s; return this; }
@@ -65,6 +67,11 @@ namespace VisualMannschaftsverwaltung
                 this._result_a = i;
             if (t.Equals(TeamUnit.TEAM_B))
                 this._result_b = i;
+            return this;
+        }
+        public Spiel markDeleteFlag()
+        {
+            this._deleteFlag = true;
             return this;
         }
 

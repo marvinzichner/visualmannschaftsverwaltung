@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Spiele.aspx.cs" Inherits="VisualMannschaftsverwaltung.View.Spiele" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <div id="RuntimeExceptionWrapper" runat="server"></div>
+    <div id="RuntimeExceptionWrapper" class="ex-runtime-error" visible="false" runat="server"></div>
     <h3 id="spielTitle" runat="server">Bitte wählen Sie ein Turnier aus</h3>
     Lade alle Spiele aus dem Turnier:
     <asp:DropDownList ID="turniereDropdown" runat="server"></asp:DropDownList>
@@ -128,6 +128,11 @@
         .pointsizer {
             width: 60px;
             text-align: center;
+        }
+        .ex-runtime-error {
+            padding: 20px;
+            background-color: #ff9999;
+            color: black;
         }
     </style>
 

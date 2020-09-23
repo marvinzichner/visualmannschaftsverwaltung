@@ -227,20 +227,26 @@ namespace VisualMannschaftsverwaltung.View
                             spiel.getResult(Spiel.TeamUnit.TEAM_B));
                     });
 
+            int previousNumeric = -1;
             kv.sortByNumericValue().ForEach(team =>
             {
                 int mannschaftKey = Convert.ToInt32(team.Key);
                 int mannschaftValue = Convert.ToInt32(team.Value);
                 HtmlTableRow tr = new HtmlTableRow();
 
-                tr.Cells.Add(createCell($"{relativeCounter}", "tablecell cellReadOnly"));
+                if (!previousNumeric.Equals(mannschaftValue))
+                    tr.Cells.Add(createCell($"{relativeCounter}", "tablecell cellReadOnly"));
+                if (previousNumeric.Equals(mannschaftValue))
+                    tr.Cells.Add(createCell($"{relativeCounter-1}", "tablecell cellReadOnly"));
+
                 tr.Cells.Add(createCell($"{getMannschaftByKey(mannschaftKey).Name}", "tablecell cellReadOnly"));
                 tr.Cells.Add(createCell($"{team.Value}", "tablecell cellReadOnly"));
 
                 presenterRank.Rows.Add(tr);
 
-                if (!lastResult.Equals(mannschaftValue))
+                if (!previousNumeric.Equals(mannschaftValue))
                     relativeCounter++;
+                previousNumeric = mannschaftValue;
                 //lastResult = mannschaftValue;
             });
         }
@@ -353,6 +359,7 @@ namespace VisualMannschaftsverwaltung.View
                 {
                     RuntimeExceptionWrapper.InnerHtml = 
                         $"<b>{t.getException().Message}</b>";
+                    RuntimeExceptionWrapper.Visible = true;
                 });
             });
 

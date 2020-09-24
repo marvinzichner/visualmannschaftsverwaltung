@@ -30,6 +30,8 @@
         <h3>Tabelle</h3>
         <table class="table" runat="server" id="presenterRank">
         </table>
+        <div runat="server" class="middleText" id="presenterRankText"></div>
+
         <br /><br />
         <h3>Ergebnisse der Spiele</h3>
         <asp:Button ID="editButton" runat="server" AutoPostBack="True" OnClick="editList" Text="Einträge bearbeiten"/>
@@ -38,6 +40,7 @@
         <table class="table" runat="server" id="presenterTable">
        
         </table>
+        <div runat="server" class="middleText" id="presenterTableText"></div>
     </div>
 
     <style>
@@ -47,6 +50,9 @@
             -ms-transform: rotate(-90deg);
             -o-transform: rotate(-90deg);
             float: left;
+        }
+        .middleText {
+            text-align: center;
         }
         .table {
             width: 100%;

@@ -54,6 +54,10 @@ namespace VisualMannschaftsverwaltung
             return this.kvList;
         }
 
+        public int countEntries()
+        {
+            return kvList.Count;
+        }
         public void increaseOrUpdateKeyByInt32(string key, int increase)
         {
             KeyValuePair<string, string> result = this.kvList.FindLast(x => x.Key.Equals(key));

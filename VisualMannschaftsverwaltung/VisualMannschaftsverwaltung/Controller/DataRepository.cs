@@ -717,7 +717,58 @@ namespace VisualMannschaftsverwaltung
 
             return Turniere;
         }
-        
+
+        public Dictionary<string, int> getGoals(int id)
+        {
+            Dictionary<string, int> dictionary = new Dictionary<string, int>();
+            List<Spiel> spiele = getSpiele();
+
+            int goals = 0;
+            int goalsAgainst = 0;
+            int won = 0;
+            int both = 0;
+            int loosed = 0;
+            int ALL = 0;
+            spiele.ForEach(spiel =>
+            {
+                System.Diagnostics.Debug.WriteLine($"SPIEL: {id}? A={spiel.getMannschaft(Spiel.TeamUnit.TEAM_A)} B={spiel.getMannschaft(Spiel.TeamUnit.TEAM_B)}");
+
+                if (spiel.getMannschaft(Spiel.TeamUnit.TEAM_A) == id)
+                {
+                    System.Diagnostics.Debug.WriteLine($"-- A: detected");
+
+                    goals = goals + spiel.getResult(Spiel.TeamUnit.TEAM_A);
+                    goalsAgainst = goalsAgainst + spiel.getResult(Spiel.TeamUnit.TEAM_B);
+                    ALL++;
+                    System.Diagnostics.Debug.WriteLine($"-- A: goals={goals} goalsAgaint={goalsAgainst} all={ALL}");
+
+                    if (spiel.getResult(Spiel.TeamUnit.TEAM_A) > spiel.getResult(Spiel.TeamUnit.TEAM_B)) won++;
+                    if (spiel.getResult(Spiel.TeamUnit.TEAM_A) < spiel.getResult(Spiel.TeamUnit.TEAM_B)) loosed++;
+                }
+                if (spiel.getMannschaft(Spiel.TeamUnit.TEAM_B) == id)
+                {
+                    System.Diagnostics.Debug.WriteLine($"-- B: detected");
+
+                    goals = goals + spiel.getResult(Spiel.TeamUnit.TEAM_B);
+                    goalsAgainst = goalsAgainst + spiel.getResult(Spiel.TeamUnit.TEAM_A);
+                    ALL++;
+                    System.Diagnostics.Debug.WriteLine($"-- B: goals={goals} goalsAgaint={goalsAgainst} all={ALL}");
+
+                    if (spiel.getResult(Spiel.TeamUnit.TEAM_B) > spiel.getResult(Spiel.TeamUnit.TEAM_A)) won++;
+                    if (spiel.getResult(Spiel.TeamUnit.TEAM_B) < spiel.getResult(Spiel.TeamUnit.TEAM_A)) loosed++;
+                }
+            });
+
+            dictionary.Add("GOALS", goals);
+            dictionary.Add("GOALS_AGAINST", goalsAgainst);
+            dictionary.Add("WON", won);
+            dictionary.Add("LOOSED", loosed);
+            dictionary.Add("ALL", loosed);
+
+            return dictionary;
+        }
+
+
         public void addTurnier(string name, SportArt sportArt)
         {
             if (!databaseIsConnectedAndReady()) return;

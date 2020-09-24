@@ -192,6 +192,7 @@
     <Compile Include="Contact.aspx.designer.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Controller\Analyzer\ResultScoreAnalyzer.cs" />
     <Compile Include="Controller\ApplicationContext.cs" />
     <Compile Include="Controller\ApplicationController.cs" />
     <Compile Include="Controller\Repository\SqlBuilder.cs" />

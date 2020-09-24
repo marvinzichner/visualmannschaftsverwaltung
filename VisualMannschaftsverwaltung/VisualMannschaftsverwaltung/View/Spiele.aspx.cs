@@ -120,6 +120,7 @@ namespace VisualMannschaftsverwaltung.View
             });
 
             if (this.Session["SelectedTurnier"] != null)
+                try { 
                 ApplicationController.getTurniere(GetUserFromSession().getSessionId())
                     .Find(t => t.getId().ToString().Equals((string)this.Session["SelectedTurnier"]))
                     .getMannschaften()
@@ -132,6 +133,11 @@ namespace VisualMannschaftsverwaltung.View
                             dropdownTeamA.Items.Add(listItem);
                             dropdownTeamb.Items.Add(listItem);
                         });
+                }
+                catch (Exception e)
+                {
+                    this.Session["SelectedTurnier"] = null;
+                }
         }
 
         public void createNewTurnier(Object sender, EventArgs e)
@@ -210,6 +216,11 @@ namespace VisualMannschaftsverwaltung.View
             HtmlTableRow trHead = new HtmlTableRow();
             trHead.Cells.Add(createCell($"Position", "tablecell cellHead"));
             trHead.Cells.Add(createCell($"Mannschaft", "tablecell cellHead"));
+            trHead.Cells.Add(createCell($"Anz. Spiele", "tablecell cellHead"));
+            trHead.Cells.Add(createCell($"Erzielt", "tablecell cellHead"));
+            trHead.Cells.Add(createCell($"Erhalten", "tablecell cellHead"));
+            trHead.Cells.Add(createCell($"Gewonnen", "tablecell cellHead"));
+            trHead.Cells.Add(createCell($"Verloren", "tablecell cellHead"));
             trHead.Cells.Add(createCell($"Absolutes Ergebnis", "tablecell cellHead"));
             presenterRank.Rows.Add(trHead);
 
@@ -232,7 +243,11 @@ namespace VisualMannschaftsverwaltung.View
             {
                 int mannschaftKey = Convert.ToInt32(team.Key);
                 int mannschaftValue = Convert.ToInt32(team.Value);
+                Mannschaft mannschaft = ApplicationController
+                    .getMannschaften(GetUserFromSession().getSessionId())
+                    .Find(m => m.ID == mannschaftKey);
                 HtmlTableRow tr = new HtmlTableRow();
+                //ResultScoreAnalyzer rsa = new ResultScoreAnalyzer(kv);
 
                 if (!previousNumeric.Equals(mannschaftValue))
                     tr.Cells.Add(createCell($"{relativeCounter}", "tablecell cellReadOnly"));
@@ -240,6 +255,16 @@ namespace VisualMannschaftsverwaltung.View
                     tr.Cells.Add(createCell($"{relativeCounter-1}", "tablecell cellReadOnly"));
 
                 tr.Cells.Add(createCell($"{getMannschaftByKey(mannschaftKey).Name}", "tablecell cellReadOnly"));
+                tr.Cells.Add(
+                    createCell($"{mannschaft.getGoals(GetUserFromSession().getSessionId())["ALL"].ToString()}", "tablecell cellReadOnly"));
+                tr.Cells.Add(
+                    createCell($"{mannschaft.getGoals(GetUserFromSession().getSessionId())["GOALS"].ToString()}", "tablecell cellReadOnly"));
+                tr.Cells.Add(
+                    createCell($"{mannschaft.getGoals(GetUserFromSession().getSessionId())["GOALS_AGAINST"].ToString()}", "tablecell cellReadOnly"));
+                tr.Cells.Add(
+                    createCell($"{mannschaft.getGoals(GetUserFromSession().getSessionId())["WON"].ToString()}", "tablecell cellReadOnly"));
+                tr.Cells.Add(
+                    createCell($"{mannschaft.getGoals(GetUserFromSession().getSessionId())["LOOSED"].ToString()}", "tablecell cellReadOnly"));
                 tr.Cells.Add(createCell($"{team.Value}", "tablecell cellReadOnly"));
 
                 presenterRank.Rows.Add(tr);
@@ -249,6 +274,11 @@ namespace VisualMannschaftsverwaltung.View
                 previousNumeric = mannschaftValue;
                 //lastResult = mannschaftValue;
             });
+
+            if (kv.countEntries() == 0)
+                presenterRankText.InnerHtml = "<b>Derzeit ist keine Auswertung möglich.</b>";
+            if (kv.countEntries() > 0)
+                presenterRankText.InnerHtml = "";
         }
 
         public void showCreationMode(Object sender, EventArgs e)
@@ -282,6 +312,7 @@ namespace VisualMannschaftsverwaltung.View
             trHead.Cells.Add(createCell($"Mannschaft B", "tablecell cellHead"));
             presenterTable.Rows.Add(trHead);
 
+            bool contextPresent = false;
             if (selectedContext)
                 ApplicationController.getSpiele(GetUserFromSession().getSessionId())
                     .FindAll(search => search.getTurnierId().ToString().Equals(ID))
@@ -290,6 +321,7 @@ namespace VisualMannschaftsverwaltung.View
                     Mannschaft TeamA = getMannschaftByKey(spiel.getMannschaft(Spiel.TeamUnit.TEAM_A));
                     Mannschaft TeamB = getMannschaftByKey(spiel.getMannschaft(Spiel.TeamUnit.TEAM_B));
 
+                    contextPresent = true;
                     if (TeamA != null && TeamB != null)
                     {
                         HtmlTableRow tr = new HtmlTableRow();
@@ -316,6 +348,11 @@ namespace VisualMannschaftsverwaltung.View
                     }
 
                 });
+
+            if (!contextPresent)
+                presenterTableText.InnerHtml = "<b>Es sind keine Spiele vorhanden. Bitte legen Sie Spiele an.</b>";
+            if (contextPresent)
+                presenterTableText.InnerHtml = "";
         }
 
         public void selectTurnier(Object sender, System.EventArgs e)

@@ -177,9 +177,9 @@ namespace VisualMannschaftsverwaltung
             return this;
         }
 
-        public Dictionary<string, int> getGoals(string session)
+        public Dictionary<string, int> getGoals(string session, string turnierFk)
         {
-            return ApplicationController.getGoals(ID, session);
+            return ApplicationController.getGoals(ID, session, turnierFk);
         }
 
         public List<Person> applySearchPattern()

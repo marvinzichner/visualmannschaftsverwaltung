@@ -349,11 +349,11 @@ namespace VisualMannschaftsverwaltung
             repo.removeSpiel(id);
         }
 
-        public static Dictionary<string, int> getGoals(int id, string session)
+        public static Dictionary<string, int> getGoals(int id, string session, string turnierFk)
         {
             DataRepository repo = new DataRepository();
             repo.setSession(session);
-            return repo.getGoals(id);
+            return repo.getGoals(id, turnierFk);
         }
 
         public void updateSpieleResult(List<Spiel> spiele)

@@ -216,12 +216,13 @@ namespace VisualMannschaftsverwaltung.View
             HtmlTableRow trHead = new HtmlTableRow();
             trHead.Cells.Add(createCell($"Position", "tablecell cellHead"));
             trHead.Cells.Add(createCell($"Mannschaft", "tablecell cellHead"));
-            trHead.Cells.Add(createCell($"Anz. Spiele", "tablecell cellHead"));
-            trHead.Cells.Add(createCell($"Erzielt", "tablecell cellHead"));
-            trHead.Cells.Add(createCell($"Erhalten", "tablecell cellHead"));
-            trHead.Cells.Add(createCell($"Gewonnen", "tablecell cellHead"));
-            trHead.Cells.Add(createCell($"Verloren", "tablecell cellHead"));
-            trHead.Cells.Add(createCell($"Absolutes Ergebnis", "tablecell cellHead"));
+            //trHead.Cells.Add(createCell($"Sp", "tablecell cellFixed cellHead"));
+            trHead.Cells.Add(createCell($"T", "tablecell cellFixed cellHead"));
+            trHead.Cells.Add(createCell($"GT", "tablecell cellFixed cellHead"));
+            trHead.Cells.Add(createCell($"G", "tablecell cellFixed cellHead"));
+            trHead.Cells.Add(createCell($"V", "tablecell cellFixed cellHead"));
+            trHead.Cells.Add(createCell($"U", "tablecell cellFixed cellHead"));
+            trHead.Cells.Add(createCell($"Punktzahl", "tablecell tablecellRightAlign cellHead"));
             presenterRank.Rows.Add(trHead);
 
             if (selectedContext)
@@ -255,17 +256,19 @@ namespace VisualMannschaftsverwaltung.View
                     tr.Cells.Add(createCell($"{relativeCounter-1}", "tablecell cellReadOnly"));
 
                 tr.Cells.Add(createCell($"{getMannschaftByKey(mannschaftKey).Name}", "tablecell cellReadOnly"));
+                //tr.Cells.Add(
+                //    createCell($"{mannschaft.getGoals(GetUserFromSession().getSessionId(), ID)["ALL"].ToString()}", "tablecell cellReadOnly"));
                 tr.Cells.Add(
-                    createCell($"{mannschaft.getGoals(GetUserFromSession().getSessionId())["ALL"].ToString()}", "tablecell cellReadOnly"));
+                    createCell($"{mannschaft.getGoals(GetUserFromSession().getSessionId(), ID)["GOALS"].ToString()}", "tablecell cellFixed cellReadOnly"));
                 tr.Cells.Add(
-                    createCell($"{mannschaft.getGoals(GetUserFromSession().getSessionId())["GOALS"].ToString()}", "tablecell cellReadOnly"));
+                    createCell($"{mannschaft.getGoals(GetUserFromSession().getSessionId(), ID)["GOALS_AGAINST"].ToString()}", "tablecell cellFixed cellReadOnly"));
                 tr.Cells.Add(
-                    createCell($"{mannschaft.getGoals(GetUserFromSession().getSessionId())["GOALS_AGAINST"].ToString()}", "tablecell cellReadOnly"));
+                    createCell($"{mannschaft.getGoals(GetUserFromSession().getSessionId(), ID)["WON"].ToString()}", "tablecell cellFixed cellReadOnly"));
                 tr.Cells.Add(
-                    createCell($"{mannschaft.getGoals(GetUserFromSession().getSessionId())["WON"].ToString()}", "tablecell cellReadOnly"));
+                    createCell($"{mannschaft.getGoals(GetUserFromSession().getSessionId(), ID)["LOOSED"].ToString()}", "tablecell cellFixed cellReadOnly"));
                 tr.Cells.Add(
-                    createCell($"{mannschaft.getGoals(GetUserFromSession().getSessionId())["LOOSED"].ToString()}", "tablecell cellReadOnly"));
-                tr.Cells.Add(createCell($"{team.Value}", "tablecell cellReadOnly"));
+                   createCell($"{mannschaft.getGoals(GetUserFromSession().getSessionId(), ID)["BOTH"].ToString()}", "tablecell cellFixed cellReadOnly"));
+                tr.Cells.Add(createCell($"{team.Value}", "tablecell tablecellRightAlign cellReadOnly"));
 
                 presenterRank.Rows.Add(tr);
 

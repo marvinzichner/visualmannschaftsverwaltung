@@ -718,7 +718,7 @@ namespace VisualMannschaftsverwaltung
             return Turniere;
         }
 
-        public Dictionary<string, int> getGoals(int id)
+        public Dictionary<string, int> getGoals(int id, string turnierFk)
         {
             Dictionary<string, int> dictionary = new Dictionary<string, int>();
             List<Spiel> spiele = getSpiele();
@@ -729,33 +729,30 @@ namespace VisualMannschaftsverwaltung
             int both = 0;
             int loosed = 0;
             int ALL = 0;
+
             spiele.ForEach(spiel =>
             {
-                System.Diagnostics.Debug.WriteLine($"SPIEL: {id}? A={spiel.getMannschaft(Spiel.TeamUnit.TEAM_A)} B={spiel.getMannschaft(Spiel.TeamUnit.TEAM_B)}");
-
-                if (spiel.getMannschaft(Spiel.TeamUnit.TEAM_A) == id)
+                if (spiel.getMannschaft(Spiel.TeamUnit.TEAM_A) == id 
+                    && spiel.getTurnierId().ToString().Equals(turnierFk))
                 {
-                    System.Diagnostics.Debug.WriteLine($"-- A: detected");
-
                     goals = goals + spiel.getResult(Spiel.TeamUnit.TEAM_A);
                     goalsAgainst = goalsAgainst + spiel.getResult(Spiel.TeamUnit.TEAM_B);
-                    ALL++;
-                    System.Diagnostics.Debug.WriteLine($"-- A: goals={goals} goalsAgaint={goalsAgainst} all={ALL}");
+                    ALL = ALL + 1;
 
                     if (spiel.getResult(Spiel.TeamUnit.TEAM_A) > spiel.getResult(Spiel.TeamUnit.TEAM_B)) won++;
                     if (spiel.getResult(Spiel.TeamUnit.TEAM_A) < spiel.getResult(Spiel.TeamUnit.TEAM_B)) loosed++;
+                    if (spiel.getResult(Spiel.TeamUnit.TEAM_A) == spiel.getResult(Spiel.TeamUnit.TEAM_B)) both++;
                 }
-                if (spiel.getMannschaft(Spiel.TeamUnit.TEAM_B) == id)
+                if (spiel.getMannschaft(Spiel.TeamUnit.TEAM_B) == id
+                    && spiel.getTurnierId().ToString().Equals(turnierFk))
                 {
-                    System.Diagnostics.Debug.WriteLine($"-- B: detected");
-
                     goals = goals + spiel.getResult(Spiel.TeamUnit.TEAM_B);
                     goalsAgainst = goalsAgainst + spiel.getResult(Spiel.TeamUnit.TEAM_A);
-                    ALL++;
-                    System.Diagnostics.Debug.WriteLine($"-- B: goals={goals} goalsAgaint={goalsAgainst} all={ALL}");
+                    ALL = ALL + 1;
 
                     if (spiel.getResult(Spiel.TeamUnit.TEAM_B) > spiel.getResult(Spiel.TeamUnit.TEAM_A)) won++;
                     if (spiel.getResult(Spiel.TeamUnit.TEAM_B) < spiel.getResult(Spiel.TeamUnit.TEAM_A)) loosed++;
+                    if (spiel.getResult(Spiel.TeamUnit.TEAM_A) == spiel.getResult(Spiel.TeamUnit.TEAM_B)) both++;
                 }
             });
 
@@ -763,6 +760,7 @@ namespace VisualMannschaftsverwaltung
             dictionary.Add("GOALS_AGAINST", goalsAgainst);
             dictionary.Add("WON", won);
             dictionary.Add("LOOSED", loosed);
+            dictionary.Add("BOTH", both);
             dictionary.Add("ALL", loosed);
 
             return dictionary;

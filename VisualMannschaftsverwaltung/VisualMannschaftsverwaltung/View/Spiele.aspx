@@ -74,6 +74,13 @@
             font-size: 9pt;
             color: #808080;
         }
+        .cellFixed {
+            width: 12px;
+            text-align: center;
+        }
+        .tablecellRightAlign {
+            text-align: right;
+        }
         .cellInteraction {
             font-size: 9pt;
             color: #0094ff;

@@ -84,14 +84,6 @@ namespace VisualMannschaftsverwaltung
 
             return list;
         }
-
-        public Dictionary<string, string> getGoalsByTeamId()
-        {
-            
-
-
-            return new Dictionary<string, string>();
-        }
         #endregion
     }
 }

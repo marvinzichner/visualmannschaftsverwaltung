@@ -120,10 +120,10 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="Controller\Repository\Migration\V1_Base.sql" />
-    <Content Include="Controller\Repository\Migration\V3_SessionAndTurnier.sql" />
-    <Content Include="Controller\Repository\Migration\V2_FakeData.sql" />
-    <Content Include="Controller\Repository\Migration\V4_Spiel.sql" />
+    <Content Include="com.marvinzichner\controller\repository\migration\V1_Base.sql" />
+    <Content Include="com.marvinzichner\controller\repository\migration\V3_SessionAndTurnier.sql" />
+    <Content Include="com.marvinzichner\controller\repository\migration\V2_FakeData.sql" />
+    <Content Include="com.marvinzichner\controller\repository\migration\V4_Spiel.sql" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -192,21 +192,20 @@
     <Compile Include="Contact.aspx.designer.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Controller\Analyzer\ResultScoreAnalyzer.cs" />
-    <Compile Include="Controller\ApplicationContext.cs" />
-    <Compile Include="Controller\ApplicationController.cs" />
-    <Compile Include="Controller\Repository\SqlBuilder.cs" />
-    <Compile Include="Exception\Try.cs" />
-    <Compile Include="Model\AuthenticatedRole.cs" />
-    <Compile Include="Model\CustomPage.cs">
+    <Compile Include="com.marvinzichner\controller\analyzer\ResultScoreAnalyzer.cs" />
+    <Compile Include="com.marvinzichner\controller\ApplicationContext.cs" />
+    <Compile Include="com.marvinzichner\controller\ApplicationController.cs" />
+    <Compile Include="com.marvinzichner\Exception\Try.cs" />
+    <Compile Include="com.marvinzichner\model\AuthenticatedRole.cs" />
+    <Compile Include="com.marvinzichner\model\CustomPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Controller\Export.cs" />
-    <Compile Include="Model\KeyValueList.cs" />
-    <Compile Include="Controller\Property.cs" />
-    <Compile Include="Controller\Repository\RepositorySettings.cs" />
-    <Compile Include="Controller\DataRepository.cs" />
-    <Compile Include="Controller\Utils.cs" />
+    <Compile Include="com.marvinzichner\controller\export\Export.cs" />
+    <Compile Include="com.marvinzichner\model\KeyValueList.cs" />
+    <Compile Include="com.marvinzichner\utils\Property.cs" />
+    <Compile Include="com.marvinzichner\controller\repository\RepositorySettings.cs" />
+    <Compile Include="com.marvinzichner\controller\repository\DataRepository.cs" />
+    <Compile Include="com.marvinzichner\utils\Utils.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -214,25 +213,25 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Exception\RuntimeException.cs" />
-    <Compile Include="Exception\InputValidationException.cs" />
+    <Compile Include="com.marvinzichner\Exception\RuntimeException.cs" />
+    <Compile Include="com.marvinzichner\Exception\InputValidationException.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Model\AuthenticatedUser.cs" />
-    <Compile Include="Model\Database\DB.cs" />
-    <Compile Include="Model\Spiel.cs" />
-    <Compile Include="Model\FussballSpieler.cs" />
-    <Compile Include="Model\HandballSpieler.cs" />
-    <Compile Include="Model\Mannschaft.cs" />
-    <Compile Include="Model\Person.cs" />
-    <Compile Include="Model\Physiotherapeut.cs" />
-    <Compile Include="Model\Spieler.cs" />
-    <Compile Include="Model\SpielerRolle.cs" />
-    <Compile Include="Model\SportArt.cs" />
-    <Compile Include="Model\TennisSpieler.cs" />
-    <Compile Include="Model\Trainer.cs" />
-    <Compile Include="Model\Turnier.cs" />
+    <Compile Include="com.marvinzichner\model\AuthenticatedUser.cs" />
+    <Compile Include="com.marvinzichner\model\db\DB.cs" />
+    <Compile Include="com.marvinzichner\model\Spiel.cs" />
+    <Compile Include="com.marvinzichner\model\FussballSpieler.cs" />
+    <Compile Include="com.marvinzichner\model\HandballSpieler.cs" />
+    <Compile Include="com.marvinzichner\model\Mannschaft.cs" />
+    <Compile Include="com.marvinzichner\model\Person.cs" />
+    <Compile Include="com.marvinzichner\model\Physiotherapeut.cs" />
+    <Compile Include="com.marvinzichner\model\Spieler.cs" />
+    <Compile Include="com.marvinzichner\model\SpielerRolle.cs" />
+    <Compile Include="com.marvinzichner\model\SportArt.cs" />
+    <Compile Include="com.marvinzichner\model\TennisSpieler.cs" />
+    <Compile Include="com.marvinzichner\model\Trainer.cs" />
+    <Compile Include="com.marvinzichner\model\Turnier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>

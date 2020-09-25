@@ -36,6 +36,12 @@ namespace VisualMannschaftsverwaltung
             return failed;
         }
 
+        public void ignoreError()
+        {
+            this.failed = false;
+            this.e = null;
+        }
+
         public Try or(Action a)
         {
             a.Invoke();

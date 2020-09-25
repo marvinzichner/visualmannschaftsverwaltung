@@ -59,9 +59,11 @@ namespace VisualMannschaftsverwaltung.View
                 if (this.Session["VIEW"].ToString() == "ERGEBNISSE")
                 {
                     SECTION_TABELLE.Visible = false;
-                    SECTION_TABELLE.Visible = true;
+                    SECTION_ERGEBNISSE.Visible = true;
                 }
             }
+            if (this.Session["SelectedTurnier"] != null)
+                previewHider.Visible = true;
         }
         public void changeView(Object sender, EventArgs e)
         {
@@ -348,15 +350,11 @@ namespace VisualMannschaftsverwaltung.View
             if ((string)this.Session["SelectedTurnier"] != null) { 
                 ID = (string)this.Session["SelectedTurnier"];
                 selectedContext = true;
-            }
 
-            try { 
-                spielTitle.InnerText = ApplicationController.getTurniere(GetUserFromSession().getSessionId())
-                    .Find(turnier => turnier.getId().Equals((string)this.Session["SelectedTurnier"])).getName();
-            }
-            catch (Exception e)
-            {
-                spielTitle.InnerText = "Bitte wählen Sie ein Turnier aus";
+                Turnier selectedTurnier = ApplicationController
+                .getTurniere(GetUserFromSession().getSessionId())
+                .Find(turnier => turnier.getId() == Convert.ToInt32(ID));
+                turnierNameHeadline.InnerText = selectedTurnier.getName();
             }
 
             HtmlTableRow trHead = new HtmlTableRow();
@@ -445,7 +443,10 @@ namespace VisualMannschaftsverwaltung.View
                     string deleteB = Request[$"ctl00$MainContent$TBX-{spiel.getId()}-B"];
 
                     if (deleteA == "x" || deleteA == "X" || deleteB == "x" || deleteB == "X")
+                    {
                         spiel.markDeleteFlag();
+                        t.ignoreError();
+                    }
 
                 }).afterFail(() =>
                 {

@@ -2,7 +2,6 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <div id="RuntimeExceptionWrapper" class="ex-runtime-error" visible="false" runat="server"></div>
-    <h3 id="spielTitle" runat="server">Bitte wählen Sie ein Turnier aus</h3>
     Lade alle Spiele aus dem Turnier:
     <asp:DropDownList ID="turniereDropdown" runat="server"></asp:DropDownList>
     <asp:Button ID="turnierLoadButton" runat="server" OnClick="selectTurnier" Text="Anwenden"/><br /><br />
@@ -23,6 +22,8 @@
     </div>
 
     <div id="previewHider" runat="server">
+        <h2 runat="server" id="turnierNameHeadline">TURNIER_NAME</h2>
+
         <div id="SECTION_TABELLE" runat="server">
             <h3><span class="title-active">Tabelle</span> <asp:LinkButton class="title-href" runat="server" OnClick="changeView">Ergebnisse</asp:LinkButton></h3>
             <br />

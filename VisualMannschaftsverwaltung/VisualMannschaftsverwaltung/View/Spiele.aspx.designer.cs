@@ -22,15 +22,6 @@ namespace VisualMannschaftsverwaltung.View {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl RuntimeExceptionWrapper;
         
         /// <summary>
-        /// spielTitle-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spielTitle;
-        
-        /// <summary>
         /// turniereDropdown-Steuerelement
         /// </summary>
         /// <remarks>
@@ -101,6 +92,15 @@ namespace VisualMannschaftsverwaltung.View {
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl previewHider;
+        
+        /// <summary>
+        /// turnierNameHeadline-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl turnierNameHeadline;
         
         /// <summary>
         /// SECTION_TABELLE-Steuerelement

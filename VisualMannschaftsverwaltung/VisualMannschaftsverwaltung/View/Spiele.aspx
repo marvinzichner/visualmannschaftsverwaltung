@@ -7,6 +7,7 @@
     <asp:DropDownList ID="turniereDropdown" runat="server"></asp:DropDownList>
     <asp:Button ID="turnierLoadButton" runat="server" OnClick="selectTurnier" Text="Anwenden"/><br /><br />
 
+
     <div id="createNewGame" runat="server" visible="false">
         <h3>Neues Spiel erstellen</h3>
         
@@ -22,28 +23,40 @@
     </div>
 
     <div id="previewHider" runat="server">
-        <asp:Button ID="addNewTurnier" runat="server" OnClick="showCreationMode" AutoPostBack="true" Text="Neues Spiel erstellen"/>
-        <asp:Button ID="generateTurniere" runat="server" OnClick="generateKnockoutSpiele" AutoPostBack="true" Text="Knockout: Alle erforderlichen Spiele generieren"/>
-        <asp:Button ID="randomResults" runat="server" OnClick="generateRandomResults" AutoPostBack="true" Text="Zufällige Ergebnisse generieren"/>
-        <br />
-        <br />
-        <h3>Tabelle</h3>
-        <table class="table" runat="server" id="presenterRank">
-        </table>
-        <div runat="server" class="middleText" id="presenterRankText"></div>
-
-        <br /><br />
-        <h3>Ergebnisse der Spiele</h3>
-        <asp:Button ID="editButton" runat="server" AutoPostBack="True" OnClick="editList" Text="Einträge bearbeiten"/>
-        &emsp; <span style="color: cornflowerblue"><b>Information zum Löschen</b></span>
-        Schreiben Sie während der Bearbeitung der Spiele ein "x" auf eine beliebeige Teilnehmerseite.<br /><br />
-        <table class="table" runat="server" id="presenterTable">
-       
-        </table>
-        <div runat="server" class="middleText" id="presenterTableText"></div>
+        <div id="SECTION_TABELLE" runat="server">
+            <h3><span class="title-active">Tabelle</span> <asp:LinkButton class="title-href" runat="server" OnClick="changeView">Ergebnisse</asp:LinkButton></h3>
+            <br />
+            <table class="table" runat="server" id="presenterRank">
+            </table>
+            <div runat="server" class="middleText" id="presenterRankText"></div>
+        </div>
+        
+        <div id="SECTION_ERGEBNISSE" runat="server" visible="false">
+            <h3><asp:LinkButton class="title-href" runat="server" OnClick="changeView">Tabelle</asp:LinkButton> <span class="title-active">Ergebnisse</span></h3>
+            <br />
+            <asp:Button ID="addNewTurnier" runat="server" OnClick="showCreationMode" AutoPostBack="true" Text="Neues Spiel erstellen"/>
+            <asp:Button ID="generateTurniere" runat="server" OnClick="generateKnockoutSpiele" AutoPostBack="true" Text="Knockout: Alle erforderlichen Spiele generieren"/>
+            <asp:Button ID="randomResults" runat="server" OnClick="generateRandomResults" AutoPostBack="true" Text="Zufällige Ergebnisse generieren"/>
+            <br /><br />
+            <asp:Button ID="editButton" runat="server" AutoPostBack="True" OnClick="editList" Text="Einträge bearbeiten"/>
+            &emsp; <span style="color: cornflowerblue"><b>Information zum Löschen</b></span>
+            Schreiben Sie während der Bearbeitung der Spiele ein "x" auf eine beliebeige Teilnehmerseite.<br /><br />
+            <table class="table" runat="server" id="presenterTable"></table>
+            <div runat="server" class="middleText" id="presenterTableText"></div>
+        </div>
     </div>
 
     <style>
+        .title-href {
+            color: #b3b3b3;
+        }
+        .title-active {
+            border-bottom: 2px solid #80bfff;
+        }
+        .title-href:hover {
+            border-bottom: 2px solid #b3b3b3;
+            cursor: pointer;
+        }
         .rotate {
             -webkit-transform: rotate(-90deg);
             -moz-transform: rotate(-90deg);

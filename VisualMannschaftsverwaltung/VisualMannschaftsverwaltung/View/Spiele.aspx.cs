@@ -37,11 +37,54 @@ namespace VisualMannschaftsverwaltung.View
             previewHider.Visible = false;
             this.disableAdminFeatures();
 
+            if (this.Session["VIEW"] != null)
+                System.Diagnostics.Debug.WriteLine("GOT: " + this.Session["VIEW"].ToString());
+            this.toggleViews();
+
             //reloadContext();
         }
         #endregion
 
         #region Woker
+        private void toggleViews()
+        {
+            if (this.Session["VIEW"] != null)
+            {
+                System.Diagnostics.Debug.WriteLine($"changeing views");
+                if (this.Session["VIEW"].ToString() == "TABELLE")
+                {
+                    SECTION_TABELLE.Visible = true;
+                    SECTION_ERGEBNISSE.Visible = false;
+                }
+                if (this.Session["VIEW"].ToString() == "ERGEBNISSE")
+                {
+                    SECTION_TABELLE.Visible = false;
+                    SECTION_TABELLE.Visible = true;
+                }
+            }
+        }
+        public void changeView(Object sender, EventArgs e)
+        {
+            if (this.Session["VIEW"] == null)
+                this.Session["VIEW"] = "TABELLE";
+
+            if (this.Session["VIEW"].ToString() == "TABELLE")
+            {
+                System.Diagnostics.Debug.WriteLine($"change to ergebnisse");
+                this.Session["VIEW"] = "ERGEBNISSE";
+                toggleViews();
+                return;
+            }
+                
+            if (this.Session["VIEW"].ToString() == "ERGEBNISSE")
+            {
+                System.Diagnostics.Debug.WriteLine($"change to tabelle");
+                this.Session["VIEW"] = "TABELLE";
+                toggleViews();
+                return;
+            }
+
+        }
         private void disableAdminFeatures()
         {
             if (GetUserFromSession().isUser())
@@ -222,14 +265,18 @@ namespace VisualMannschaftsverwaltung.View
             trHead.Cells.Add(createCell($"G", "tablecell cellFixed cellHead"));
             trHead.Cells.Add(createCell($"V", "tablecell cellFixed cellHead"));
             trHead.Cells.Add(createCell($"U", "tablecell cellFixed cellHead"));
+            trHead.Cells.Add(createCell($"DIFF", "tablecell cellFixed cellHead"));
             trHead.Cells.Add(createCell($"Punktzahl", "tablecell tablecellRightAlign cellHead"));
             presenterRank.Rows.Add(trHead);
 
+            ResultScoreAnalyzer analyzer = new ResultScoreAnalyzer();
             if (selectedContext)
                 ApplicationController.getSpiele(GetUserFromSession().getSessionId())
                     .FindAll(search => search.getTurnierId().ToString().Equals(ID))
                     .ForEach(spiel =>
                     {
+                        analyzer.append(spiel);
+
                         kv.increaseOrUpdateKeyByInt32(
                             spiel.getMannschaft(Spiel.TeamUnit.TEAM_A).ToString(),
                             spiel.getResult(Spiel.TeamUnit.TEAM_A));
@@ -239,16 +286,19 @@ namespace VisualMannschaftsverwaltung.View
                             spiel.getResult(Spiel.TeamUnit.TEAM_B));
                     });
 
+            analyzer.analyze();
             int previousNumeric = -1;
-            kv.sortByNumericValue().ForEach(team =>
+            analyzer.getSpiele().ForEach(team =>
             {
-                int mannschaftKey = Convert.ToInt32(team.Key);
-                int mannschaftValue = Convert.ToInt32(team.Value);
+                int mannschaftKey = team.Key;
+                int mannschaftValue = team.Value;
                 Mannschaft mannschaft = ApplicationController
                     .getMannschaften(GetUserFromSession().getSessionId())
                     .Find(m => m.ID == mannschaftKey);
                 HtmlTableRow tr = new HtmlTableRow();
-                //ResultScoreAnalyzer rsa = new ResultScoreAnalyzer(kv);
+
+                Dictionary<string, int> data = mannschaft.getGoals(GetUserFromSession().getSessionId(), ID);
+                int diff = data["WON"] - data["LOOSED"];
 
                 if (!previousNumeric.Equals(mannschaftValue))
                     tr.Cells.Add(createCell($"{relativeCounter}", "tablecell cellReadOnly"));
@@ -259,15 +309,17 @@ namespace VisualMannschaftsverwaltung.View
                 //tr.Cells.Add(
                 //    createCell($"{mannschaft.getGoals(GetUserFromSession().getSessionId(), ID)["ALL"].ToString()}", "tablecell cellReadOnly"));
                 tr.Cells.Add(
-                    createCell($"{mannschaft.getGoals(GetUserFromSession().getSessionId(), ID)["GOALS"].ToString()}", "tablecell cellFixed cellReadOnly"));
+                    createCell($"{data["GOALS"].ToString()}", "tablecell cellFixed cellReadOnly"));
                 tr.Cells.Add(
-                    createCell($"{mannschaft.getGoals(GetUserFromSession().getSessionId(), ID)["GOALS_AGAINST"].ToString()}", "tablecell cellFixed cellReadOnly"));
+                    createCell($"{data["GOALS_AGAINST"].ToString()}", "tablecell cellFixed cellReadOnly"));
                 tr.Cells.Add(
-                    createCell($"{mannschaft.getGoals(GetUserFromSession().getSessionId(), ID)["WON"].ToString()}", "tablecell cellFixed cellReadOnly"));
+                    createCell($"{data["WON"].ToString()}", "tablecell cellFixed cellReadOnly"));
                 tr.Cells.Add(
-                    createCell($"{mannschaft.getGoals(GetUserFromSession().getSessionId(), ID)["LOOSED"].ToString()}", "tablecell cellFixed cellReadOnly"));
+                    createCell($"{data["LOOSED"].ToString()}", "tablecell cellFixed cellReadOnly"));
                 tr.Cells.Add(
-                   createCell($"{mannschaft.getGoals(GetUserFromSession().getSessionId(), ID)["BOTH"].ToString()}", "tablecell cellFixed cellReadOnly"));
+                   createCell($"{data["BOTH"].ToString()}", "tablecell cellFixed cellReadOnly"));
+                tr.Cells.Add(
+                   createCell($"{diff.ToString()}", "tablecell cellFixed cellReadOnly"));
                 tr.Cells.Add(createCell($"{team.Value}", "tablecell tablecellRightAlign cellReadOnly"));
 
                 presenterRank.Rows.Add(tr);

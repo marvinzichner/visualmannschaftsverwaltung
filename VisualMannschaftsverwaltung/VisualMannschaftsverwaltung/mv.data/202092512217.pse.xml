@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfPerson xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Person xsi:type="FussballSpieler">
+    <Name>Marvin</Name>
+    <SportArt>FUSSBALL</SportArt>
+    <GenericAttributes>
+      <string>IsLeftFeet</string>
+      <string>SpielSiege</string>
+    </GenericAttributes>
+    <Nachname>Zichner</Nachname>
+    <Birthdate>09.08.1999</Birthdate>
+    <ID>12</ID>
+    <SpielerNummer>-9999</SpielerNummer>
+    <SpielerRolle>KEINE</SpielerRolle>
+    <SpielSiege>1</SpielSiege>
+    <IsLeftFeet>true</IsLeftFeet>
+  </Person>
+</ArrayOfPerson>

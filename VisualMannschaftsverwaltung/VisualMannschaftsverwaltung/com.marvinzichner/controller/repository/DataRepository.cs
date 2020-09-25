@@ -162,6 +162,8 @@ namespace VisualMannschaftsverwaltung
                     $"from {DB.PERSON.TABLE} as p left join {DB.HANDBALLSPIELER.TABLE} as h " +
                     $"on p.{DB.PERSON.id} = h.{DB.HANDBALLSPIELER.fk_person} {joinCondition} " +
                     $"where p.{DB.PERSON.id} = h.{DB.HANDBALLSPIELER.fk_person} {mannschaftId} {sessionSql};";
+
+                System.Diagnostics.Debug.Print(sql);
                 command = new MySqlCommand(sql, MySqlConnection);
                 reader = command.ExecuteReader();
 

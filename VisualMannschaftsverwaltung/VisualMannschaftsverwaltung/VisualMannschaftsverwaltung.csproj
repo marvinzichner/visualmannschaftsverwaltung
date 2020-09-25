@@ -195,7 +195,7 @@
     <Compile Include="com.marvinzichner\controller\analyzer\ResultScoreAnalyzer.cs" />
     <Compile Include="com.marvinzichner\controller\ApplicationContext.cs" />
     <Compile Include="com.marvinzichner\controller\ApplicationController.cs" />
-    <Compile Include="com.marvinzichner\Exception\Try.cs" />
+    <Compile Include="com.marvinzichner\exception\Try.cs" />
     <Compile Include="com.marvinzichner\model\AuthenticatedRole.cs" />
     <Compile Include="com.marvinzichner\model\CustomPage.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -213,8 +213,8 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="com.marvinzichner\Exception\RuntimeException.cs" />
-    <Compile Include="com.marvinzichner\Exception\InputValidationException.cs" />
+    <Compile Include="com.marvinzichner\exception\RuntimeException.cs" />
+    <Compile Include="com.marvinzichner\exception\InputValidationException.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

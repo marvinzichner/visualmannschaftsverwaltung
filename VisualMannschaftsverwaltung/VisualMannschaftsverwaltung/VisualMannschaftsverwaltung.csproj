@@ -185,6 +185,8 @@
       <DependentUpon>About.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="com.marvinzichner\controller\repository\GeneratorUtil.cs" />
+    <Compile Include="com.marvinzichner\controller\repository\RandomUtils.cs" />
     <Compile Include="Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -1,4 +1,4 @@
-﻿create table MVW_MIGRATION (
+﻿CREATE table MVW_MIGRATION (
     ID int auto_increment not null,
     VERSION int,
     NAME text,

@@ -38,10 +38,13 @@ namespace VisualMannschaftsverwaltung
         public static void createDatabaseContext()
         {
             DataRepository repo = new DataRepository();
-            if(repo.databaseIsConnectedAndReady()) { 
-                int DB_VERSION = repo.getLatestVersion();
-                int currentFile = 0;
+            if(repo.databaseIsConnectedAndReady()) {
+                repo.FORCE_DELETE_DATABASE();
 
+                int DB_VERSION = repo.getLatestVersion();
+                int DB_VERSION_LAUNCH = repo.getLatestVersion();
+                int currentFile = 0;
+                
                 string currentPath = System.AppDomain.CurrentDomain.BaseDirectory.ToString();
                 string migrationPath = $"{currentPath}\\com.marvinzichner\\controller\\repository\\migration";
                 string[] scripts = Directory.GetFiles(migrationPath);
@@ -57,6 +60,12 @@ namespace VisualMannschaftsverwaltung
                     }
 
                     currentFile++;
+                }
+
+                if (DB_VERSION_LAUNCH == -1)
+                {
+                    GeneratorUtil generatorUtil = new GeneratorUtil();
+                    generatorUtil.generate();
                 }
             }
         }

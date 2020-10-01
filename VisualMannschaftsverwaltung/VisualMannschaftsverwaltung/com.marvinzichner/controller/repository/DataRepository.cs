@@ -59,6 +59,11 @@ namespace VisualMannschaftsverwaltung
             }
         }
 
+        public void FORCE_DELETE_DATABASE()
+        {
+            executeSql("DROP TABLE `mvw_auth`, `mvw_fussballspieler`, `mvw_handballspieler`, `mvw_mannschaft`, `mvw_mannschaft_person`, `mvw_mannschaft_turnier`, `mvw_migration`, `mvw_person`, `mvw_physiotherapeut`, `mvw_spiel`, `mvw_spielerrolle`, `mvw_tennisspieler`, `mvw_trainer`, `mvw_turnier`;");
+        }
+
         public bool checkConnection()
         {
             createConnection();
@@ -76,8 +81,12 @@ namespace VisualMannschaftsverwaltung
             int rowsAffected = 0;
             if (createConnection())
             {
-                MySqlCommand command = new MySqlCommand(sql, MySqlConnection);
-                rowsAffected = command.ExecuteNonQuery();
+                try
+                {
+                    MySqlCommand command = new MySqlCommand(sql, MySqlConnection);
+                    rowsAffected = command.ExecuteNonQuery();
+                }
+                finally { }
             }
             else
             {

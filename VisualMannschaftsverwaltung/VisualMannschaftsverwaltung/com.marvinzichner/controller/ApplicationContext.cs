@@ -35,38 +35,49 @@ namespace VisualMannschaftsverwaltung
             DataRepository repo = new DataRepository();
             return repo.databaseIsConnectedAndReady();
         }
+
+        public static void doMigration()
+        {
+            DataRepository repo = new DataRepository();
+            int DB_VERSION = repo.getLatestVersion();
+            int DB_VERSION_LAUNCH = repo.getLatestVersion();
+            int currentFile = 0;
+
+            string currentPath = System.AppDomain.CurrentDomain.BaseDirectory.ToString();
+            string migrationPath = $"{currentPath}\\com.marvinzichner\\controller\\repository\\migration";
+            string[] scripts = Directory.GetFiles(migrationPath);
+            foreach (string script in scripts)
+            {
+                if (currentFile > DB_VERSION)
+                {
+                    string sql = File.ReadAllText(script, Encoding.UTF8);
+                    repo.executeSql(sql);
+
+                    string versionInserter = $"insert into MVW_MIGRATION (VERSION, NAME, CREATED) values ({currentFile}, '{script}', NOW())";
+                    repo.executeSql(versionInserter);
+                }
+
+                currentFile++;
+            }
+
+            if (DB_VERSION_LAUNCH == -1)
+            {
+                GeneratorUtil generatorUtil = new GeneratorUtil();
+                generatorUtil.generate();
+            }
+        }
         public static void createDatabaseContext()
         {
             DataRepository repo = new DataRepository();
-            if(repo.databaseIsConnectedAndReady()) {
-                repo.FORCE_DELETE_DATABASE();
+            if (repo.databaseIsConnectedAndReady())
+            {
+                // repo.FORCE_DELETE_DATABASE();
+                doMigration();
+            }
 
-                int DB_VERSION = repo.getLatestVersion();
-                int DB_VERSION_LAUNCH = repo.getLatestVersion();
-                int currentFile = 0;
-                
-                string currentPath = System.AppDomain.CurrentDomain.BaseDirectory.ToString();
-                string migrationPath = $"{currentPath}\\com.marvinzichner\\controller\\repository\\migration";
-                string[] scripts = Directory.GetFiles(migrationPath);
-                foreach(string script in scripts)
-                {
-                    if (currentFile > DB_VERSION)
-                    {
-                        string sql = File.ReadAllText(script, Encoding.UTF8);
-                        repo.executeSql(sql);
-
-                        string versionInserter = $"insert into MVW_MIGRATION (VERSION, NAME, CREATED) values ({currentFile}, '{script}', NOW())";
-                        repo.executeSql(versionInserter);
-                    }
-
-                    currentFile++;
-                }
-
-                if (DB_VERSION_LAUNCH == -1)
-                {
-                    GeneratorUtil generatorUtil = new GeneratorUtil();
-                    generatorUtil.generate();
-                }
+            if (repo.databaseExists() == false)
+            {
+                doMigration();
             }
         }
 

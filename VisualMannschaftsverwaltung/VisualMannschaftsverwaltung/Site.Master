@@ -148,6 +148,37 @@
     </div>
 
     <style>
+        .table {
+            width: 100%;
+            padding: 10px;
+        }
+        .tablecell {
+           
+        }
+        .cellHead {
+            font-weight: bold;
+            background-color: #f2f2f2;
+        }
+        .cellBody {
+            
+        }
+        .cellBodyHover:hover {
+            background-color: #f2f2f2;
+        }
+        .cellReadOnly {
+            font-size: 9pt;
+            color: #808080;
+        }
+        .cellInteraction {
+            font-size: 9pt;
+            color: #0094ff;
+            text-decoration: underline;
+        }
+        .cellEnd {
+            border-bottom: 2px solid #cccccc;
+        }
+
+
         .auth {
             width:100%;
             padding: 20px;

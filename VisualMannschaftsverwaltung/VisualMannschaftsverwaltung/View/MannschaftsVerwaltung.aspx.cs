@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace VisualMannschaftsverwaltung.View
@@ -47,8 +48,24 @@ namespace VisualMannschaftsverwaltung.View
             }
         }
 
+        private HtmlTableCell createCell(string text, string classes)
+        {
+            HtmlTableCell tc = new HtmlTableCell();
+            tc.InnerHtml = text;
+            tc.Attributes.Add("class", classes);
+
+            return tc;
+        }
+
         protected void prepareData()
         {
+            HtmlTableRow trHead = new HtmlTableRow();
+            trHead.Cells.Add(createCell($"Globale Id", "tablecell cellHead"));
+            trHead.Cells.Add(createCell($"Name", "tablecell cellHead"));
+            trHead.Cells.Add(createCell($"Typ", "tablecell cellHead"));
+            trHead.Cells.Add(createCell($"Aktionen", "tablecell cellHead"));
+            mannschaftenTabelle.Rows.Add(trHead);
+
             //Dropdown
             teamsList.Items.Clear();
             ApplicationController.getMannschaften(
@@ -58,6 +75,23 @@ namespace VisualMannschaftsverwaltung.View
                 li.Text = $"{m.Name} ({m.SportArt.ToString()})";
                 li.Value = m.Name;
                 teamsList.Items.Add(li);
+
+                HtmlTableRow tr = new HtmlTableRow();
+                tr.Cells.Add(createCell($"{m.ID.ToString()}", "tablecell cellReadOnly"));
+                tr.Cells.Add(createCell($"{m.Name}", "tablecell cellBody"));
+                tr.Cells.Add(createCell($"{m.SportArt.ToString()}", "tablecell cellReadOnly"));
+                tr.Cells.Add(createCell($"Aktionen", "tablecell cellReadOnly"));
+                mannschaftenTabelle.Rows.Add(tr);
+
+                m.Personen.ForEach(person =>
+                {
+                    HtmlTableRow trPerson = new HtmlTableRow();
+                    trPerson.Cells.Add(createCell($"&emsp; {person.ID.ToString()}", "tablecell cellReadOnly"));
+                    trPerson.Cells.Add(createCell($"{person.Nachname.ToUpper()}, {person.Name}", "tablecell cellReadOnly"));
+                    trPerson.Cells.Add(createCell($"{person.SportArt.ToString()}", "tablecell cellReadOnly"));
+                    trPerson.Cells.Add(createCell($"Aktionen", "tablecell cellReadOnly"));
+                    mannschaftenTabelle.Rows.Add(trPerson);
+                });
             });
 
             if (ApplicationController.getMannschaften(

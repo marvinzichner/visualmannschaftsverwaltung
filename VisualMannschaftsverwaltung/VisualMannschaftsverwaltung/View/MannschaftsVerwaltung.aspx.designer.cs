@@ -22,6 +22,24 @@ namespace VisualMannschaftsverwaltung.View {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl configMismatch;
         
         /// <summary>
+        /// sectionTurnierlist-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sectionTurnierlist;
+        
+        /// <summary>
+        /// mannschaftenTabelle-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTable mannschaftenTabelle;
+        
+        /// <summary>
         /// selectTeamAlternative-Steuerelement
         /// </summary>
         /// <remarks>

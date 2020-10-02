@@ -85,8 +85,7 @@ namespace VisualMannschaftsverwaltung
                 {
                     MySqlCommand command = new MySqlCommand(sql, MySqlConnection);
                     rowsAffected = command.ExecuteNonQuery();
-                }
-                finally { }
+                } finally { }
             }
             else
             {
@@ -305,6 +304,31 @@ namespace VisualMannschaftsverwaltung
             }
         }
 
+        public bool databaseExists()
+        {
+            string exceptionPattern = "Unknown database 'mannschaftsverwaltung'";
+
+            if (MySqlConnection.ConnectionString == "")
+                MySqlConnection.ConnectionString = RepositorySettings.getConnectionString();
+            try
+            {
+                MySqlConnection.Open();
+                MySqlConnection.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                MySqlConnection.Close();
+                if (e.InnerException.Message == exceptionPattern)
+                    return false;
+                return true;
+            }
+            finally
+            {
+                MySqlConnection.Close();
+            }
+        }
+
         public void removePerson(Person p)
         {
             if (!databaseIsConnectedAndReady()) return;
@@ -463,7 +487,7 @@ namespace VisualMannschaftsverwaltung
 
         public int getLatestVersion()
         {
-            if (!databaseIsConnectedAndReady()) return 0;
+            if (!databaseIsConnectedAndReady()) return -1;
             int DB_VERSION = -1;
             
             if (createConnection())

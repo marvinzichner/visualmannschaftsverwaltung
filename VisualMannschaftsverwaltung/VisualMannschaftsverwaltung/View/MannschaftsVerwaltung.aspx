@@ -12,6 +12,12 @@
         }
     </style>
 
+    <div id="sectionTurnierlist" runat="server">
+        <h3>Mannschaftsverwaltung</h3>
+        <table runat="server" id="mannschaftenTabelle" class="table"></table>
+    </div>
+    <br /><br />
+
     <div class="big-missing" id="selectTeamAlternative" runat="server" visible="false">Hier sieht es momentan noch ziemlich leer aus.</div>
     <div id="selectTeam" runat="server">
         <asp:DropDownList ID="teamsList" runat="server" CssClass="masterselect" AutoPostBack="True" OnTextChanged="teamSelected">

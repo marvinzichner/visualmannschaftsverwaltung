@@ -18,9 +18,9 @@ namespace VisualMannschaftsverwaltung
         public static bool asBoolean()
         {
             Random random = new Random();
-            int rand = random.Next(1, 2);
+            int rand = random.Next(0, 2);
 
-            if (rand == 1) return false;
+            if (rand == 0) return false;
             return true;
         }
 

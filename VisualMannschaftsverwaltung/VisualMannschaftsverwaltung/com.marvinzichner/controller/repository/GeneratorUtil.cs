@@ -95,59 +95,75 @@ namespace VisualMannschaftsverwaltung
             {
                 for (int i = 0; i <= this.COUNT_PERSONEN; i++)
                 {
-                    FussballSpieler fussballSpieler = new FussballSpieler();
-                    fussballSpieler
-                        .name(RandomUtils.fromCollection(forename))
-                        .nachname(RandomUtils.fromCollection(surname))
-                        .birthdate(RandomUtils.fromCollection(birthdate))
-                        .sportArt(SportArt.FUSSBALL)
-                            .toFussballSpieler()
-                            .isLeftFeet(RandomUtils.asBoolean())
-                            .spielSiege(RandomUtils.asInteger(0, 3));
+                    int rand = RandomUtils.asInteger(0, 4);
 
-                    HandballSpieler handballSpieler = new HandballSpieler();
-                    handballSpieler
-                        .name(RandomUtils.fromCollection(forename))
-                        .nachname(RandomUtils.fromCollection(surname))
-                        .birthdate(RandomUtils.fromCollection(birthdate))
-                        .sportArt(SportArt.HANDBALL)
-                            .toHandballSpieler()
-                            .isLeftHand(RandomUtils.asBoolean())
-                            .spielSiege(RandomUtils.asInteger(0, 3));
+                    if(rand == 0) { 
+                        FussballSpieler fussballSpieler = new FussballSpieler();
+                        fussballSpieler
+                            .name(RandomUtils.fromCollection(forename))
+                            .nachname(RandomUtils.fromCollection(surname))
+                            .birthdate(RandomUtils.fromCollection(birthdate))
+                            .sportArt(SportArt.FUSSBALL)
+                                .toFussballSpieler()
+                                .isLeftFeet(RandomUtils.asBoolean())
+                                .spielSiege(RandomUtils.asInteger(0, 3));
+                        app.addPerson(fussballSpieler, session);
+                    }
 
-                    TennisSpieler tennisSpieler = new TennisSpieler();
-                    tennisSpieler
-                        .name(RandomUtils.fromCollection(forename))
-                        .nachname(RandomUtils.fromCollection(surname))
-                        .birthdate(RandomUtils.fromCollection(birthdate))
-                        .sportArt(SportArt.TENNIS)
-                            .toTennisSpieler()
-                            .isLeftHand(RandomUtils.asBoolean())
-                            .spielSiege(RandomUtils.asInteger(0, 3));
+                    if (rand == 1)
+                    {
+                        HandballSpieler handballSpieler = new HandballSpieler();
+                        handballSpieler
+                            .name(RandomUtils.fromCollection(forename))
+                            .nachname(RandomUtils.fromCollection(surname))
+                            .birthdate(RandomUtils.fromCollection(birthdate))
+                            .sportArt(SportArt.HANDBALL)
+                                .toHandballSpieler()
+                                .isLeftHand(RandomUtils.asBoolean())
+                                .spielSiege(RandomUtils.asInteger(0, 3));
+                        app.addPerson(handballSpieler, session);
+                    }
 
-                    Trainer trainer = new Trainer();
-                    trainer
-                        .name(RandomUtils.fromCollection(forename))
-                        .nachname(RandomUtils.fromCollection(surname))
-                        .birthdate(RandomUtils.fromCollection(birthdate))
-                        .sportArt(SportArt.KEINE)
-                            .toTrainer()
-                            .hasLicense(RandomUtils.asBoolean());
+                    if (rand == 2)
+                    {
+                        TennisSpieler tennisSpieler = new TennisSpieler();
+                        tennisSpieler
+                            .name(RandomUtils.fromCollection(forename))
+                            .nachname(RandomUtils.fromCollection(surname))
+                            .birthdate(RandomUtils.fromCollection(birthdate))
+                            .sportArt(SportArt.TENNIS)
+                                .toTennisSpieler()
+                                .isLeftHand(RandomUtils.asBoolean())
+                                .spielSiege(RandomUtils.asInteger(0, 3));
+                        app.addPerson(tennisSpieler, session);
+                    }
 
-                    Physiotherapeut physiotherapeut = new Physiotherapeut();
-                    physiotherapeut
-                        .name(RandomUtils.fromCollection(forename))
-                        .nachname(RandomUtils.fromCollection(surname))
-                        .birthdate(RandomUtils.fromCollection(birthdate))
-                        .sportArt(SportArt.KEINE)
-                            .toPhysiotherapeut()
-                            .hasLicense(RandomUtils.asBoolean());
+                    if (rand == 3)
+                    {
+                        Trainer trainer = new Trainer();
+                        trainer
+                            .name(RandomUtils.fromCollection(forename))
+                            .nachname(RandomUtils.fromCollection(surname))
+                            .birthdate(RandomUtils.fromCollection(birthdate))
+                            .sportArt(SportArt.KEINE)
+                                .toTrainer()
+                                .hasLicense(RandomUtils.asBoolean());
+                        app.addPerson(trainer, session);
+                    }
 
-                    app.addPerson(fussballSpieler, session);
-                    app.addPerson(handballSpieler, session);
-                    app.addPerson(tennisSpieler, session);
-                    app.addPerson(trainer, session);
-                    app.addPerson(physiotherapeut, session);
+                    if (rand == 4)
+                    {
+                        Physiotherapeut physiotherapeut = new Physiotherapeut();
+                        physiotherapeut
+                            .name(RandomUtils.fromCollection(forename))
+                            .nachname(RandomUtils.fromCollection(surname))
+                            .birthdate(RandomUtils.fromCollection(birthdate))
+                            .sportArt(SportArt.KEINE)
+                                .toPhysiotherapeut()
+                                .hasLicense(RandomUtils.asBoolean());
+                        app.addPerson(physiotherapeut, session);
+                    }
+
                 }
 
                 // mannschaften
@@ -160,6 +176,52 @@ namespace VisualMannschaftsverwaltung
 
                     app.addMannschaftIfNotExists(mannschaft, session);
                 }
+
+                //Turnier
+                app.createNewTurnier("1. Bundesliga", SportArt.FUSSBALL, session);
+                app.createNewTurnier("2. Bundesliga", SportArt.FUSSBALL, session);
+
+                app.getTurniere(session).ForEach(turnier =>
+                {
+                    int count = 0;
+                    app.getMannschaften(session).ForEach(mannschaft =>
+                    {
+                        if (count < 5 || RandomUtils.asBoolean())
+                        {
+                            app.addMappingOfTurnierAndMannschaft(
+                                mannschaft.ID.ToString(), turnier.getId().ToString());
+                            count++;
+                        }
+                    });
+                });
+
+                //Spiele
+                app.getTurniere(session).ForEach(turnier =>
+                {
+                    int day = 1;
+                    List<Mannschaft> turnierMannschaften = 
+                        turnier.getMannschaften();
+
+                    turnierMannschaften.ForEach(mannschaft =>
+                    {
+                        turnierMannschaften.ForEach(mannschaft2 =>
+                        {
+                            if (mannschaft.ID != mannschaft2.ID)
+                            {
+                                app.createNewSpielOfTurnier(
+                                    "generated.fwd",
+                                    mannschaft.ID,
+                                    mannschaft2.ID,
+                                    day.ToString(),
+                                    turnier.getId(),
+                                    session);
+                                day++;
+                            }
+                        });
+                    });
+
+                    app.generateRandomResults(turnier.getId().ToString(), session);
+                });
             });
         }
     }

@@ -26,8 +26,8 @@ namespace VisualMannschaftsverwaltung
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            if(ApplicationContext.databaseIsReady())
-                ApplicationContext.createDatabaseContext();
+            
+            ApplicationContext.createDatabaseContext();
             ApplicationController = new ApplicationController();
             ApplicationContext.createFilesystemStructure();
             ApplicationController.prepareTuple();

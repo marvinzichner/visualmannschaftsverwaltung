@@ -12,6 +12,7 @@ namespace VisualMannschaftsverwaltung.View
     {
         #region Eigenschaften
         private ApplicationController applicationController;
+        private string SESSION_TURNIER = "MVW_TURNIER";
         #endregion
 
         #region Accessoren / Modifier
@@ -63,6 +64,7 @@ namespace VisualMannschaftsverwaltung.View
             trHead.Cells.Add(createCell($"Globale Id", "tablecell cellHead"));
             trHead.Cells.Add(createCell($"Name", "tablecell cellHead"));
             trHead.Cells.Add(createCell($"Typ", "tablecell cellHead"));
+            trHead.Cells.Add(createCell($"Mitglieder", "tablecell cellHead"));
             trHead.Cells.Add(createCell($"Aktionen", "tablecell cellHead"));
             mannschaftenTabelle.Rows.Add(trHead);
 
@@ -77,21 +79,27 @@ namespace VisualMannschaftsverwaltung.View
                 teamsList.Items.Add(li);
 
                 HtmlTableRow tr = new HtmlTableRow();
+                tr.Attributes.Add("class", "cellBodyHover");
                 tr.Cells.Add(createCell($"{m.ID.ToString()}", "tablecell cellReadOnly"));
                 tr.Cells.Add(createCell($"{m.Name}", "tablecell cellBody"));
                 tr.Cells.Add(createCell($"{m.SportArt.ToString()}", "tablecell cellReadOnly"));
-                tr.Cells.Add(createCell($"Aktionen", "tablecell cellReadOnly"));
-                mannschaftenTabelle.Rows.Add(tr);
 
+                string cellPersonen = "";
                 m.Personen.ForEach(person =>
                 {
-                    HtmlTableRow trPerson = new HtmlTableRow();
-                    trPerson.Cells.Add(createCell($"&emsp; {person.ID.ToString()}", "tablecell cellReadOnly"));
-                    trPerson.Cells.Add(createCell($"{person.Nachname.ToUpper()}, {person.Name}", "tablecell cellReadOnly"));
-                    trPerson.Cells.Add(createCell($"{person.SportArt.ToString()}", "tablecell cellReadOnly"));
-                    trPerson.Cells.Add(createCell($"Aktionen", "tablecell cellReadOnly"));
-                    mannschaftenTabelle.Rows.Add(trPerson);
+                    cellPersonen += $"{person.Nachname.ToString().ToUpper()}, {person.Name} <br>";
                 });
+                tr.Cells.Add(createCell($"{cellPersonen}", "tablecell cellReadOnly"));
+
+                HtmlTableCell cell = new HtmlTableCell();
+                Button select = new Button();
+                select.Click += new EventHandler(tableButtonSelected);
+                select.Text = "Auswählen";
+                select.Attributes.Add("data", $"turnier={m.ID.ToString()}#data=attribute");
+                cell.Controls.Add(select);
+                tr.Cells.Add(cell);
+
+                mannschaftenTabelle.Rows.Add(tr);
             });
 
             if (ApplicationController.getMannschaften(
@@ -109,6 +117,17 @@ namespace VisualMannschaftsverwaltung.View
                 selectTeam.Visible = true;
             }
         }
+
+        public void tableButtonSelected(object sender, EventArgs e)
+        {
+            Button selectedButton = (Button)sender;
+            KeyValueList kv = new KeyValueList();
+            kv.extractDataFromCombinedString(selectedButton.Attributes["data"]);
+            string turnier = kv.getValueFromKeyValueList("turnier");
+
+            this.Session[SESSION_TURNIER] = turnier;
+        }
+
         protected void loadMembers(Mannschaft.OrderBy ob = Mannschaft.OrderBy.UNSORTED) {
             //Team Members
             ApplicationController.loadPersonenFromRepository(GetUserFromSession().getSessionId());
@@ -116,6 +135,7 @@ namespace VisualMannschaftsverwaltung.View
             membersListContainer.Controls.Clear();
             personListDelete.Items.Clear();
             this.teamName.InnerHtml = ApplicationController.TempMannschaft.Name;
+
             ApplicationController.TempMannschaft
                 .rule(ob)
                 .enableGroupSort()

@@ -31,51 +31,6 @@ namespace VisualMannschaftsverwaltung.View {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl sectionTurnierlist;
         
         /// <summary>
-        /// mannschaftenTabelle-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTable mannschaftenTabelle;
-        
-        /// <summary>
-        /// selectTeamAlternative-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl selectTeamAlternative;
-        
-        /// <summary>
-        /// selectTeam-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl selectTeam;
-        
-        /// <summary>
-        /// teamsList-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList teamsList;
-        
-        /// <summary>
-        /// teamsListSelect-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton teamsListSelect;
-        
-        /// <summary>
         /// showCreationPanelButton-Steuerelement
         /// </summary>
         /// <remarks>
@@ -83,15 +38,6 @@ namespace VisualMannschaftsverwaltung.View {
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton showCreationPanelButton;
-        
-        /// <summary>
-        /// teamsDelete-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton teamsDelete;
         
         /// <summary>
         /// downloadButton-Steuerelement
@@ -139,13 +85,40 @@ namespace VisualMannschaftsverwaltung.View {
         protected global::System.Web.UI.WebControls.Button newTeamBtn;
         
         /// <summary>
-        /// contentContainer-Steuerelement
+        /// mannschaftenTabelle-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl contentContainer;
+        protected global::System.Web.UI.HtmlControls.HtmlTable mannschaftenTabelle;
+        
+        /// <summary>
+        /// selectTeamAlternative-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl selectTeamAlternative;
+        
+        /// <summary>
+        /// selectTeam-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl selectTeam;
+        
+        /// <summary>
+        /// teamsList-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList teamsList;
         
         /// <summary>
         /// teamsEdit-Steuerelement
@@ -154,16 +127,16 @@ namespace VisualMannschaftsverwaltung.View {
         /// Automatisch generiertes Feld
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button teamsEdit;
+        protected global::System.Web.UI.WebControls.LinkButton teamsEdit;
         
         /// <summary>
-        /// teamName-Steuerelement
+        /// teamsDelete-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl teamName;
+        protected global::System.Web.UI.WebControls.LinkButton teamsDelete;
         
         /// <summary>
         /// personList-Steuerelement
@@ -200,6 +173,24 @@ namespace VisualMannschaftsverwaltung.View {
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button personListDeleteButton;
+        
+        /// <summary>
+        /// contentContainer-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl contentContainer;
+        
+        /// <summary>
+        /// teamName-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl teamName;
         
         /// <summary>
         /// dropDownSorting-Steuerelement

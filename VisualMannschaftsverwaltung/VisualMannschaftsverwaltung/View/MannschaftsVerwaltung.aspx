@@ -13,48 +13,76 @@
     </style>
 
     <div id="sectionTurnierlist" runat="server">
-        <h3>Mannschaftsverwaltung</h3>
-        <table runat="server" id="mannschaftenTabelle" class="table"></table>
-    </div>
-    <br /><br />
+        <asp:LinkButton ID="showCreationPanelButton" runat="server" OnClick="showCreationPanel" Text='<div class="btn"><i class="material-icons">add_circle</i> Neue Mannschaft</div>' />
+        <asp:LinkButton ID="downloadButton" runat="server" OnClick="generateXML" Text='<div class="btn"><i class="material-icons">cloud_download</i> XML</div>' />
 
+        <div id="creationPanel" runat="server" visible="false">
+            <br />
+            <h3>Eine neue Mannschaft erstellen</h3>
+            <br />
+            Mannschaftsnamen und Typ angeben:
+            <asp:TextBox ID="newTeamnameBox" runat="server"></asp:TextBox>
+            <asp:DropDownList ID="newTeamtype" runat="server">
+                <asp:ListItem Value="FUSSBALL" Text="Fußball"></asp:ListItem>
+                <asp:ListItem Value="HANDBALL" Text="Handball"></asp:ListItem>
+                <asp:ListItem Value="TENNIS" Text="Tennis"></asp:ListItem>
+            </asp:DropDownList>
+            <asp:Button ID="newTeamBtn" runat="server" OnClick="createTeam" Text="Mannschaft erstellen" />
+        </div>
+
+        <br /><br />
+        <div class="table-wrapper">
+            <table runat="server" id="mannschaftenTabelle" class="table"></table>
+        </div>
+    </div>
+
+    <!--
     <div class="big-missing" id="selectTeamAlternative" runat="server" visible="false">Hier sieht es momentan noch ziemlich leer aus.</div>
     <div id="selectTeam" runat="server">
         <asp:DropDownList ID="teamsList" runat="server" CssClass="masterselect" AutoPostBack="True" OnTextChanged="teamSelected">
         </asp:DropDownList>
-        <asp:LinkButton ID="teamsListSelect" runat="server" OnClick="teamSelected" Text='<div class="btn"><i class="material-icons">keyboard_return</i> Öffnen</div>' />
-        <asp:LinkButton ID="showCreationPanelButton" runat="server" OnClick="showCreationPanel" Text='<div class="btn"><i class="material-icons">add_circle</i> Neue Mannschaft</div>' />
-        &emsp;&emsp;
-        <asp:LinkButton ID="teamsDelete" runat="server" OnClick="removeTeam" Text='<div class="btn"><i class="material-icons">remove_circle</i> Löschen</div>' />
-        <asp:LinkButton ID="downloadButton" runat="server" OnClick="generateXML" Text='<div class="btn"><i class="material-icons">cloud_download</i> XML</div>' />
+        
     </div>
+    -->
 
-    <div id="creationPanel" runat="server" visible="false">
-        <br />
-        <h3>Eine neue Mannschaft erstellen</h3>
-        <br />
-        Mannschaftsnamen und Typ angeben:
-        <asp:TextBox ID="newTeamnameBox" runat="server"></asp:TextBox>
-        <asp:DropDownList ID="newTeamtype" runat="server">
-            <asp:ListItem Value="FUSSBALL" Text="Fußball"></asp:ListItem>
-            <asp:ListItem Value="HANDBALL" Text="Handball"></asp:ListItem>
-            <asp:ListItem Value="TENNIS" Text="Tennis"></asp:ListItem>
-        </asp:DropDownList>
-        <asp:Button ID="newTeamBtn" runat="server" OnClick="createTeam" Text="Mannschaft erstellen" />
-    </div>
+    <h3>Mannschaftsname 123</h3>
+    <br />
+    
+    <table>
+        <tr>
+            <td>Aktionen für Mannschaft</td>
+            <td style="padding-left: 50px;">
+                <asp:LinkButton ID="teamsEdit" runat="server" OnClick="changeTeam" Text='<div class="btn"><i class="material-icons">remove_circle</i> Bearbeiten</div>' />
+                <asp:LinkButton ID="teamsDelete" runat="server" OnClick="removeTeam" Text='<div class="btn"><i class="material-icons">remove_circle</i> Löschen</div>' />
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-top: 10px;">Spieler hinzufügen</td>
+            <td style="padding-top: 10px; padding-left: 50px;">
+                <asp:DropDownList ID="personList" runat="server" CssClass="niceSelect"></asp:DropDownList>
+                <asp:Button ID="personListButton" runat="server" OnClick="addPersonToMannschaft" Text="Hinzufügen" />
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-top: 10px;">Spieler entfernen</td>
+            <td style="padding-top: 10px; padding-left: 50px;">
+                <asp:DropDownList ID="personListDelete" runat="server" CssClass="niceSelect"></asp:DropDownList>
+                <asp:Button ID="personListDeleteButton" runat="server" OnClick="removePersonFromMannschaft" Text="Entfernen" />
+            </td>
+        </tr>
+    </table>
 
-    <hr />
 
     <div id="contentContainer" runat="server" visible="false">
-        <asp:Button ID="teamsEdit" runat="server" OnClick="changeTeam" Text="Mannschaft bearbeiten" CssClass="floater" />
+      
+
+
+        
         <h3 runat="server" ID="teamName">Mannschaftsname</h3>
         
         <hr />
-        Hinzufügen: <asp:DropDownList ID="personList" runat="server" CssClass="masterselect"></asp:DropDownList>
-        <asp:Button ID="personListButton" runat="server" OnClick="addPersonToMannschaft" Text="Hinzufügen" />
         &emsp;&emsp;&emsp;
-        Löschen: <asp:DropDownList ID="personListDelete" runat="server" CssClass="masterselect"></asp:DropDownList>
-        <asp:Button ID="personListDeleteButton" runat="server" OnClick="removePersonFromMannschaft" Text="Entfernen" />
+        Löschen: 
         <br />
         Sortierung: 
         <asp:DropDownList ID="dropDownSorting" CssClass="masterselect" runat="server">
@@ -77,6 +105,30 @@
     </div>
 
     <style>
+        .table-wrapper {
+            height: 250px;
+            width: 100%;
+            border: 1px solid gray;
+            overflow-x: hidden;
+            overflow-y: scroll;
+        }
+        .niceSelect {
+            padding: 10px;
+            border: none;
+            outline: none;
+            background-color: #f2f2f2;
+            border-radius: 5px;
+            border: 1px dashed gray;
+        }
+        .niceSelect:active {
+            padding: 10px;
+            border: none;
+            outline: none;
+            background-color: #f2f2f2;
+            border-radius: 5px;
+            border: 1px dashed gray;
+        }
+
         .btn {
             padding: 2px;
             line-height: 34px;

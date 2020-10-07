@@ -121,6 +121,13 @@ namespace VisualMannschaftsverwaltung
             this.Personen = mns;
         }
 
+        public List<Person> getUnsortedPersonen(string session)
+        {
+            DataRepository repo = new DataRepository();
+            return repo.setSession(session)
+                .loadPersonen();
+        }
+
         public List<Person> getPersonen(Mannschaft.OrderBy ob, Mannschaft.SearchTerm st, string session = "ALL")
         {
             loadPersonenFromRepository(session);
@@ -183,6 +190,16 @@ namespace VisualMannschaftsverwaltung
             //this.DatabaseOk = repo.checkConnection();
             this.Personen = repo.loadPersonen();
         }
+
+        public List<Person> getPersonen(string session = "ALL")
+        {
+            DataRepository repo = new DataRepository();
+            repo.setSession(session)
+                .enableSessionbasedQueries();
+
+           return repo.loadPersonen();
+        }
+
 
         public void loadMannschaftenFromRepository(string session)
         {

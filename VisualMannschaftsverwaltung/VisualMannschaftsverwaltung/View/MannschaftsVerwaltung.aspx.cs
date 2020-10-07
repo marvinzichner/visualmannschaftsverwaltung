@@ -12,7 +12,7 @@ namespace VisualMannschaftsverwaltung.View
     {
         #region Eigenschaften
         private ApplicationController applicationController;
-        private string SESSION_TURNIER = "MVW_TURNIER";
+        private string SESSION_MANNSCHAFT = "MVW_MANNSCHAFT";
         #endregion
 
         #region Accessoren / Modifier
@@ -95,7 +95,7 @@ namespace VisualMannschaftsverwaltung.View
                 Button select = new Button();
                 select.Click += new EventHandler(tableButtonSelected);
                 select.Text = "Auswählen";
-                select.Attributes.Add("data", $"turnier={m.ID.ToString()}#data=attribute");
+                select.Attributes.Add("data", $"mannschaft={m.ID.ToString()}#data=attribute");
                 cell.Controls.Add(select);
                 tr.Cells.Add(cell);
 
@@ -123,19 +123,40 @@ namespace VisualMannschaftsverwaltung.View
             Button selectedButton = (Button)sender;
             KeyValueList kv = new KeyValueList();
             kv.extractDataFromCombinedString(selectedButton.Attributes["data"]);
-            string turnier = kv.getValueFromKeyValueList("turnier");
+            string mannschaft = kv.getValueFromKeyValueList("mannschaft");
 
-            this.Session[SESSION_TURNIER] = turnier;
+            this.Session[SESSION_MANNSCHAFT] = mannschaft;
+            this.loadMembers();
         }
 
         protected void loadMembers(Mannschaft.OrderBy ob = Mannschaft.OrderBy.UNSORTED) {
             //Team Members
-            ApplicationController.loadPersonenFromRepository(GetUserFromSession().getSessionId());
+            // ApplicationController.loadPersonenFromRepository(GetUserFromSession().getSessionId());
        
             membersListContainer.Controls.Clear();
             personListDelete.Items.Clear();
-            this.teamName.InnerHtml = ApplicationController.TempMannschaft.Name;
+            // this.teamName.InnerHtml = ApplicationController.TempMannschaft.Name;
 
+            int mannschaftId = -1;
+            if (this.Session[SESSION_MANNSCHAFT] != null)
+            {
+                mannschaftId = Convert.ToInt32(this.Session[SESSION_MANNSCHAFT].ToString());
+
+                ApplicationController.getMannschaften(GetUserFromSession().getSessionId())
+                    .Find(mannschaft => mannschaft.ID == mannschaftId)
+                    .Personen
+                    .ForEach(person =>
+                    {
+                        createPersonEntry(person, "");
+
+                        ListItem li = new ListItem();
+                        li.Text = $"{person.Nachname.ToUpper()}, {person.Name} ({person.Birthdate})";
+                        li.Value = $"{person.ID}";
+                        personListDelete.Items.Add(li);
+                    });
+            }
+
+            /* 
             ApplicationController.TempMannschaft
                 .rule(ob)
                 .enableGroupSort()
@@ -149,15 +170,16 @@ namespace VisualMannschaftsverwaltung.View
                 li.Value = $"{p.Name}{p.Nachname}-{p.Birthdate}";
                 personListDelete.Items.Add(li);
             });
+            */
 
             personList.Items.Clear();
-            ApplicationController.getAvailablePersonen().ForEach(p =>
+            /* ApplicationController.getAvailablePersonen().ForEach(p =>
             {
                 ListItem li = new ListItem();
                 li.Text = $"{p.Nachname}, {p.Name} ({p.Birthdate}) [{basetypeName(p)}]";
                 li.Value = $"{p.Name}{p.Nachname}-{p.Birthdate}";
                 personList.Items.Add(li);
-            });
+            }); */
         }
 
         protected void appendFilter(object sender, EventArgs e)

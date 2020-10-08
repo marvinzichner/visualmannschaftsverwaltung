@@ -121,6 +121,24 @@ namespace VisualMannschaftsverwaltung.View {
         protected global::System.Web.UI.WebControls.DropDownList teamsList;
         
         /// <summary>
+        /// displayMannschaftName-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl displayMannschaftName;
+        
+        /// <summary>
+        /// editSection-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTable editSection;
+        
+        /// <summary>
         /// teamsEdit-Steuerelement
         /// </summary>
         /// <remarks>

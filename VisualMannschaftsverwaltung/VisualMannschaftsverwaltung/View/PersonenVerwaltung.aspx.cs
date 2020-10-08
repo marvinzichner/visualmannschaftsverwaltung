@@ -439,7 +439,8 @@ namespace VisualMannschaftsverwaltung.View
 
         protected void generateXML(object sender, EventArgs e)
         {
-            ApplicationController.generatePersonenXML();
+            ApplicationController.generatePersonenXML(
+                GetUserFromSession().getSessionId());
         }
         #endregion
     }

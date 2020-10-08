@@ -45,10 +45,10 @@
     </div>
     -->
 
-    <h3>Mannschaftsname 123</h3>
+    <h3 runat="server" id="displayMannschaftName">Mannschaftsname 123</h3>
     <br />
     
-    <table>
+    <table runat="server" id="editSection">
         <tr>
             <td>Aktionen für Mannschaft</td>
             <td style="padding-left: 50px;">

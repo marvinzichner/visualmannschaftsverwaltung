@@ -124,7 +124,9 @@ namespace VisualMannschaftsverwaltung
         public List<Person> getUnsortedPersonen(string session)
         {
             DataRepository repo = new DataRepository();
-            return repo.setSession(session)
+            return repo
+                .enableSessionbasedQueries()
+                .setSession(session)
                 .loadPersonen();
         }
 
@@ -221,7 +223,7 @@ namespace VisualMannschaftsverwaltung
         {
             DataRepository repo = new DataRepository();
             repo.addPersonToMannschaft(p, m);
-            loadMannschaftenFromRepository(s);
+            // loadMannschaftenFromRepository(s);
         }
         public void removeMannschaft(Mannschaft m, string session)
         {
@@ -328,25 +330,28 @@ namespace VisualMannschaftsverwaltung
                     .createNewSpielOfTurnier(title, playerA, playerB, spieltag, turnierFk);
         }
 
-        public void generatePersonenXML()
+        public void generatePersonenXML(string session)
         {
             Export export = new Export();
             string filename = $"{Utils.simpleFileDate()}.pse.xml";
             string path = $"{ApplicationContext.getContextPath()}{filename}";
 
             export.configure(path, filename);
-            export.doXmlExport(Personen, Person.getTypes());
+            export.doXmlExport(getUnsortedPersonen(session), Person.getTypes());
             export.doDownload();
         }
 
-        public void generateMannschaftenXML()
+        public void generateMannschaftenXML(string session)
         {
             DataRepository repo = new DataRepository();
+            repo
+                .enableSessionbasedQueries()
+                .setSession(session);
+
             Export export = new Export();
             string filename = $"{Utils.simpleFileDate()}.mne.xml";
             string path = $"{ApplicationContext.getContextPath()}{filename}";
 
-            repo.disableSessionbasedQueries();
             export.configure(path, filename);
             export.doXmlExport(repo.getMannschaften(), Mannschaft.getTypes());
             export.doDownload();

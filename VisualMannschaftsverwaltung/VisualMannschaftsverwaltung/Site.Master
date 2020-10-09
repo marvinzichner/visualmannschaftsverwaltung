@@ -142,6 +142,10 @@
             Prüfen Sie, ob die Datenbank läuft und erreichbar ist. Kontaktieren Sie gegebenfalls den Support. <br />
             <br />
             <a runat="server" href="~/">Erneut versuchen</a><br />
+            <br />
+            <br />
+            <b>Prüfen Sie die folgende Datenbankkonfiguration</b><br />
+            <a target="_blank" href="https://github.com/marvinzichner/visualmannschaftsverwaltung/blob/master/README.md">Konfiguration auf github.com ansehen</a><br />
             <br /><br /><br /><br /><br /><br />
             &copy; 2020 - VisualMannschaftsverwaltung - Marvin Zichner
         </div>

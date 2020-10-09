@@ -41,6 +41,11 @@ namespace VisualMannschaftsverwaltung
         {
             return $"server={Server};database={Database};uid={Uid};password={Password};";
         }
+
+        public string getBasicConnectionString()
+        {
+            return $"server={Server};uid={Uid};password={Password};";
+        }
         #endregion
     }
 }

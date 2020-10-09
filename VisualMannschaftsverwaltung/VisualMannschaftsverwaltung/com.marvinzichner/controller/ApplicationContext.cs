@@ -36,12 +36,22 @@ namespace VisualMannschaftsverwaltung
             return repo.databaseIsConnectedAndReady();
         }
 
-        public static void doMigration()
+        public static void doMigration(bool isReady)
         {
+            int DB_VERSION, DB_VERSION_LAUNCH, currentFile = 0;
             DataRepository repo = new DataRepository();
-            int DB_VERSION = repo.getLatestVersion();
-            int DB_VERSION_LAUNCH = repo.getLatestVersion();
-            int currentFile = 0;
+            repo.tryBasicConnectionIfErrorAppears();
+
+            if (isReady)
+            {
+                DB_VERSION = repo.getLatestVersion();
+                DB_VERSION_LAUNCH = repo.getLatestVersion();
+            }
+            else
+            {
+                DB_VERSION = -1;
+                DB_VERSION_LAUNCH = -1;
+            }
 
             string currentPath = System.AppDomain.CurrentDomain.BaseDirectory.ToString();
             string migrationPath = $"{currentPath}\\com.marvinzichner\\controller\\repository\\migration";
@@ -72,12 +82,12 @@ namespace VisualMannschaftsverwaltung
             if (repo.databaseIsConnectedAndReady())
             {
                 // repo.FORCE_DELETE_DATABASE();
-                doMigration();
+                doMigration(true);
             }
 
             if (repo.databaseExists() == false)
             {
-                doMigration();
+                doMigration(false);
             }
         }
 

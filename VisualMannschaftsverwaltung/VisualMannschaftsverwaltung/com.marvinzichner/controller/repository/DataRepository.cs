@@ -22,6 +22,7 @@ namespace VisualMannschaftsverwaltung
         private bool _connectionReady;
         private string _session;
         private bool _sessionQuery;
+        private bool basicConnect;
         #endregion
 
         #region Accessoren / Modifier
@@ -38,25 +39,53 @@ namespace VisualMannschaftsverwaltung
             RepositorySettings = new RepositorySettings();
             MySqlConnection = new MySqlConnection();
             ConnectionReady = false;
+            basicConnect = false;
             Session = "ALL";
         }
         #endregion
 
         #region Worker
+        public DataRepository tryBasicConnectionIfErrorAppears()
+        {
+            basicConnect = true;
+            return this;
+        }
         public bool createConnection()
         {
+            bool failed = false;
+
+            // if not basic connect
             try { 
                 MySqlConnection.ConnectionString = RepositorySettings.getConnectionString();
                 MySqlConnection.Open();
                 ConnectionReady = true;
-                
-                return true;
             } 
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                return false;
+                failed = true;
             }
+
+            // if first connection failed
+            if (basicConnect && failed)
+            {
+                try
+                {
+                    MySqlConnection.ConnectionString = RepositorySettings.getBasicConnectionString();
+                    MySqlConnection.Open();
+                    ConnectionReady = true;                
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    return false;
+                }
+            }
+
+            if (failed && !basicConnect)
+                return false;
+
+            return true;
         }
 
         public void FORCE_DELETE_DATABASE()
@@ -85,7 +114,12 @@ namespace VisualMannschaftsverwaltung
                 {
                     MySqlCommand command = new MySqlCommand(sql, MySqlConnection);
                     rowsAffected = command.ExecuteNonQuery();
-                } finally { }
+                }
+                catch(Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                }
+                finally { }
             }
             else
             {

@@ -1,16 +1,14 @@
 # Mannschaftsverwaltung (.NET Framework) + GUI (ASP)	 
 Dieses Projekt ist Teil einer Lernsituation im Unterrichtsfach Anwendungsentwicklung.
 
-
-
 ### Vorbereitung der Applikation
 
 #### Die Datenbank muss konfiguriert werden
-Die Anwendung funktioniert nur mit angeschlossener Datenbank. 
+Die Anwendung funktioniert nur mit einer angeschlossenen Datenbank. 
 Beim Starten der Anwendung wird das Datenbankschema automatisch eingerichtet. 
-Der erste Start kann dadurch etwas länger dauern.
+Der erste Start kann dadurch wenige Sekunden dauern.
 
-In dem Datenbanksystem muss ein User und eine Datenbank angelegt werden. Diese sollten nach dem folgenden Schema angelegt werden. Bei Abweichungen der Datenbankkonfiguration muss die Application.properties Datei geändert werden.
+In dem Datenbanksystem sollte ein User angelegt werden, der nur die nötigsten Rechte erhält. Dazu kann folgende Matrix betrachtet werden:
 ```
 + user
 |-- username:    mvw_app
@@ -18,7 +16,7 @@ In dem Datenbanksystem muss ein User und eine Datenbank angelegt werden. Diese s
 |-- access from hostname:    localhost     (Wildcard funktioniert ggf. nicht)
 |-- permissions: SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, GRANT
 
-+ database
++ database (wird automatisch erstellt)
 |-- name:        mannschaftsverwaltung
 ```
 
@@ -29,6 +27,3 @@ DB_DATABASE=mannschaftsverwaltung
 DB_UID=mvw_app
 DB_PASSWORD=mvw_app
 ```
-
-#### Datenbankstatus
-Auf einigen Seiten ist ersichtlich, wenn die Verbindung zur Datenbank fehlgeschlagen ist. Die initale Konfiguration bzw. deren Funktionalität können Sie unter dem Menüpunkt Informationen ablesen.

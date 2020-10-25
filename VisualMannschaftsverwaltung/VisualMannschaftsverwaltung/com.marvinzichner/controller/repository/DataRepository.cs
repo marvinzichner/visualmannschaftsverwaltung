@@ -117,7 +117,7 @@ namespace VisualMannschaftsverwaltung
                 }
                 catch(Exception e)
                 {
-                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    // nothing
                 }
                 finally { }
             }
@@ -187,7 +187,7 @@ namespace VisualMannschaftsverwaltung
                          .id(Convert.ToInt32(reader[DB.PERSON.id].ToString()))
                          .name(reader[DB.PERSON.vorname].ToString())
                          .nachname(reader[DB.PERSON.nachname].ToString())
-                         .birthdate(reader[DB.PERSON.geburtsdatum].ToString())
+                         .birthdate(reader["BDAY"].ToString())
                          .sportArt(SportArt.FUSSBALL)
                             .toFussballSpieler()
                             .spielSiege(Convert.ToInt32(reader[DB.FUSSBALLSPIELER.gewonnene_spiele].ToString()))
@@ -205,7 +205,6 @@ namespace VisualMannschaftsverwaltung
                     $"on p.{DB.PERSON.id} = h.{DB.HANDBALLSPIELER.fk_person} {joinCondition} " +
                     $"where p.{DB.PERSON.id} = h.{DB.HANDBALLSPIELER.fk_person} {mannschaftId} {sessionSql};";
 
-                System.Diagnostics.Debug.Print(sql);
                 command = new MySqlCommand(sql, MySqlConnection);
                 reader = command.ExecuteReader();
 
@@ -217,7 +216,7 @@ namespace VisualMannschaftsverwaltung
                          .id(Convert.ToInt32(reader[DB.PERSON.id].ToString()))
                          .name(reader[DB.PERSON.vorname].ToString())
                          .nachname(reader[DB.PERSON.nachname].ToString())
-                         .birthdate(reader[DB.PERSON.geburtsdatum].ToString())
+                         .birthdate(reader["BDAY"].ToString())
                          .sportArt(SportArt.HANDBALL)
                             .toHandballSpieler()
                             .spielSiege(Convert.ToInt32(reader.GetValue(8).ToString()))
@@ -245,7 +244,7 @@ namespace VisualMannschaftsverwaltung
                          .id(Convert.ToInt32(reader[DB.PERSON.id].ToString()))
                          .name(reader[DB.PERSON.vorname].ToString())
                          .nachname(reader[DB.PERSON.nachname].ToString())
-                         .birthdate(reader[DB.PERSON.geburtsdatum].ToString())
+                         .birthdate(reader["BDAY"].ToString())
                          .sportArt(SportArt.TENNIS)
                             .toTennisSpieler()
                             .spielSiege(Convert.ToInt32(reader.GetValue(8).ToString()))
@@ -273,7 +272,7 @@ namespace VisualMannschaftsverwaltung
                         .id(Convert.ToInt32(reader[DB.PERSON.id].ToString()))
                          .name(reader[DB.PERSON.vorname].ToString())
                          .nachname(reader[DB.PERSON.nachname].ToString())
-                         .birthdate(reader[DB.PERSON.geburtsdatum].ToString())
+                         .birthdate(reader["BDAY"].ToString())
                          .sportArt(SportArt.KEINE)
                             .toTrainer()
                             .hasLicense(Utils.convertFromBasic(reader[DB.TRAINER.hasLicense].ToString()));
@@ -300,7 +299,7 @@ namespace VisualMannschaftsverwaltung
                          .id(Convert.ToInt32(reader[DB.PERSON.id].ToString()))
                          .name(reader[DB.PERSON.vorname].ToString())
                          .nachname(reader[DB.PERSON.nachname].ToString())
-                         .birthdate(reader[DB.PERSON.geburtsdatum].ToString())
+                         .birthdate(reader["BDAY"].ToString())
                          .sportArt(SportArt.KEINE)
                             .toPhysiotherapeut()
                             .hasLicense(Utils.convertFromBasic(reader[DB.PHYSIOTHERAPEUT.hasLicense].ToString()));
@@ -875,6 +874,15 @@ namespace VisualMannschaftsverwaltung
             });
 
             executeSql(builder);
+        }
+
+        public void updateTurnier(Turnier turnier)
+        {
+            string sql = $"update {DB.TURNIER.TABLE} " +
+                $"set {DB.TURNIER.name}='{turnier.getName()}' " +
+                $"where {DB.TURNIER.id}={turnier.getId().ToString()}";
+
+            executeSql(sql);
         }
         #endregion
     }

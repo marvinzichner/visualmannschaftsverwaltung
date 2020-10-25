@@ -40,6 +40,7 @@ namespace VisualMannschaftsverwaltung.View
         {
             sectionCreateTurnier.Visible = false;
             sectionMapping.Visible = false;
+            renameSection.Visible = false;
 
             loadTurniere();
             loadDropdownSelections();
@@ -168,6 +169,9 @@ namespace VisualMannschaftsverwaltung.View
                 tr.Cells.Add(createCell($"{turnier.getName()}", "tablecell cellBody"));
                 tr.Cells.Add(createCell($"{turnier.getType()}", "tablecell cellBody"));
 
+                // add Turnier to Dropdown Menue
+
+
                 if (GetUserFromSession().isAdmin())
                 {
                     tr.Cells.Add(createCellButton(
@@ -228,6 +232,7 @@ namespace VisualMannschaftsverwaltung.View
         {
             dropdownMannschaften.Items.Clear();
             dropdownTurniere.Items.Clear();
+            turnierDropdownList.Items.Clear();
 
             ApplicationController.getMannschaften(GetUserFromSession().getSessionId()).ForEach(mannschaft =>
             {
@@ -246,6 +251,15 @@ namespace VisualMannschaftsverwaltung.View
 
                 dropdownTurniere.Items.Add(item);
             });
+
+            ApplicationController.getTurniere(GetUserFromSession().getSessionId()).ForEach(turnier =>
+            {
+                ListItem item = new ListItem();
+                item.Text = $"{turnier.getName()} [{turnier.getType().ToString()}]";
+                item.Value = turnier.getId().ToString();
+
+                turnierDropdownList.Items.Add(item);
+            });
         }
 
         public void openCreationMode(Object sender, EventArgs e) {
@@ -259,6 +273,7 @@ namespace VisualMannschaftsverwaltung.View
             sectionTurnierlist.Visible = true;
             sectionCreateTurnier.Visible = false;
             sectionMapping.Visible = false;
+            renameSection.Visible = false;
         }
 
         public void openMappingMode(Object sender, EventArgs e)
@@ -298,6 +313,33 @@ namespace VisualMannschaftsverwaltung.View
             ApplicationController.addMappingOfTurnierAndMannschaft(
                 dropdownMannschaften.SelectedValue,
                 dropdownTurniere.SelectedValue);
+
+            this.loadTurniere();
+            this.loadDropdownSelections();
+            this.cancelAction(sender, e);
+        }
+
+        public void openRenameMode(Object sender, EventArgs e)
+        {
+            renameSection.Visible = true;
+        }
+
+        public void doTurnierRenaming(Object sender, EventArgs e)
+        {
+            try {
+                string newName = ApplicationContext.disarmHijacking(newTurnierName.Text);
+                int selectedTurnier = Utils.convertToInteger32(
+                    turnierDropdownList.SelectedValue.ToString());
+                Turnier turnier = ApplicationController.getTurniere(GetUserFromSession().getSessionId())
+                    .Find(t => t.getId() == selectedTurnier);
+
+                turnier.setName(newName);
+                ApplicationController.updateTurnier(turnier);
+            }
+            catch (Exception exception)
+            {
+
+            }
 
             this.loadTurniere();
             this.loadDropdownSelections();

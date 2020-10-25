@@ -50,7 +50,6 @@ namespace VisualMannschaftsverwaltung.View
         {
             if (this.Session["VIEW"] != null)
             {
-                System.Diagnostics.Debug.WriteLine($"changeing views");
                 if (this.Session["VIEW"].ToString() == "TABELLE")
                 {
                     SECTION_TABELLE.Visible = true;
@@ -72,7 +71,6 @@ namespace VisualMannschaftsverwaltung.View
 
             if (this.Session["VIEW"].ToString() == "TABELLE")
             {
-                System.Diagnostics.Debug.WriteLine($"change to ergebnisse");
                 this.Session["VIEW"] = "ERGEBNISSE";
                 toggleViews();
                 return;
@@ -80,7 +78,6 @@ namespace VisualMannschaftsverwaltung.View
                 
             if (this.Session["VIEW"].ToString() == "ERGEBNISSE")
             {
-                System.Diagnostics.Debug.WriteLine($"change to tabelle");
                 this.Session["VIEW"] = "TABELLE";
                 toggleViews();
                 return;

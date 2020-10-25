@@ -143,42 +143,52 @@ namespace VisualMannschaftsverwaltung.View
                 mannschaftId = Convert.ToInt32(this.Session[SESSION_MANNSCHAFT].ToString());
                 List<Person> personen = new List<Person>();
 
-                displayMannschaftName.InnerHtml = 
-                    ApplicationController
-                    .getMannschaften(GetUserFromSession().getSessionId())
-                    .Find(mannschaft => mannschaft.ID == mannschaftId).Name;
+                try { 
 
-                ApplicationController.getMannschaften(GetUserFromSession().getSessionId())
-                    .Find(mannschaft => mannschaft.ID == mannschaftId)
-                    .Personen
-                    .ForEach(person =>
-                    {
-                        createPersonEntry(person, "");
+                    displayMannschaftName.InnerHtml = 
+                        ApplicationController
+                        .getMannschaften(GetUserFromSession().getSessionId())
+                        .Find(mannschaft => mannschaft.ID == mannschaftId).Name;
 
-                        ListItem li = new ListItem();
-                        li.Text = $"{person.Nachname.ToUpper()}, {person.Name} ({person.Birthdate})";
-                        li.Value = $"{person.ID}";
-                        personListDelete.Items.Add(li);
-
-                        personen.Add(person);
-                    });
-
-                personList.Items.Clear();
-                SportArt sa = ApplicationController.getMannschaften(GetUserFromSession().getSessionId())
-                    .Find(mannschaft => mannschaft.ID == mannschaftId).SportArt;
-                ApplicationController.getUnsortedPersonen(GetUserFromSession().getSessionId())
-                    .ForEach(person =>
-                    {
-                        if (personen.Find(p => p.ID == person.ID) == null)
+                    ApplicationController.getMannschaften(GetUserFromSession().getSessionId())
+                        .Find(mannschaft => mannschaft.ID == mannschaftId)
+                        .Personen
+                        .ForEach(person =>
                         {
+                            createPersonEntry(person, "");
+
                             ListItem li = new ListItem();
                             li.Text = $"{person.Nachname.ToUpper()}, {person.Name} ({person.Birthdate})";
                             li.Value = $"{person.ID}";
+                            personListDelete.Items.Add(li);
 
-                            if (sa == person.SportArt)
-                                personList.Items.Add(li);
-                        }
-                    });
+                            personen.Add(person);
+                        });
+
+                    personList.Items.Clear();
+                    SportArt sa = ApplicationController.getMannschaften(GetUserFromSession().getSessionId())
+                        .Find(mannschaft => mannschaft.ID == mannschaftId).SportArt;
+                    ApplicationController.getUnsortedPersonen(GetUserFromSession().getSessionId())
+                        .ForEach(person =>
+                        {
+                            if (personen.Find(p => p.ID == person.ID) == null)
+                            {
+                                ListItem li = new ListItem();
+                                li.Text = $"{person.Nachname.ToUpper()}, {person.Name} ({person.Birthdate})";
+                                li.Value = $"{person.ID}";
+
+                                if (sa == person.SportArt || 
+                                       person.isTrainer() ||
+                                       person.isPhysiotherapeut())
+                                    personList.Items.Add(li);
+                            }
+                        });
+
+                } 
+                catch (Exception ex)
+                {
+                    displayMannschaftName.InnerHtml = "Bitte wählen Sie eine Mannschaft";
+                }
             }
         }
 
@@ -230,9 +240,15 @@ namespace VisualMannschaftsverwaltung.View
 
         protected void changeTeam(object sender, EventArgs e)
         {
-            newTeamnameBox.Text = ApplicationController.TempMannschaft.Name;
-            newTeamtype.Text = ApplicationController.TempMannschaft.SportArt.ToString();
-            newTeamtype.SelectedValue = ApplicationController.TempMannschaft.SportArt.ToString();
+            int mannschaftId = Convert.ToInt32(this.Session[SESSION_MANNSCHAFT].ToString());
+            Mannschaft mannschaft = ApplicationController
+                .getMannschaften(GetUserFromSession().getSessionId())
+                .Find(m => m.ID == mannschaftId);
+
+            newTeamnameBox.Text = mannschaft.Name;
+            newTeamtype.Text = mannschaft.SportArt.ToString();
+            newTeamtype.SelectedValue = mannschaft.SportArt.ToString();
+
             ApplicationController.EditMode = true;
             newTeamBtn.Text = "Änderung anwenden";
             creationPanel.Visible = true;
@@ -245,18 +261,25 @@ namespace VisualMannschaftsverwaltung.View
             string searchPattern = this.personList.SelectedValue;
             if (searchPattern != null || searchPattern != "")
             {
-                int personId = Convert.ToInt32(searchPattern);
-                int selectedMannschaft = Convert.ToInt32(this.Session[SESSION_MANNSCHAFT]);
+                try {  
+                    int personId = Convert.ToInt32(searchPattern);
+                    int selectedMannschaft = Convert.ToInt32(this.Session[SESSION_MANNSCHAFT]);
 
-                Person person = ApplicationController
-                        .getUnsortedPersonen(GetUserFromSession().getSessionId())
-                        .Find(p => personId == p.ID);
-                Mannschaft mannschaft = ApplicationController.
-                    getMannschaften(GetUserFromSession().getSessionId())
-                    .Find(m => m.ID == selectedMannschaft);
+                    Person person = ApplicationController
+                            .getUnsortedPersonen(GetUserFromSession().getSessionId())
+                            .Find(p => personId == p.ID);
+                    Mannschaft mannschaft = ApplicationController.
+                        getMannschaften(GetUserFromSession().getSessionId())
+                        .Find(m => m.ID == selectedMannschaft);
 
-                ApplicationController.addPersonToMannschaft(
-                    person, mannschaft, GetUserFromSession().getSessionId());
+                    ApplicationController.addPersonToMannschaft(
+                        person, mannschaft, GetUserFromSession().getSessionId());
+                }
+                catch (Exception exception)
+                {
+                    // nothing
+                }
+                finally { };
             }
 
             this.prepareData();
@@ -270,7 +293,9 @@ namespace VisualMannschaftsverwaltung.View
             DataRepository repo = new DataRepository();
 
             if (this.personListDelete.SelectedValue != null 
-                || this.personListDelete.SelectedValue != "") { 
+                || this.personListDelete.SelectedValue != "") {
+                try
+                {
                     int selectedId = Convert.ToInt32(this.personListDelete.SelectedValue);
                     int selectedMannschaft = Convert.ToInt32(this.Session[SESSION_MANNSCHAFT]);
                     Person person = ApplicationController
@@ -281,9 +306,14 @@ namespace VisualMannschaftsverwaltung.View
                         .Find(m => m.ID == selectedMannschaft);
 
                     repo.removePersonFromMannschaft(person, mannschaft);
-           
+
                     this.prepareData();
                     this.loadMembers();
+                }
+                catch (Exception exception)
+                {
+                    // nothing
+                }
             }
 
             personListDeleteButton.Enabled = true;
@@ -297,14 +327,17 @@ namespace VisualMannschaftsverwaltung.View
 
             if (ApplicationController.EditMode)
             {
-                ApplicationController.TempMannschaft.Name = teamname;
-                ApplicationController.TempMannschaft.SportArt = sa;
+                int mannschaftId = Convert.ToInt32(
+                    this.Session[SESSION_MANNSCHAFT].ToString());
+                Mannschaft mannschaft = ApplicationController
+                    .getMannschaften(GetUserFromSession().getSessionId())
+                    .Find(m => m.ID == mannschaftId);
 
                 DataRepository repo = new DataRepository();
                 repo.enableSessionbasedQueries()
                     .setSession(GetUserFromSession().getSessionId())
                     .updateMannschaftSettings(
-                        ApplicationController.TempMannschaft.ID.ToString(), teamname, sa.ToString());
+                        mannschaft.ID.ToString(), teamname, sa.ToString());
             }
             else
             {
@@ -313,7 +346,9 @@ namespace VisualMannschaftsverwaltung.View
                     .name(teamname)
                     .sportArt(sa);
 
-                ApplicationController.addMannschaftIfNotExists(mannschaft, GetUserFromSession().getSessionId());
+                ApplicationController
+                    .addMannschaftIfNotExists(
+                    mannschaft, GetUserFromSession().getSessionId());
             }
 
             ApplicationController.EditMode = false;

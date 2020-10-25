@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 using System.Xml.Serialization;
 using System.IO;
 using System.Web.UI.HtmlControls;
+using System.Text.RegularExpressions;
 
 namespace VisualMannschaftsverwaltung.View
 {
@@ -64,10 +65,11 @@ namespace VisualMannschaftsverwaltung.View
             {
                 if (btnCreatePerson.Text == "ÄNDERUNGEN SPEICHERN")
                 {
-                    Person loader = ApplicationController.Personen.Find(
-                        person => person.ID == 
-                            Convert.ToInt32(
-                                ApplicationController.getFirstTupleMatch("personenverwaltung.pid")));
+                    Person loader = ApplicationController.getPersonen(GetUserFromSession().getSessionId())
+                        .Find(
+                            person => person.ID == 
+                                Convert.ToInt32(
+                                    ApplicationController.getFirstTupleMatch("personenverwaltung.pid")));
                     selectedType = loader.GetType().Name;
                 }
 
@@ -88,12 +90,20 @@ namespace VisualMannschaftsverwaltung.View
 
                 if (btnCreatePerson.Text == "ÄNDERUNGEN SPEICHERN")
                 {
-                    Person loader = ApplicationController.Personen.Find(
-                       person => person.ID ==
-                           Convert.ToInt32(
-                               ApplicationController.getFirstTupleMatch("personenverwaltung.pid")));
+                    Person loader = ApplicationController.getPersonen(GetUserFromSession().getSessionId())
+                        .Find(
+                           person => person.ID ==
+                               Convert.ToInt32(
+                                   ApplicationController.getFirstTupleMatch("personenverwaltung.pid")));
 
-                    //reflectedInstance.toDefinedPlayerBy(loader.GetType());
+                    // check american system date -> e.g.  1/12/1971 
+                    string pattern = @"\d{1,4}/\d{1,4}/\d{1,4}";
+                    Match match = Regex.Match(loader.Birthdate, pattern, RegexOptions.IgnoreCase);
+                    if (match.Success)
+                    {
+                        string[] parts = loader.Birthdate.Split('/');
+                        loader.Birthdate = $"{parts[1]}.{parts[0]}.{parts[2]}";
+                    }
 
                     ApplicationController.updatePerson(
                             reflectedInstance.buildFromKeyValueAttributeList(attr).id(loader.ID),

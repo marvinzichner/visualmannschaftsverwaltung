@@ -170,6 +170,7 @@
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="View\MannschaftsVerwaltung.aspx" />
     <Content Include="View\PersonenVerwaltung.aspx" />
+    <Content Include="View\RuntimeError.aspx" />
     <Content Include="View\Spiele.aspx" />
     <Content Include="View\TurnierVerwaltung.aspx" />
     <Content Include="Web.config" />
@@ -270,6 +271,13 @@
     </Compile>
     <Compile Include="View\PersonenVerwaltung.aspx.designer.cs">
       <DependentUpon>PersonenVerwaltung.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\RuntimeError.aspx.cs">
+      <DependentUpon>RuntimeError.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\RuntimeError.aspx.designer.cs">
+      <DependentUpon>RuntimeError.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\Spiele.aspx.cs">
       <DependentUpon>Spiele.aspx</DependentUpon>

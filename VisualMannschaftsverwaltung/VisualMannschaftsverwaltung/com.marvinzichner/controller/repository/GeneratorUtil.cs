@@ -8,8 +8,8 @@ namespace VisualMannschaftsverwaltung
     public class GeneratorUtil
     {
         ApplicationController app;
-        private int COUNT_PERSONEN = 15;
-        private int COUNT_MANNSCHAFTEN = 30;
+        private int COUNT_PERSONEN = 20;
+        private int COUNT_MANNSCHAFTEN = 20;
         private List<string> sessions;
         private string[] forename;
         private string[] surname;
@@ -39,6 +39,26 @@ namespace VisualMannschaftsverwaltung
                 "Yi",
                 "Werner",
                 "John",
+                "Thomas",
+                "Herbert",
+                "Hubert",
+                "Garry",
+                "Bo",
+                "Jens",
+                "Gerald",
+                "Grant",
+                "Thorsten",
+                "Maik",
+                "Samu",
+                "Mehmmet",
+                "Ayse",
+                "Kira",
+                "Jana",
+                "Lilli",
+                "Laura",
+                "Lea",
+                "Pia",
+                "Chantal"
             };
             this.surname = new string[] {
                 "Schmitz",
@@ -52,6 +72,19 @@ namespace VisualMannschaftsverwaltung
                 "Mania",
                 "Feldmann",
                 "Bert",
+                "Priesmann",
+                "Ad-Kongo",
+                "Graß",
+                "Müller-Themensen",
+                "Grandis",
+                "Weber",
+                "Khedira",
+                "Deniz",
+                "Stinson",
+                "Oldrin",
+                "Eriksen",
+                "Mosby",
+                "Scherbatzky"
             };
             this.birthdate = new string[] {
                 "12.01.1971",
@@ -61,6 +94,17 @@ namespace VisualMannschaftsverwaltung
                 "16.11.1900",
                 "11.11.1911",
                 "04.06.2003",
+                "01.03.1992",
+                "12.06.2007",
+                "14.19.1989",
+                "16.10.1997",
+                "22.11.1920",
+                "09.03.2000",
+                "15.05.2001",
+                "28.08.1992",
+                "29.11.1999",
+                "11.01.2004",
+                "16.05.1999"
             };
             this.mannschaften = new string[] {
                 "FC Augsburg",
@@ -83,7 +127,7 @@ namespace VisualMannschaftsverwaltung
                 "VfL Bochum",
                 "Hannover 96",
                 "Fortuna Düsseldorf",
-                "Holstein Kiel",
+                "Holstein Kiel"
             };
         }
 

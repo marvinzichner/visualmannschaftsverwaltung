@@ -383,6 +383,12 @@ namespace VisualMannschaftsverwaltung
             DataRepository repo = new DataRepository();
             repo.updateSpieleResult(spiele);
         }
+
+        public void updateTurnier(Turnier turnier)
+        {
+            DataRepository repo = new DataRepository();
+            repo.updateTurnier(turnier);
+        }
         #endregion
     }
 }

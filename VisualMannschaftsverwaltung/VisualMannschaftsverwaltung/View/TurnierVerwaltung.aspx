@@ -1,10 +1,27 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="TurnierVerwaltung.aspx.cs" Inherits="VisualMannschaftsverwaltung.View.TurnierVerwaltung" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
+    
+    <div id="renameSection" runat="server">
+        <h3>Turnier umbenennen</h3>
+
+        Das Turnier 
+        <asp:DropDownList ID="turnierDropdownList" runat="server"></asp:DropDownList>
+        zum Turnier
+        <asp:TextBox ID="newTurnierName" runat="server"></asp:TextBox>
+        umbenennen.
+
+        <br />
+        <br />
+        <asp:Button ID="renameButton" runat="server" Text="Turnier umbennnen" OnClick="doTurnierRenaming" />
+        <asp:Button ID="Button1" runat="server" Text="Abbrechen" OnClick="cancelAction" />
+    </div>
+
     <div id="sectionTurnierlist" runat="server">
         <h3>Turnierverwaltung</h3>
         <asp:Button ID="buttonConfirmSelection" runat="server" Text="Neues Turnier erstellen" OnClick="openCreationMode" />
         <asp:Button ID="buttonAddMapping" runat="server" Text="Mannschaft zu Turnier hinzufügen" OnClick="openMappingMode" />
+        <asp:Button ID="buttonEditTurnier" runat="server" Text="Turnier bearbeiten" OnClick="openRenameMode" />
         <br />
         <br />
         <table runat="server" id="storedTurniere" class="table"></table>

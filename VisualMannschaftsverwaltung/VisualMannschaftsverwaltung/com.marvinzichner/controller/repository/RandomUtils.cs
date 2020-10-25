@@ -11,6 +11,7 @@ namespace VisualMannschaftsverwaltung
         {
             Random random = new Random();
             int rand = random.Next(0, collection.Length);
+            string result = collection[rand];
 
             return collection[rand];
         }

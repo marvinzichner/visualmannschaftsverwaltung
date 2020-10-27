@@ -9,6 +9,8 @@
 <body>
     <form id="form1" runat="server">
         <div>
+            Sorry. An unexpected error appeared. <br />
+            <a href="/">Retry...</a>
         </div>
     </form>
 </body>

@@ -90,7 +90,7 @@ namespace VisualMannschaftsverwaltung
 
         public void FORCE_DELETE_DATABASE()
         {
-            executeSql("DROP TABLE `mvw_auth`, `mvw_fussballspieler`, `mvw_handballspieler`, `mvw_mannschaft`, `mvw_mannschaft_person`, `mvw_mannschaft_turnier`, `mvw_migration`, `mvw_person`, `mvw_physiotherapeut`, `mvw_spiel`, `mvw_spielerrolle`, `mvw_tennisspieler`, `mvw_trainer`, `mvw_turnier`;");
+            executeSql("DROP TABLE mvw_auth, mvw_fussballspieler, mvw_handballspieler, mvw_mannschaft, mvw_mannschaft_person, mvw_mannschaft_turnier, mvw_migration, mvw_person, mvw_physiotherapeut, mvw_spiel, mvw_spielerrolle, mvw_tennisspieler, mvw_trainer, mvw_turnier;");
         }
 
         public bool checkConnection()
@@ -114,10 +114,13 @@ namespace VisualMannschaftsverwaltung
                 {
                     MySqlCommand command = new MySqlCommand(sql, MySqlConnection);
                     rowsAffected = command.ExecuteNonQuery();
+
+                    System.Diagnostics.Debug.WriteLine($"[ INFO ] SQL: {sql}");
                 }
                 catch(Exception e)
                 {
-                    // nothing
+                    System.Diagnostics.Debug.WriteLine($"[ERROR] failed to execute: {sql}");
+                    System.Diagnostics.Debug.WriteLine($"[ERROR] caused by: {e.Message}");
                 }
                 finally { }
             }
@@ -406,7 +409,7 @@ namespace VisualMannschaftsverwaltung
 
             string sqlPartA = $"SELECT *, SUM(RESULT_A) as CALCULATED_A FROM {DB.SPIEL.TABLE} " +
                 $"where {DB.SPIEL.fkTurnier}={turnierId.ToString()} " +
-                $"group by `{DB.SPIEL.fkMannschaftA}` order by CALCULATED_A desc";
+                $"group by {DB.SPIEL.fkMannschaftA} order by CALCULATED_A desc";
         }
 
         public void createNewSpielOfTurnier(string title, int playerA, int playerB, string spieltag, int turnierFk)
@@ -539,7 +542,7 @@ namespace VisualMannschaftsverwaltung
                 } 
                 catch (Exception e)
                 {
-                    Console.Write(e);
+                    System.Diagnostics.Debug.WriteLine(e.Message);
                     DB_VERSION = -1;
                 }
                 

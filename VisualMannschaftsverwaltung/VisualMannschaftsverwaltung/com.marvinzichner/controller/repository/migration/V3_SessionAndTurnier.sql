@@ -15,9 +15,3 @@ create table MVW_MANNSCHAFT_TURNIER (
     TURNIER_ID int,
     primary key (ID)
 );
-
-insert into MVW_TURNIER (NAME, TYPE, TURNIERART, SESSION_ID) 
-	values ('Mock Data Cup 2020', 'FUSSBALL', 'EGAL', 'ALL');
-
-insert into MVW_MANNSCHAFT_TURNIER (MANNSCHAFT_ID, TURNIER_ID) 
-	values (1, 1);

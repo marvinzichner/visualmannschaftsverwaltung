@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 
 namespace VisualMannschaftsverwaltung
@@ -10,6 +11,7 @@ namespace VisualMannschaftsverwaltung
         ApplicationController app;
         private int COUNT_PERSONEN = 20;
         private int COUNT_MANNSCHAFTEN = 20;
+        private int MS_SQL_DELAY = 20; 
         private List<string> sessions;
         private string[] forename;
         private string[] surname;
@@ -104,7 +106,10 @@ namespace VisualMannschaftsverwaltung
                 "28.08.1992",
                 "29.11.1999",
                 "11.01.2004",
-                "16.05.1999"
+                "16.05.2002",
+                "26.07.1997",
+                "05.09.1963",
+                "13.11.1971"
             };
             this.mannschaften = new string[] {
                 "FC Augsburg",
@@ -140,13 +145,14 @@ namespace VisualMannschaftsverwaltung
                 for (int i = 0; i <= this.COUNT_PERSONEN; i++)
                 {
                     int rand = RandomUtils.asInteger(0, 4);
+                    Thread.Sleep(MS_SQL_DELAY);
 
-                    if(rand == 0) { 
+                    if (rand == 0) { 
                         FussballSpieler fussballSpieler = new FussballSpieler();
                         fussballSpieler
-                            .name(RandomUtils.fromCollection(forename))
-                            .nachname(RandomUtils.fromCollection(surname))
-                            .birthdate(RandomUtils.fromCollection(birthdate))
+                            .name(forename[i])
+                            .nachname(surname[i])
+                            .birthdate(birthdate[i])
                             .sportArt(SportArt.FUSSBALL)
                                 .toFussballSpieler()
                                 .isLeftFeet(RandomUtils.asBoolean())
@@ -158,9 +164,9 @@ namespace VisualMannschaftsverwaltung
                     {
                         HandballSpieler handballSpieler = new HandballSpieler();
                         handballSpieler
-                            .name(RandomUtils.fromCollection(forename))
-                            .nachname(RandomUtils.fromCollection(surname))
-                            .birthdate(RandomUtils.fromCollection(birthdate))
+                            .name(forename[i])
+                            .nachname(surname[i])
+                            .birthdate(birthdate[i])
                             .sportArt(SportArt.HANDBALL)
                                 .toHandballSpieler()
                                 .isLeftHand(RandomUtils.asBoolean())
@@ -172,9 +178,9 @@ namespace VisualMannschaftsverwaltung
                     {
                         TennisSpieler tennisSpieler = new TennisSpieler();
                         tennisSpieler
-                            .name(RandomUtils.fromCollection(forename))
-                            .nachname(RandomUtils.fromCollection(surname))
-                            .birthdate(RandomUtils.fromCollection(birthdate))
+                            .name(forename[i])
+                            .nachname(surname[i])
+                            .birthdate(birthdate[i])
                             .sportArt(SportArt.TENNIS)
                                 .toTennisSpieler()
                                 .isLeftHand(RandomUtils.asBoolean())
@@ -186,9 +192,9 @@ namespace VisualMannschaftsverwaltung
                     {
                         Trainer trainer = new Trainer();
                         trainer
-                            .name(RandomUtils.fromCollection(forename))
-                            .nachname(RandomUtils.fromCollection(surname))
-                            .birthdate(RandomUtils.fromCollection(birthdate))
+                            .name(forename[i])
+                            .nachname(surname[i])
+                            .birthdate(birthdate[i])
                             .sportArt(SportArt.KEINE)
                                 .toTrainer()
                                 .hasLicense(RandomUtils.asBoolean());
@@ -199,9 +205,9 @@ namespace VisualMannschaftsverwaltung
                     {
                         Physiotherapeut physiotherapeut = new Physiotherapeut();
                         physiotherapeut
-                            .name(RandomUtils.fromCollection(forename))
-                            .nachname(RandomUtils.fromCollection(surname))
-                            .birthdate(RandomUtils.fromCollection(birthdate))
+                            .name(forename[i])
+                            .nachname(surname[i])
+                            .birthdate(birthdate[i])
                             .sportArt(SportArt.KEINE)
                                 .toPhysiotherapeut()
                                 .hasLicense(RandomUtils.asBoolean());
@@ -213,6 +219,7 @@ namespace VisualMannschaftsverwaltung
                 // mannschaften
                 for (int j = 0; j < this.mannschaften.Length; j++)
                 {
+                    Thread.Sleep(MS_SQL_DELAY);
                     Mannschaft mannschaft = new Mannschaft();
                     mannschaft
                         .name(this.mannschaften[j])
@@ -221,7 +228,7 @@ namespace VisualMannschaftsverwaltung
                     app.addMannschaftIfNotExists(mannschaft, session);
                 }
 
-                //Turnier
+                // Turniere
                 app.createNewTurnier("1. Bundesliga", SportArt.FUSSBALL, session);
                 app.createNewTurnier("2. Bundesliga", SportArt.FUSSBALL, session);
 
@@ -232,6 +239,7 @@ namespace VisualMannschaftsverwaltung
                     {
                         if (count < 5 || RandomUtils.asBoolean())
                         {
+                            Thread.Sleep(MS_SQL_DELAY);
                             app.addMappingOfTurnierAndMannschaft(
                                 mannschaft.ID.ToString(), turnier.getId().ToString());
                             count++;
@@ -239,7 +247,7 @@ namespace VisualMannschaftsverwaltung
                     });
                 });
 
-                //Spiele
+                // Spiele
                 app.getTurniere(session).ForEach(turnier =>
                 {
                     int day = 1;
@@ -252,6 +260,7 @@ namespace VisualMannschaftsverwaltung
                         {
                             if (mannschaft.ID != mannschaft2.ID)
                             {
+                                Thread.Sleep(MS_SQL_DELAY);
                                 app.createNewSpielOfTurnier(
                                     "generated.fwd",
                                     mannschaft.ID,

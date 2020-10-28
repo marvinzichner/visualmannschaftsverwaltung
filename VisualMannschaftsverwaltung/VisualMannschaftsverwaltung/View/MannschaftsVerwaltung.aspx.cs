@@ -232,35 +232,50 @@ namespace VisualMannschaftsverwaltung.View
 
         protected void removeTeam(object sender, EventArgs e)
         {
-            int mannschaftId = Convert.ToInt32(this.Session[SESSION_MANNSCHAFT].ToString());
-            Mannschaft mannschaft = ApplicationController
-                .getMannschaften(GetUserFromSession().getSessionId())
-                .Find(m => m.ID == mannschaftId);
+            try { 
 
-            ApplicationController.removeMannschaft(
-                 mannschaft,
-                 GetUserFromSession().getSessionId());
+                int mannschaftId = Convert.ToInt32(this.Session[SESSION_MANNSCHAFT].ToString());
+                Mannschaft mannschaft = ApplicationController
+                    .getMannschaften(GetUserFromSession().getSessionId())
+                    .Find(m => m.ID == mannschaftId);
+
+                ApplicationController.removeMannschaft(
+                     mannschaft,
+                     GetUserFromSession().getSessionId());
             
-            ApplicationController.TempMannschaft = new Mannschaft("_GENERATED");
-            this.contentContainer.Visible = false;
-            this.prepareData();
-            this.loadMembers();
+                ApplicationController.TempMannschaft = new Mannschaft("_GENERATED");
+                this.contentContainer.Visible = false;
+                this.prepareData();
+                this.loadMembers();
+            }
+            catch (Exception exception)
+            {
+                // ignore
+            }
         }
 
         protected void changeTeam(object sender, EventArgs e)
         {
-            int mannschaftId = Convert.ToInt32(this.Session[SESSION_MANNSCHAFT].ToString());
-            Mannschaft mannschaft = ApplicationController
-                .getMannschaften(GetUserFromSession().getSessionId())
-                .Find(m => m.ID == mannschaftId);
+            try
+            {
+                
+                int mannschaftId = Convert.ToInt32(this.Session[SESSION_MANNSCHAFT].ToString());
+                Mannschaft mannschaft = ApplicationController
+                    .getMannschaften(GetUserFromSession().getSessionId())
+                    .Find(m => m.ID == mannschaftId);
 
-            newTeamnameBox.Text = mannschaft.Name;
-            newTeamtype.Text = mannschaft.SportArt.ToString();
-            newTeamtype.SelectedValue = mannschaft.SportArt.ToString();
+                newTeamnameBox.Text = mannschaft.Name;
+                newTeamtype.Text = mannschaft.SportArt.ToString();
+                newTeamtype.SelectedValue = mannschaft.SportArt.ToString();
 
-            ApplicationController.EditMode = true;
-            newTeamBtn.Text = "Änderung anwenden";
-            creationPanel.Visible = true;
+                ApplicationController.EditMode = true;
+                newTeamBtn.Text = "Änderung anwenden";
+                creationPanel.Visible = true;
+            }
+            catch (Exception exception)
+            {
+                // ignore
+            }
         }
 
         protected void addPersonToMannschaft(object sender, EventArgs e)

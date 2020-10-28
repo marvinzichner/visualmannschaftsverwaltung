@@ -37,6 +37,11 @@ namespace VisualMannschaftsverwaltung
                 shortcuts.Visible = false;
             }
 
+            if (Global.isFirstRun)
+            {
+                firstRun.Visible = true;
+            }
+
             SessionText.InnerText = session;
             this.checkLifecycle();
         }

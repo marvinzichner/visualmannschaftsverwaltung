@@ -76,19 +76,23 @@ namespace VisualMannschaftsverwaltung
                 generatorUtil.generate();
             }
         }
-        public static void createDatabaseContext()
+        public static bool createDatabaseContext()
         {
             DataRepository repo = new DataRepository();
             if (repo.databaseIsConnectedAndReady())
             {
                 // repo.FORCE_DELETE_DATABASE();
                 doMigration(true);
+                return true;
             }
 
             if (repo.databaseExists() == false)
             {
                 doMigration(false);
+                return false;
             }
+
+            return false;
         }
 
         public static void createFilesystemStructure()

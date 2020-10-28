@@ -30,6 +30,9 @@ namespace VisualMannschaftsverwaltung.View
         protected void Page_Init(object sender, EventArgs e)
         {
             ApplicationController = Global.ApplicationController;
+
+            this.loadPersonen();
+            this.disableAdminFeatures();
         }
         protected void Page_Load(object sender, EventArgs e)
         {

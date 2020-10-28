@@ -13,9 +13,11 @@ namespace VisualMannschaftsverwaltung
     {
         static private ApplicationController _applicationController;
         static private Property _property;
+        static private bool _isFirstRun;
 
         static public ApplicationController ApplicationController { get => _applicationController; set => _applicationController = value; }
         public static Property PropertyManager { get => _property; set => _property = value; }
+        public static bool isFirstRun { get => _isFirstRun; set => _isFirstRun = value; }
 
         void Application_Start(object sender, EventArgs e)
         {
@@ -27,7 +29,7 @@ namespace VisualMannschaftsverwaltung
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             
-            ApplicationContext.createDatabaseContext();
+            bool dbReady = ApplicationContext.createDatabaseContext();
             ApplicationController = new ApplicationController();
             ApplicationContext.createFilesystemStructure();
             ApplicationController.prepareTuple();
@@ -35,6 +37,15 @@ namespace VisualMannschaftsverwaltung
             { 
                 ApplicationController.loadPersonenFromRepository();
                 ApplicationController.loadMannschaftenFromRepository("");
+            }
+
+            if (dbReady)
+            {
+                isFirstRun = false;
+            }
+            else
+            {
+                isFirstRun = true;
             }
         }
     }

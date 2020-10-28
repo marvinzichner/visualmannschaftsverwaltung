@@ -153,6 +153,15 @@
         </div>
     </div>
 
+     <div class="bigError" id="firstRun" runat="server" visible="false">
+        <div class="wrapper">
+            <span class="bigTitle"><b>Die Datenbank ist jetzt bereit</b></span><br />
+            Wir haben die Datenbank erfolgreich vorbereitet. <br /> Bitte starten Sie die Anwendung neu, um alle Funktionalitäten verwenden zu können. <br />
+          
+            &copy; 2020 - VisualMannschaftsverwaltung - Marvin Zichner
+        </div>
+    </div>
+
     <style>
         .table {
             width: 100%;

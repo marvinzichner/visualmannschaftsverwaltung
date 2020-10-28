@@ -65,7 +65,7 @@ namespace VisualMannschaftsverwaltung.View
             {
                 if (btnCreatePerson.Text == "ÄNDERUNGEN SPEICHERN")
                 {
-                    Person loader = ApplicationController.getPersonen(GetUserFromSession().getSessionId())
+                    Person loader = ApplicationController.Personen
                         .Find(
                             person => person.ID == 
                                 Convert.ToInt32(
@@ -260,13 +260,15 @@ namespace VisualMannschaftsverwaltung.View
 
                         if(GetUserFromSession().isAdmin()) { 
                             Button edit = new Button();
-                            edit.ID = "E" + person.ID.ToString();
+                            // edit.ID = RandomUtils.next();
+                            edit.Attributes.Add("data", person.ID.ToString());
                             edit.Click += new EventHandler(this.editSelectedPerson);
                             edit.Text = "Bearbeiten";
                             tc.Controls.Add(edit);
 
                             Button delete = new Button();
-                            delete.ID = "D" + person.ID.ToString();
+                            // delete.ID = RandomUtils.next();
+                            delete.Attributes.Add("data", person.ID.ToString());
                             delete.Click += new EventHandler(this.removeSelectedPerson);
                             delete.Text = "Löschen";
                             tc.Controls.Add(delete);
@@ -313,8 +315,8 @@ namespace VisualMannschaftsverwaltung.View
         protected void removeSelectedPerson(object sender, EventArgs e)
         {
             Button b = (Button)sender;
-            String id = b.ID;
-            int pid = Convert.ToInt32(id.Substring(1));
+            String id = b.Attributes["data"];
+            int pid = Convert.ToInt32(id);
             ApplicationController.setTuple("personenverwaltung.pid", pid.ToString());
 
             Person p = new Trainer();
@@ -335,8 +337,8 @@ namespace VisualMannschaftsverwaltung.View
         protected void editSelectedPerson(object sender, EventArgs e)
         {
             Button b = (Button)sender;
-            String id = b.ID;
-            int pid = Convert.ToInt32(id.Substring(1));
+            String id = b.Attributes["data"];
+            int pid = Convert.ToInt32(id);
             ApplicationController.setTuple("personenverwaltung.pid", pid.ToString());
 
             Object p = new Trainer();

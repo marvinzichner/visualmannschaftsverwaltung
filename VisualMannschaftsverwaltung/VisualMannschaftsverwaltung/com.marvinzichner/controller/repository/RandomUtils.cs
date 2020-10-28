@@ -40,5 +40,10 @@ namespace VisualMannschaftsverwaltung
 
             return sa;
         }
+
+        public static string next()
+        {
+            return System.Guid.NewGuid().ToString();
+        }
     }
 }

@@ -33,6 +33,12 @@ namespace VisualMannschaftsverwaltung.View
         protected void Page_Load(object sender, EventArgs e)
         {
             this.disableAdminFeatures();
+
+            if (!IsPostBack)
+            {
+                this.prepareData();
+                this.loadMembers();
+            }
         }
 
         private void disableAdminFeatures()
@@ -226,10 +232,13 @@ namespace VisualMannschaftsverwaltung.View
 
         protected void removeTeam(object sender, EventArgs e)
         {
-            string team = teamsList.SelectedValue;
+            int mannschaftId = Convert.ToInt32(this.Session[SESSION_MANNSCHAFT].ToString());
+            Mannschaft mannschaft = ApplicationController
+                .getMannschaften(GetUserFromSession().getSessionId())
+                .Find(m => m.ID == mannschaftId);
+
             ApplicationController.removeMannschaft(
-                 ApplicationController.Mannschaften.Find(
-                    m => m.Name == team),
+                 mannschaft,
                  GetUserFromSession().getSessionId());
             
             ApplicationController.TempMannschaft = new Mannschaft("_GENERATED");

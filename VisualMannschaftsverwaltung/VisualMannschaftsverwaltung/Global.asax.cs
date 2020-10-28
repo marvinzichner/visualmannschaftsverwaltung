@@ -37,12 +37,5 @@ namespace VisualMannschaftsverwaltung
                 ApplicationController.loadMannschaftenFromRepository("");
             }
         }
-
-        void Application_Error(object sender, EventArgs e)
-        {
-            Exception exc = Server.GetLastError();
-            
-            // Catch unhandled exceptions to nil
-        }
     }
 }

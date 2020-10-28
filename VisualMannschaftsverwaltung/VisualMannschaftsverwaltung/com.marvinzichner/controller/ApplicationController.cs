@@ -100,7 +100,8 @@ namespace VisualMannschaftsverwaltung
             repo.enableSessionbasedQueries()
                 .setSession(session);
             bool existing = false;
-            Mannschaften.ForEach(m =>
+
+            getMannschaften(session).ForEach(m =>
             {
                 if(newMannschaft.Name == m.Name
                     && newMannschaft.SportArt == m.SportArt)
@@ -112,7 +113,6 @@ namespace VisualMannschaftsverwaltung
             if (!existing && newMannschaft.Name != "")
             {
                 repo.createMannschaft(newMannschaft);
-                Mannschaften.Add(newMannschaft);
             }
         }
 
@@ -135,7 +135,7 @@ namespace VisualMannschaftsverwaltung
             loadPersonenFromRepository(session);
 
             Mannschaft mannschaft = new Mannschaft("TRANSFERRING_OBJECT");
-            mannschaft.Personen = this.Personen;
+            mannschaft.Personen = getUnsortedPersonen(session);
 
             if(ob == Mannschaft.OrderBy.NAME_ASC) {
                 return mannschaft

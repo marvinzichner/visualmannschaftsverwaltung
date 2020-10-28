@@ -87,36 +87,38 @@
                     <td></td>
                     <td><i class="material-icons md-18">person_pin</i></td>
                     <td><i class="material-icons md-18">person_pin</i></td>
-                    <td><i class="material-icons md-18">person_pin</i></td>
-                    <td><i class="material-icons md-18">person_pin</i></td>
+                    <!--<td><i class="material-icons md-18">person_pin</i></td>
+                    <td><i class="material-icons md-18">person_pin</i></td>-->
                 </tr>
                 <tr>
                     <td><b>Benutzername</b></td>
                     <td>mustermann</td>
                     <td>mustermann.admin</td>
-                    <td>fcbla</td>
-                    <td>fcbla.admin</td>
+                    <!--<td>fcbla</td>
+                    <td>fcbla.admin</td>-->
                 </tr>
                 <tr>
                     <td><b>Kennwort</b></td>
                     <td>1234</td>
                     <td>password</td>
-                    <td>simplepass</td>
-                    <td>sonnenblume</td>
+                    <!--<td>simplepass</td>
+                    <td>sonnenblume</td>-->
                 </tr>
                 <tr>
                     <td><b>Rolle</b></td>
                     <td>Benutzer</td>
                     <td>Administrator</td>
-                    <td>Benutzer</td>
-                    <td>Administrator</td>
+                    <!--<td>Benutzer</td>
+                    <td>Administrator</td>-->
                 </tr>
                 <tr>
                     <td></td>
                     <td><asp:Button ID="impersonate1" runat="server" Text="impersonate" USER="mustermann" PASS="1234" OnClick="impersonate" /></td>
                     <td><asp:Button ID="impersonate2" runat="server" Text="impersonate" USER="mustermann.admin" PASS="password" OnClick="impersonate" /></td>
+                    <!--
                     <td><asp:Button ID="impersonate3" runat="server" Text="impersonate" USER="fcbla" PASS="simplepass" OnClick="impersonate" /></td>
                     <td><asp:Button ID="impersonate4" runat="server" Text="impersonate" USER="fcbla.admin" PASS="sonnenblume" OnClick="impersonate" /></td>
+                    -->
                 </tr>
             </table>
             <br /><br /><br /><br /><br /><br />

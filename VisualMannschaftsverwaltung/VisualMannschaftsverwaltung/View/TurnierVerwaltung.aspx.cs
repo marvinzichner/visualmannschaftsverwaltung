@@ -34,6 +34,7 @@ namespace VisualMannschaftsverwaltung.View
 
             loadTurniere();
             loadDropdownSelections();
+            this.disableAdminFeatures();
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -42,9 +43,12 @@ namespace VisualMannschaftsverwaltung.View
             sectionMapping.Visible = false;
             renameSection.Visible = false;
 
-            loadTurniere();
-            loadDropdownSelections();
-            this.disableAdminFeatures();
+            if (!IsPostBack)
+            {
+                loadTurniere();
+                loadDropdownSelections();
+                this.disableAdminFeatures();
+            }
         }
 
         #region Worker
@@ -56,6 +60,7 @@ namespace VisualMannschaftsverwaltung.View
                 buttonAddMapping.Visible = false;
                 createNewTurnierButton.Visible = false;
                 createNewMapping.Visible = false;
+                buttonEditTurnier.Visible = false;
             }
         }
 
